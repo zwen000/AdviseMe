@@ -1,2 +1,8 @@
+# Python Virtual Enviornment:
 /[Ee]nv/
+
+#SQL Database:
 /database.db
+
+# VSCode:
+.vscode/
