@@ -2,20 +2,22 @@ Senior Design 2: AdviseMe
 
 ## To set up a Python Virtual Enviornment:
     
-    install virtual enviornment: 
+- To install virtual enviornment: 
 
         $ python -m pip install --user virtualenv
 
-    create a virtual enviornment: 
+- To create a virtual enviornment: 
 
         $ python -m venv env
 
 ## To run the virtual enviornment: 
 
-    Mac OS/Linux: 
+- Mac OS/Linux: 
+        
         $ source /env/bin/activate
 
-    Windows: 
+- Windows: 
+        
         $ .\env\Scripts\activate
  
 
@@ -26,7 +28,11 @@ Senior Design 2: AdviseMe
 ## To check dependencies installed: 
 
         $ pip freeze
+        
+- To update requirements.txt:
 
+        $ pip freeze > requirements.txt 
+        
 ## To run the application:
 
         $ python run.py 
