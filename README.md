@@ -1,4 +1,4 @@
-Senior Design 2: AdviseMe
+# Senior Design 2: (Group 6) AdviseMe
 
 ## To set up a Python Virtual Enviornment:
 To install virtual enviornment: 
