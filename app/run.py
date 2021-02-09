@@ -28,6 +28,7 @@ posts = [
     }
 ]
 
+# Ignore the text above that is just dummy data ... 
 
 @app.route('/')
 @app.route('/home')
@@ -36,22 +37,28 @@ def home():
 
 
 @app.route('/about')
-def about_page():
+def about():
     return render_template('about.html', title='About')
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')      # displays success message in bootstrap green! 
-        return redirect(url_for('home'))                                    # redirects us to the home page! 
-    return render_template('register.html', title='Register', form=form)
+    form = RegistrationForm()                                                                   # create the form  
+    if form.validate_on_submit():                                                               # if our form is valid on submission (i.e there are no errors)
+        flash(f'Account created for {form.username.data}!', 'success')                          # display success message in bootstrap green! 
+        return redirect(url_for('home'))                                                        # redirects user to the home page! 
+    return render_template('register.html', title='Register', form=form)                        
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = LoginForm()                                                                          # create the form 
+    if form.validate_on_submit():                                                               # if our form is valid on submission (i.e there are no errors)
+        if form.email.data == 'admin@blog.com' and form.password.data == 'password':            # if this checks pass 
+            flash('You have been logged in!', 'success')                                        # display success message in bootstrap green! 
+            return redirect(url_for('home'))                                                    # redirect user to the home page!
+        else:
+            flash('Login Unsuccessful. Please check your username and password', 'danger')      # display success message in bootstrap red! 
     return render_template('login.html', title='Login', form=form)
 
 
