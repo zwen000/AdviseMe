@@ -5,7 +5,8 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '3a005a74e33b93ce317f78c78fb2577d'
 
-
+#Will be useful for displaying students in need of advisement 
+'''
 posts = [
     {
         'author': 'Rehman Arshad',
@@ -26,12 +27,15 @@ posts = [
         'date_posted': 'April 20th, 2006'
     }
 ]
-
+'''
 
 @app.route('/')
+def landing_page():
+    return render_template('index.html')
+
 @app.route('/home')
 def home_page():
-    return render_template('home.html', posts=posts)
+    return render_template('home.html')
 
 
 @app.route('/about')
