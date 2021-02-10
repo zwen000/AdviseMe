@@ -9,3 +9,6 @@
 
 # Pycache: 
 __pycache__/
+
+# Custom Mac OS File (not needed)
+.DS_Store
