@@ -12,7 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/main.css') }}">
 
     {% if title %}
         <title>AdviseMe - {{ title }}</title>
@@ -27,7 +27,7 @@
     <header class="site-header">
         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top" style="background-color: #3772D7;">
             <div class="container">
-                <a class="navbar-brand mr-4" href="/home"><img src="{{ url_for('static', filename='AdviseMe.svg') }}"></a>
+                <a class="navbar-brand mr-4" href="/home"><img src="{{ url_for('static', filename='/Images/AdviseMe.svg') }}"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
