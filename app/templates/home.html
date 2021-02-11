@@ -37,7 +37,7 @@
                   <img class="each-event-img" src="{{ url_for('static', filename='/Images/CheckList.svg') }}">
                   <h6 class="each-event-title">Students have automated advisement.</h6>
                   <div class="event-description">
-                    The live advisement form has filled in the grades of all the courses the student has taken, and includes classes they are currently taking. Allows Students to choose courses they intend on taking the following semester, and automatically submit to advisor(s).
+                    The live advisement form is prefilled with grades of all the courses the student has taken, and includes classes they are currently taking. Students can select courses they intend on taking the following semester, and submit to advisor(s).
                   </div>
                 </div>
               </center>
@@ -76,7 +76,7 @@
                     <img class="each-event-img2" src="{{ url_for('static', filename='/Images/EditPages.svg') }}">
                     <h6 class="each-event-title">Faculty can edit the Advisement Form & Workflow</h6>
                     <div class="event-description">
-                      The staff can also edit the Computer Science Curriculum (live advisement form). The staff can also edit and save the workflow. They can select what permissions are needed depending on credits and grades change.
+                      The staff can also edit the live advisement form and the workflow. They can select what permissions are needed depending on credits.
                     </div>
                   </div>
                 </center>
@@ -86,7 +86,7 @@
                     <img class="each-event-img2" src="{{ url_for('static', filename='/Images/AdvisorGoal.svg') }}">
                     <h6 class="each-event-title">Advisors are here to help students!</h6>
                     <div class="event-description">
-                      Academic advisors assist students in class planning, major and minor selections, career and internship options, graduate school opportunities, and research possibilities. In addition, they work with every department on campus to bring resources to students.
+                      Academic advisors assist students in class planning, major and minor selections, career and internship options, graduate school opportunities, research possibilities, and bring resources to students.
                     </div>
                   </div>
                 </center>
@@ -106,9 +106,9 @@
             </div>
        </div>
   </div>
-  <div style="padding-bottom: 13%; padding-top: 0%;">
+  <div class="AdviseMePurpose">
     <center>
-      <div class="each-event" style="width: 40%; padding-top: 0%;">
+      <div class="each-event" style="width: 60%; padding-top: 0%;">
         <img class="each-event-img" src="{{ url_for('static', filename='/Images/GradCap.svg') }}">
         <h6 class="each-event-title">We are an Online Advisement Platform</h6>
         <div class="event-description">
@@ -118,23 +118,6 @@
     </center>
   </div>
 
-
-  
-
-    <!-- This is how we display the info for post but save for later it will be useful for displaying student info for Advisors & even classes 
-    {% for post in posts %}    
-        <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="#">{{ post.author }}</a>
-                    <small class="text-muted">{{ post.date_posted }}</small>
-                </div>
-                <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-                <p class="article-content">{{ post.content }}</p>
-            </div>
-        </article>
-    {% endfor %}
-   -->
 <script>
 var $element=$('.each-event, .title');
 var $window = $(window);
@@ -207,14 +190,6 @@ function check_for_fade() {
     font: bold 18px Open Sans Condensed, sans-serif;
 }
 
-.block::before{
-    content: "";
-    height: 100%;
-    width: 3px;
-    background-color: #233B7E;
-    left: 50%;
-    margin-top: 1%;
-  }
 
 .title {
   font: bold 24px Open Sans Condensed, sans-serif;
@@ -227,12 +202,12 @@ function check_for_fade() {
 }
 
 .each-event-img2{
-  width: 63%;
+  width: 61%;
 }
 .each-event {
   background-color: #f4f4f4;
   color: #233B7E;
-  padding: 15px;
+  padding: 5%;
   margin: 60px 20px;
   width: 65%;
   position: relative;
@@ -260,6 +235,11 @@ function check_for_fade() {
       left: calc(100% + 14px);
   }
 
+.AdviseMePurpose{
+  padding-bottom: 7%; 
+  padding-top: 0%;
+}  
+
 .title.non-focus {
   font-size: 24px;
   line-height: 34px;
@@ -277,5 +257,50 @@ function check_for_fade() {
     opacity: 0;
     background-color: #aaa;
   }
+
+  /* To make homepage responsive */ 
+  @media only screen and (max-width: 800px) {
+    .AdviseMeBG{
+      background-image: none;
+      padding-top: 0%;
+    width: 0%;
+    height: 0%;
+    padding-bottom: 0%;
+   }
+
+
+
+   .each-event.non-focus {
+  color: #d2d2d2;
+  background: #e6e6e6;
+  margin-top: 90px;
+  transform: rotateZ(5deg);
+  transition: all 0.8s ease-in-out;
+}
+.column {
+  float: left;
+  width: 100%;
+}
+
+.AdviseMePurpose{
+  padding-bottom: 16%;
+}
+
+.title {
+  font: bold 0px Open Sans Condensed, sans-serif;
+  text-align: center;
+  padding: 0px;
+  transition: all 2s ease-in-out;
+}
+
+.HomeTitle{
+  padding-top: 4%;
+    background-color: #fafafa;
+    color: #233B7E;
+    padding-bottom: 2%;
+    font:  20px Open Sans Condensed, sans-serif;
+}
+
+}
 </style>
 {% endblock content %}
