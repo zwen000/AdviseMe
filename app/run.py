@@ -199,6 +199,7 @@ def logout():
 
 # Student can view all notes in this route
 @app.route('/advisingNotesHome')
+@login_required
 def advisingNotesHome():
     EMPLID=current_user.EMPLID
     notes=Notes.query.filter_by(EMPLID=EMPLID).all()
@@ -206,18 +207,21 @@ def advisingNotesHome():
 
 # Can view the direct note 
 @app.route('/advisingNotes/<int:note_id>')
+@login_required
 def advisingNotes(note_id):
     notes=Notes.query.get_or_404(note_id)
     return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
 
 #faculty can see all the advising notes from students
 @app.route('/AdvisingHome')
+@login_required
 def AdvisingHome():
     notes=Notes.query.all()
     return render_template('AdvisingHome.html',notes=notes)
 
 #faculty can go editing the direct advising note in this route
 @app.route('/academicAdvising/<int:note_id>', methods=['GET', 'POST'])
+@login_required
 def academicAdvising(note_id):
     notes=Notes.query.get_or_404(note_id)
     form = advisingNotesForm()
