@@ -16,7 +16,7 @@ def home():
 def about():
     return render_template("about.html", title="About", team=team)
 
-# Can register both students and faulties
+# Can register both students and faulties (only ccny or citymail email can sign up.)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -34,7 +34,8 @@ def register():
             flash('Enter your citymail Please!', 'danger')
     return render_template('register.html', title='Register', form=form)
 
-# Can register both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account
+# Can login both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account
+# Once sign in, go direct to first time info fillout page.
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()                                                                          
@@ -53,7 +54,7 @@ def login():
         return redirect(url_for('home'))
     return render_template('login.html', title='Login', form=form)
 
-# Student fill out the basic info on the first time
+# Student fill out the basic info on the first time once they signed in
 @app.route('/studentinfo_fill', methods=['GET', 'POST'])
 def studentinfo_fill():
     form = StudentInfoForm()
@@ -74,7 +75,7 @@ def studentinfo_fill():
         return redirect(url_for('home'))
     return render_template('studentinfo_fill.html', title='info_fill', form=form)
 
-# Faculty fill out the basic info on the first time
+# Faculty fill out the basic info on the first time once they signed in
 @app.route('/facultyinfo_fill', methods=['GET', 'POST'])
 def facultyinfo_fill():
     form = FacultyInfoForm()
@@ -97,7 +98,7 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-# Student can view all notes in this route
+# Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome')
 @login_required
 def advisingNotesHome():
@@ -105,21 +106,22 @@ def advisingNotesHome():
     notes=Notes.query.filter_by(EMPLID=EMPLID).all()
     return render_template('advisingNotesHome.html',notes=notes)
 
-# Can view the direct note 
+# Can view the direct note on the note
 @app.route('/advisingNotes/<int:note_id>')
 @login_required
 def advisingNotes(note_id):
     notes=Notes.query.get_or_404(note_id)
     return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
 
-#faculty can see all the advising notes from students
+# faculty can see all the advising notes from students.
+# if user is academic advisor, only see students' note below 45 credits. elif user is faculty advisor, will see students' note above 45 credits.
 @app.route('/AdvisingHome')
 @login_required
 def AdvisingHome():
     notes=Notes.query.all()
     return render_template('AdvisingHome.html',notes=notes)
 
-#faculty can go editing the direct advising note in this route
+# faculty can go editing the direct advising note in this route
 @app.route('/academicAdvising/<int:note_id>', methods=['GET', 'POST'])
 @login_required
 def academicAdvising(note_id):
