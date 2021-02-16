@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ notes.Owner.firstname }}</a>
+        {% if notes.Owner.credit_earned <= 45 %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">ACADEMIC NOTES</a>
+          </div>
+        {% else %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">ACADEMIC NOTES</a>
+          </div>
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">FACULTY NOTES</a>
+          </div>
+        {% endif %}
+  </article>
+{% endblock content %}

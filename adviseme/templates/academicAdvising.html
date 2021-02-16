@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="form-group">
+                {{ form.academic_comment.label(class="form-control-label") }}
+                {% if form.academic_comment.errors %}
+                    {{ form.academic_comment(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.academic_comment.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.academic_comment(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.next_semester_comment.label(class="form-control-label") }}
+                {% if form.next_semester_comment.errors %}
+                    {{ form.next_semester_comment(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.next_semester_comment.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.next_semester_comment(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+			<div class="form-check">
+				{{ form.be_advised(class="form-check-input") }}
+				{{ form.be_advised.label(class="form-check-label") }}
+			</div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock content %}
