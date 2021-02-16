@@ -38,8 +38,20 @@
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                        <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                        {% if current_user.is_authenticated %}
+                            {% if '@citymail.cuny.edu' in current_user.email %}
+                                <a class="nav-item nav-link" href="{{ url_for('advisingNotesHome') }}">advisingNotes</a>
+                                <a class="nav-item nav-link" href="{{ url_for('studentinfo_fill') }}">Fill Info</a>
+                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            {% else %}
+                            <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">advising</a>
+                            <a class="nav-item nav-link" href="{{ url_for('facultyinfo_fill') }}">Fill Info</a>
+                            <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+                            <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

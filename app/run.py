@@ -1,11 +1,72 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm
+from flask import Flask, render_template, url_for, flash, redirect,request,abort
+from forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, current_user,login_required,logout_user
+from flask_bcrypt import Bcrypt
+from datetime import datetime
 
 app = Flask(__name__)
 
 
 app.config['SECRET_KEY'] = '3a005a74e33b93ce317f78c78fb2577d'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'),db.ForeignKey('faculty.EMPLID'))
+    Student = db.relationship('Student', backref='account', lazy=True)
+    Faculty = db.relationship('Faculty', backref='account', lazy=True)
+
+    def __repr__(self):
+        return f"User('{self.email}')"
+
+
+class Student(db.Model):
+    EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
+    firstname = db.Column(db.String(30), nullable=False)
+    lastname = db.Column(db.String(30), nullable=False)
+    middlename =db.Column(db.String(30), nullable=True)
+    credit_earned=db.Column(db.Integer, unique=False, nullable=False,default=0)
+    credit_taken=db.Column(db.Integer, unique=False, nullable=False,default=0)
+    graduating = db.Column(db.Boolean, nullable=False, default=False)
+    Notes = db.relationship('Notes', backref='Owner', lazy=True)
+
+    def __repr__(self):
+        return f"Student('{self.EMPLID}')"
+
+class Faculty(db.Model):
+    EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
+    firstname = db.Column(db.String(30), nullable=False)
+    lastname = db.Column(db.String(30), nullable=False)
+    middlename =db.Column(db.String(30), nullable=True)
+    staff_role =db.Column(db.String(30), nullable=True)
+    User = db.relationship('User', backref='FacultyOwner', lazy=True)
+
+    def __repr__(self):
+        return f"Faculty('{self.EMPLID}')"
+
+
+class Notes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    semster = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    academic_comment = db.Column(db.Text, nullable=False, default='')
+    next_semester_comment = db.Column(db.Text, nullable=False, default='')
+    be_advised = db.Column(db.Boolean, nullable=False, default=False)
+    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
+    Student = db.relationship('Student', backref='advisingnote', lazy=True)
+
+    def __repr__(self):
+        return f"Notes('{self.EMPLID}','{self.academic_comment}','{self.next_semester_comment}','{self.be_advised}')"
 
 
 @app.route('/')
@@ -55,28 +116,123 @@ def about():
 
     return render_template("about.html", title="About", team=team)
 
-
+# Can register both students and faulties
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegistrationForm()                                                                   # create the form
-    if form.validate_on_submit():                                                               # if our form is valid on submission (i.e there are no errors)
-        flash(f'Account created for {form.username.data}!', 'success')                          # display success message in bootstrap green!
-        return redirect(url_for('home'))                                                        # redirects user to the home page!
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        if ('@citymail.cuny.edu' in form.email.data) or ('@ccny.cuny.edu' in form.email.data):
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            user = User(email=form.email.data, password=hashed_password)
+            db.session.add(user)
+            db.session.commit()
+            flash('Your account has been created! You are now able to log in', 'success')
+            return redirect(url_for('login'))
+        else:
+            flash('Enter your citymail Please!', 'danger')
     return render_template('register.html', title='Register', form=form)
 
-
+# Can register both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()                                                                          # create the form
-    if form.validate_on_submit():                                                               # if our form is valid on submission (i.e there are no errors)
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':            # if this checks pass
-            flash('You have been logged in!', 'success')                                        # display success message in bootstrap green!
-            return redirect(url_for('home'))                                                    # redirect user to the home page!
+    form = LoginForm()                                                                          
+    if form.validate_on_submit():                                                               
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            if '@citymail.cuny.edu' in user.email and current_user.EMPLID == None:
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('studentinfo_fill'))
+            if '@ccny.cuny.edu' in user.email and current_user.EMPLID == None:
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('facultyinfo_fill'))
         else:
-            flash('Login Unsuccessful. Please check your username and password', 'danger')      # display success message in bootstrap red!
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+        return redirect(url_for('home'))
     return render_template('login.html', title='Login', form=form)
 
+# Student fill out the basic info on the first time
+@app.route('/studentinfo_fill', methods=['GET', 'POST'])
+def studentinfo_fill():
+    form = StudentInfoForm()
+    if form.validate_on_submit():
+        student = Student(EMPLID=form.EMPLID.data,
+                          firstname=form.firstname.data,
+                          lastname=form.lastname.data,
+                          middlename=form.middlename.data,
+                          credit_earned=form.credit_earned.data,
+                          credit_taken=form.credit_taken.data,
+                          graduating=form.graduating.data)
+        note = Notes(EMPLID=form.EMPLID.data)
+        current_user.EMPLID=form.EMPLID.data
+        db.session.add(student)
+        db.session.add(note)
+        db.session.commit()
+        flash('Info Updated', 'success')
+        return redirect(url_for('home'))
+    return render_template('studentinfo_fill.html', title='info_fill', form=form)
 
+# Faculty fill out the basic info on the first time
+@app.route('/facultyinfo_fill', methods=['GET', 'POST'])
+def facultyinfo_fill():
+    form = FacultyInfoForm()
+    if form.validate_on_submit():
+        faculty = Faculty(EMPLID=form.EMPLID.data,
+                          firstname=form.firstname.data,
+                          lastname=form.lastname.data,
+                          middlename=form.middlename.data,
+                          staff_role=form.staff_role.data)
+        db.session.add(faculty)
+        current_user.EMPLID=form.EMPLID.data
+        db.session.commit()
+        flash('Info Updated', 'success')
+        return redirect(url_for('home'))
+    return render_template('facultyinfo_fill.html', title='info_fill', form=form)
+
+# function for logout
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+# Student can view all notes in this route
+@app.route('/advisingNotesHome')
+def advisingNotesHome():
+    EMPLID=current_user.EMPLID
+    notes=Notes.query.filter_by(EMPLID=EMPLID).all()
+    return render_template('advisingNotesHome.html',notes=notes)
+
+# Can view the direct note 
+@app.route('/advisingNotes/<int:note_id>')
+def advisingNotes(note_id):
+    notes=Notes.query.get_or_404(note_id)
+    return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
+
+#faculty can see all the advising notes from students
+@app.route('/AdvisingHome')
+def AdvisingHome():
+    notes=Notes.query.all()
+    return render_template('AdvisingHome.html',notes=notes)
+
+#faculty can go editing the direct advising note in this route
+@app.route('/academicAdvising/<int:note_id>', methods=['GET', 'POST'])
+def academicAdvising(note_id):
+    notes=Notes.query.get_or_404(note_id)
+    form = advisingNotesForm()
+    if form.validate_on_submit():
+        notes.academic_comment=form.academic_comment.data
+        notes.next_semester_comment=form.next_semester_comment.data
+        notes.be_advised=form.be_advised.data
+        db.session.commit()
+        flash('Notes saved!', 'success')
+        return redirect(url_for('home'))
+    elif request.method == 'GET':
+        form.academic_comment.data=notes.academic_comment
+        form.next_semester_comment.data=notes.next_semester_comment
+        form.be_advised.data=notes.be_advised
+    return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
 
 
 if __name__ == '__main__':

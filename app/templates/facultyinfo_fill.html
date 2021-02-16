@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                <div class='form-group'>
+                    {{ form.EMPLID.label(class="form-control-label") }}
+
+                    {% if form.EMPLID.errors %}
+                        {{ form.EMPLID(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.EMPLID.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.EMPLID(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class='form-group'>
+                    {{ form.firstname.label(class="form-control-label") }}
+                    
+                    {% if form.firstname.errors %}
+                    {{ form.firstname(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.firstname.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ form.firstname(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class='form-group'>
+                    {{ form.lastname.label(class="form-control-label") }}
+
+                    {% if form.lastname.errors %}
+                    {{ form.lastname(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.lastname.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ form.lastname(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class='form-group'>
+                    {{ form.middlename.label(class="form-control-label") }}
+                    
+                    {% if form.middlename.errors %}
+                    {{ form.middlename(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.middlename.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                        {{ form.middlename(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-7">
+                     <label for="ex2">Staff Role:</label>
+                     <select id = "staff_role" name = "staff_role" class="selectpicker form-control " data-live-search="true" multiple>
+                        <option value="Faculty Advisor">Faculty Advisor</option>
+                        <option value="Academic Advisor">Academic Advisor</option>
+                        <option value="Dean">Dean</option>
+                        <option value="Chair">Chair</option>
+                     </select>
+                     </div>
+                   </div>
+            </fieldset>            
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
