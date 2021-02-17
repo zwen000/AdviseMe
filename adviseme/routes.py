@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request
-from adviseme import app
+from adviseme import app, bcrypt, db
 from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm
 from adviseme.models import User, Student, Faculty,Notes
 from flask_login import login_user, current_user, logout_user, login_required
