@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request
-from adviseme import app 
+from adviseme import app
 from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm
 from adviseme.models import User, Student, Faculty,Notes
 from flask_login import login_user, current_user, logout_user, login_required
@@ -14,7 +14,7 @@ def home():
 
 @app.route('/about')
 def about():
-    return render_template("about.html", title="About", team=team)
+    return render_template("about.html", title="About")
 
 # Can register both students and faulties (only ccny or citymail email can sign up.)
 @app.route('/register', methods=['GET', 'POST'])
