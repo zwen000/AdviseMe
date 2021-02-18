@@ -49,7 +49,8 @@
                         {% if current_user.is_authenticated %}
                             {% if '@citymail.cuny.edu' in current_user.email %}
                                 <!-- Navbar for Students-->
-                                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>                           <!-- Later this will be a dropdown under the Live Advisement Form-->
+                                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a> 
+                                <a class="nav-item nav-link" href="{{ url_for('advisingNotesHome') }}">Advising Notes</a>
                                 <a class="nav-item nav-link" href="{{ url_for('studentinfo_fill') }}">Student Info Form</a>    <!-- Display for now (but students will only see it the first time they login)-->
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}
