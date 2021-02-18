@@ -4,7 +4,14 @@
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                <legend class="border-bottom mb-4">Let's create your Student profile!</legend>
+
+                <div class='form-group'>
+                    <label>Upload profile image</label>  
+                    <img class="rounded-circle account-img" src="{{ profile_image }}">                    
+                </div>
+
+
                 <div class='form-group'>
                     {{ form.EMPLID.label(class="form-control-label") }}
 

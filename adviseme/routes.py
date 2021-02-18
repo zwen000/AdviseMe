@@ -106,14 +106,20 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+
 @app.route('/student')
+@login_required
 def student():
-    return render_template("student.html", title="student")
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
+    return render_template("student.html", title="Student Profile", profile_image=profile_image)
 
 
 @app.route('/faculty')
+@login_required
 def faculty():
-    return render_template("faculty.html", title="faculty")
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
+    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image)
+
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome')

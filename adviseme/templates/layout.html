@@ -34,7 +34,15 @@
 
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
-                        <a class="nav-item nav-link" href="/about">About</a>
+                        {% if current_user.is_authenticated %}
+                            {% if '@citymail.cuny.edu' in current_user.email %}
+                               <a class="nav-item nav-link" href="{{ url_for('student') }}">My Profile</a>
+                            {% else %}
+                                <a class="nav-item nav-link" href="{{ url_for('faculty') }}">My Profile</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+                        {% endif %}
                     </div>
                     <!-- Navbar -->
                     <div class="navbar-nav">
@@ -48,13 +56,13 @@
                                 <a class="nav-item nav-link" href="{{ url_for('workflow') }}">Status</a>
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}
-                            <!-- Navbar for Faculty-->
-                            <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Home</a>
-                            <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Advisement</a>
-                            <a class="nav-item nav-link" href="{{ url_for('EditForm') }}">Edit Form</a> <!-- Will only show for specific faculty-->
-                            <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow</a> <!-- Will only show for specific faculty-->
-                            <a class="nav-item nav-link" href="{{ url_for('facultyinfo_fill') }}">Fill Info</a> <!-- Display for now (but faculty will only see it the first time they login)-->
-                            <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                                <!-- Navbar for Faculty-->
+                                <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Home</a>
+                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Advisement</a>
+                                <a class="nav-item nav-link" href="{{ url_for('EditForm') }}">Edit Form</a> <!-- Will only show for specific faculty-->
+                                <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow</a> <!-- Will only show for specific faculty-->
+                                <a class="nav-item nav-link" href="{{ url_for('facultyinfo_fill') }}">Fill Info</a> <!-- Display for now (but faculty will only see it the first time they login)-->
+                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% endif %}
                         {% else %}
                             <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
