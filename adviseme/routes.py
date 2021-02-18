@@ -24,8 +24,12 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         if ('@citymail.cuny.edu' in form.email.data) or ('@ccny.cuny.edu' in form.email.data):
+            if '@citymail.cuny.edu' in form.email.data:
+                role = 'Student'
+            else:
+                role = 'Faculty'
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-            user = User(email=form.email.data, password=hashed_password)
+            user = User(email=form.email.data, password=hashed_password,role=role)
             db.session.add(user)
             db.session.commit()
             flash('Your account has been created! You are now able to log in', 'success')
@@ -45,7 +49,7 @@ def login():
             if '@citymail.cuny.edu' in user.email and current_user.EMPLID == None:
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('studentinfo_fill'))
-            if '@ccny.cuny.edu' in user.email and current_user.EMPLID == None:
+            elif '@ccny.cuny.edu' in user.email and current_user.EMPLID == None:
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('facultyinfo_fill'))
         else:
@@ -71,7 +75,7 @@ def studentinfo_fill():
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('student'))
     return render_template('studentinfo_fill.html', title='info_fill', form=form)
 
 # Faculty fill out the basic info on the first time once they signed in
@@ -88,7 +92,7 @@ def facultyinfo_fill():
         current_user.EMPLID=form.EMPLID.data
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('advisor'))
     return render_template('facultyinfo_fill.html', title='info_fill', form=form)
 
 # function for logout
@@ -96,6 +100,17 @@ def facultyinfo_fill():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+@app.route('/student')
+def student():
+    return render_template("student.html", title="student")
+
+
+@app.route('/advisor')
+def advisor():
+    return render_template("advisor.html", title="advisor")
+
+
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome')
