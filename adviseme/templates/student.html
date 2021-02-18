@@ -1,14 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1>Student Page!</h1>
+<h1>Student Profile!</h1>
 
 <div class="content-section">
     <div class="media">
-      <img class="rounded-circle account-img" src="{{ image_file }}">
+      <img class="rounded-circle account-img" src="{{ profile_image }}">
       <div class="media-body">
         <h2 class="account-heading">{{ current_user.StudentOwner.firstname }}</h2>
         <p class="text-secondary">{{ current_user.email }}</p>
+
+        <label>Student Bio:</label>
+        <p>This is my Bio, what's up? </p>
+
       </div>
 </div>
 {% endblock content %}
