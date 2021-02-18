@@ -10,11 +10,6 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
-
-    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
-        user = User.query.filter_by(EMPLID = EMPLID.data).first()
-        if user:
-            raise ValidationError('That EMPLID is already in use!')
         
     def validate_email(self, email):                # checks for duplicate emails! 
         user = User.query.filter_by(email = email.data).first()
@@ -37,6 +32,11 @@ class StudentInfoForm(FlaskForm):
     graduating = BooleanField('Is Graduating?')
     submit = SubmitField('Update')
 
+    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
+        user = User.query.filter_by(EMPLID = EMPLID.data).first()
+        if user:
+            raise ValidationError('That EMPLID is already in use!')
+
 class FacultyInfoForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
     firstname = StringField('First Name', validators=[DataRequired()])
@@ -44,6 +44,11 @@ class FacultyInfoForm(FlaskForm):
     middlename =StringField('Middle Name', validators=[])
     staff_role =StringField('Staff Role', validators=[DataRequired()])
     submit = SubmitField('Update')
+
+    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
+        user = User.query.filter_by(EMPLID = EMPLID.data).first()
+        if user:
+            raise ValidationError('That EMPLID is already in use!')
 
 class advisingNotesForm(FlaskForm):
     academic_comment = StringField('Academic Comment', validators=[DataRequired()])

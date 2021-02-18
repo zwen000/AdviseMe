@@ -53,16 +53,22 @@ def login():
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
                 return redirect(next_page) if next_page else redirect(url_for('studentinfo_fill'))
+
             elif current_user.role == 'Faculty' and current_user.EMPLID == None:
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
                 return redirect(next_page) if next_page else redirect(url_for('facultyinfo_fill'))
+            elif current_user.role == 'Student':
+                next_page = request.args.get('next')
+                flash('Login Successful. Welcome to AdviseMe', 'success')
+                return redirect(next_page) if next_page else redirect(url_for('student'))
+            elif current_user.role == 'Faculty':
+                next_page = request.args.get('next')
+                flash('Login Successful. Welcome to AdviseMe', 'success')
+                return redirect(next_page) if next_page else redirect(url_for('faculty'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-        if current_user.role == 'Student':
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('faculty'))
+
     return render_template('login.html', title='Login', form=form)
 
 # Student fill out the basic info on the first time once they signed in
@@ -201,7 +207,3 @@ def academicAdvising(note_id):
         form.next_semester_comment.data=notes.next_semester_comment
         form.be_advised.data=notes.be_advised
     return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

@@ -21,8 +21,8 @@ class User(db.Model, UserMixin):
 
 class Student(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
-    firstname = db.Column(db.String(30), unique=True, nullable=False)
-    lastname = db.Column(db.String(30), unique=True, nullable=False)
+    firstname = db.Column(db.String(30), nullable=False)
+    lastname = db.Column(db.String(30), nullable=False)
     middlename =db.Column(db.String(30), nullable=True)
     credit_earned=db.Column(db.Integer, unique=False, nullable=False,default=0)
     credit_taken=db.Column(db.Integer, unique=False, nullable=False,default=0)
@@ -35,8 +35,8 @@ class Student(db.Model):
 
 class Faculty(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
-    firstname = db.Column(db.String(30), unique=True, nullable=False)
-    lastname = db.Column(db.String(30), unique=True, nullable=False)
+    firstname = db.Column(db.String(30), nullable=False)
+    lastname = db.Column(db.String(30), nullable=False)
     middlename =db.Column(db.String(30), nullable=True)
     staff_role =db.Column(db.String(30), nullable=False)
     User = db.relationship('User', backref='FacultyOwner', lazy=True)
