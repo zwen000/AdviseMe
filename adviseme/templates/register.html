@@ -1,10 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="content-section">
+    <div class="custom-base-container2">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                <center>
+                    <img class="Register-Img" src="../static/Images/AdvisorGoal.svg">
+                   <h6 class="Register-Subheader">AdviseMe - The best Online Advisement Platform</h4>
+                    <h1 class="Register-Header">Register</h1>
+                </center>
                 <div class='form-group'>
                     {{ form.email.label(class="form-control-label") }}
                     
@@ -47,16 +51,95 @@
                         {{ form.confirm_password(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
-            </fieldset>            
+            </fieldset>  
+            <center>         
             <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                {{ form.submit(class="custom-button-login2") }}
             </div>
+            <small class="text-muted LinkToLogin-size">
+                Already have an account? <a class="ml-2 " href="{{ url_for('login') }}">Sign In</a>
+            </small>
+        </center> 
         </form>
     </div>
 
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Already have an account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
-        </small>
-    </div>
+<style>
+ /*CSS for Login Page */
+@import url("https://www.google.com/fonts#UsePlace:use/Collection:Open+Sans+Condensed:300");
+body{
+    padding-top: 2%;
+    color: #3772D7;
+}
+.Register-Header{
+    font:  25px  Open Sans Condensed, sans-serif;
+    color:  #233B7E;
+}
+.Register-Subheader{
+    font:  20px  "Snell Roundhand", cursive;
+    color:  #3772D7;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+}
+.Register-Img{
+    width: 22%; 
+    -webkit-transition: all 0.5s ease-in;
+    -moz-transition: all 0.5s ease-in;
+    -o-transition: all 0.5s ease-in;
+    transition: all 0.5s ease-in;
+}
+.custom-base-container2 {
+  padding: 3.5%;
+  margin: auto;
+  width: 60%;
+  height: 100%;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 25px #bdbdbd;
+  border-radius: 10px;
+}
+.custom-button-login2 {
+background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+border-radius: 50px;
+color: hsl(0, 0%, 100%);
+padding: 10px;
+border: none;
+width: 40%;
+cursor: pointer;
+font-style: normal;
+font-weight: bold;
+font:  18px Open Sans lighter, sans-serif;
+}
+.custom-button-login2:hover{
+  background:#233B7E;
+}
+.LinkToLogin-size{
+    font-size: small;
+    display: inline;
+    color: #3772D7;
+}
+   .form-control{
+    border-radius: 50px;
+    font:  15px  Open Sans Condensed, sans-serif;
+   }
+   .form-control:focus{
+    border-color: #3772D7;
+    box-shadow: none;
+    -webkit-box-shadow: none;} 
+
+    @media only screen and (max-width: 800px) {
+    .custom-base-container2{
+        width: 100%;
+        padding: 7%;
+   }
+   .Register-Subheader{
+    font:  18px  "Snell Roundhand", cursive;
+}
+.Register-Img{
+    width: 25%; }
+}
+Register-Header{
+    font:  19px  Open Sans Condensed, sans-serif;}
+</style>
 {% endblock content %}
