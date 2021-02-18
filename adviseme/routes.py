@@ -46,17 +46,20 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
-            if '@citymail.cuny.edu' in user.email and current_user.EMPLID == None:
+            if current_user.role == 'Student' and current_user.EMPLID == None:
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
                 return redirect(next_page) if next_page else redirect(url_for('studentinfo_fill'))
-            elif '@ccny.cuny.edu' in user.email and current_user.EMPLID == None:
+            elif current_user.role == 'Faculty' and current_user.EMPLID == None:
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
                 return redirect(next_page) if next_page else redirect(url_for('facultyinfo_fill'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-        return redirect(url_for('home'))
+        if current_user.role == 'Student':
+            return redirect(url_for('student'))
+        else:
+            return redirect(url_for('faculty'))
     return render_template('login.html', title='Login', form=form)
 
 # Student fill out the basic info on the first time once they signed in
@@ -77,7 +80,7 @@ def studentinfo_fill():
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('student'))
     return render_template('studentinfo_fill.html', title='Student Form', form=form)
 
 # Faculty fill out the basic info on the first time once they signed in
@@ -94,7 +97,7 @@ def facultyinfo_fill():
         current_user.EMPLID=form.EMPLID.data
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('faculty'))
     return render_template('facultyinfo_fill.html', title='Faculty Form', form=form)
 
 # function for logout
@@ -108,11 +111,9 @@ def student():
     return render_template("student.html", title="student")
 
 
-@app.route('/advisor')
-def advisor():
-    return render_template("advisor.html", title="advisor")
-
-
+@app.route('/faculty')
+def faculty():
+    return render_template("faculty.html", title="faculty")
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome')
