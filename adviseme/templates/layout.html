@@ -49,16 +49,13 @@
                         {% if current_user.is_authenticated %}
                             {% if '@citymail.cuny.edu' in current_user.email %}
                                 <!-- Navbar for Students-->
-                                <a class="nav-item nav-link" href="{{ url_for('student') }}">Home</a>
-                                <a class="nav-item nav-link" href="#">Live Advisement Form</a>
-                                <a class="nav-item nav-link" href="#">Advising Notes</a>                                <!-- Later this will be a dropdown under the Live Advisement Form-->
-                                <a class="nav-item nav-link" href="#">Student Info Form</a>                             <!-- Display for now (but students will only see it the first time they login)-->
-                                <a class="nav-item nav-link" href="#">Status</a>
+                                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>                           <!-- Later this will be a dropdown under the Live Advisement Form-->
+                                <a class="nav-item nav-link" href="{{ url_for('studentinfo_fill') }}">Student Info Form</a>    <!-- Display for now (but students will only see it the first time they login)-->
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}
                                 <!-- Navbar for Faculty-->
                                 <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Advisement</a>
-                                <a class="nav-item nav-link" href="{{ url_for('facultyinfo_fill') }}">Fill Info</a>     <!-- Display for now (but faculty will only see it the first time they login)-->
+                                <a class="nav-item nav-link" href="{{ url_for('facultyinfo_fill') }}">Fill Info</a>          <!-- Display for now (but faculty will only see it the first time they login)-->
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% endif %}
                         {% else %}
