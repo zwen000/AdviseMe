@@ -52,6 +52,10 @@ class Notes(db.Model):
     academic_comment = db.Column(db.Text, nullable=False, default='')
     next_semester_comment = db.Column(db.Text, nullable=False, default='')
     be_advised = db.Column(db.Boolean, nullable=False, default=False)
+
+    #academic_advising_note = db.Column(db.Text, nullable=False, default='')
+    #academic_advising_additioal = db.Column(db.Text, nullable=False, default='')
+
     EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), db.ForeignKey('faculty.EMPLID'), nullable=False)
     Student = db.relationship('Student', backref='advisingnote', lazy=True)
 

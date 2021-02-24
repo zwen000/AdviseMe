@@ -15,12 +15,12 @@ def landing():
 def home():
     return render_template('home.html', title='Home')
 
-@app.route('/about')
+@app.route('/about/')
 def about():
     return render_template("about.html", title="About")
 
 # Can register both students and faulties (only ccny or citymail email can sign up.)
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register/', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -42,7 +42,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 # Can login both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account.
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()                                                                          
     if form.validate_on_submit():                                                               
@@ -72,7 +72,7 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 # Student fill out the basic info on the first time once they signed in
-@app.route('/studentinfo_fill', methods=['GET', 'POST'])
+@app.route('/studentinfo_fill/', methods=['GET', 'POST'])
 def studentinfo_fill():
     form = StudentInfoForm()
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -94,7 +94,7 @@ def studentinfo_fill():
     return render_template('studentinfo_fill.html', title='Student Form', form=form, profile_image=profile_image)
 
 # Faculty fill out the basic info on the first time once they signed in
-@app.route('/facultyinfo_fill', methods=['GET', 'POST'])
+@app.route('/facultyinfo_fill/', methods=['GET', 'POST'])
 def facultyinfo_fill():
     form = FacultyInfoForm()
     if form.validate_on_submit():
@@ -135,7 +135,7 @@ def save_picture(form_picture):
     
     return picture_fn
 
-@app.route('/student', methods=['GET', 'POST'])
+@app.route('/student/', methods=['GET', 'POST'])
 @login_required
 def student():
     form = UpdateStudentAccountForm()
@@ -158,7 +158,7 @@ def student():
     return render_template("student.html", title="Student Profile", profile_image=profile_image, form=form)
 
 
-@app.route('/faculty')
+@app.route('/faculty/')
 @login_required
 def faculty():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -166,24 +166,32 @@ def faculty():
 
 
 # Student can view all notes in this advisingNotesHome route
-@app.route('/advisingNotesHome')
+@app.route('/advisingNotesHome/')
 @login_required
 def advisingNotesHome():
     EMPLID=current_user.EMPLID
     notes=Notes.query.filter_by(EMPLID=EMPLID).all()
-    return render_template('advisingNotesHome.html',notes=notes)
+    return render_template('advisingNotesHome.html', notes=notes)
 
 # can view the direct note by clicking on the note if below 45 credits only see academic notes
-@app.route('/advisingNotes/<int:note_id>')
+# @app.route('/advisingNotes/<int:note_id>')
+# @login_required
+# def advisingNotes(note_id):
+#     notes=Notes.query.get_or_404(note_id)
+#     return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
+
+@app.route('/advisingNotes/')
 @login_required
-def advisingNotes(note_id):
-    notes=Notes.query.get_or_404(note_id)
-    return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
+def advisingNotes():
+    #notes=Notes.query.get_or_404()
+    notes = Notes.query.all()
+    return render_template('advisingNotes.html', title='advisingNotes', notes=notes)
+
 
 # faculty can see all the advising notes from students
 # if user is academic advisor, only see students' note below 45 credits.
 # elif user is faculty advisor, will see students' note above 45 credits
-@app.route('/AdvisingHome')
+@app.route('/AdvisingHome/')
 @login_required
 def AdvisingHome():
     notes=Notes.query.all()
