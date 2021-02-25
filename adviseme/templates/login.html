@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="content-section">
+    <div class="custom-base-container">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
- 
+                <center>
+                 <img class="Login-Img" src="../static/Images/GradCap.svg">
+                 <h1 class="Login-Header">Login</h1>
+                <h6 class="Login-Subheader">Using your CCNY Credentials</h4>
+                </center>
                 <div class='form-group'>
-                    {{ form.email.label(class="form-control-label") }}
+                    {{ form.email.label(class="form-control-label ") }}
                     
                     {% if form.email.errors %}
                     {{ form.email(class="form-control form-control-lg is-invalid") }}
@@ -35,23 +38,106 @@
                     {% endif %}
                 </div>
                 <div class="form-check">
-                    {{ form.remember(class="form-check-input") }}
-                    {{ form.remember.label(class="form-check-label") }}
+                    {{ form.remember(class="form-check-input-sm") }} 
+                    {{ form.remember.label(class="form-check-label rememberMe-size") }}
                 </div>
             </fieldset>
-
+            <center>
             <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                {{ form.submit(class="custom-button-login") }}
             </div>
-            <small class="text-muted ml-2">
+            <hr>
+        </center>
+        <center>
+            <small class="text-muted ml-2 login-size">
                 <a href="#">Forgot Password?</a>
             </small>
+            <small class="text-muted ml-2 login-size">
+                <a href="#">Forgot Username?</a>
+            </small>
+            <small class="text-muted ml-2 login-size">
+                Need an account? <a class="mr-2" href="{{ url_for('register') }}">Sign Up Now</a>
+            </small>
+        </center>
         </form>
-    </div>
 
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Need an account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
-        </small>
-    </div>
+<style>
+/*CSS for Login Page */
+@import url("https://www.google.com/fonts#UsePlace:use/Collection:Open+Sans+Condensed:300");
+body{
+    padding-top: 4%;
+    color: #3772D7;
+}
+.Login-Header{
+    font:  32px  Open Sans Condensed, sans-serif;
+    color:  #233B7E;
+}
+.Login-Subheader{
+    font:  20px  "Snell Roundhand", cursive;
+    color:  #3772D7;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+}
+.Login-Img{
+    width: 20%; 
+    -webkit-transition: all 0.5s ease-in;
+    -moz-transition: all 0.5s ease-in;
+    -o-transition: all 0.5s ease-in;
+    transition: all 0.5s ease-in;
+}
+.custom-base-container {
+  padding: 3.5%;
+  margin: auto;
+  width: 60%;
+  height: 100%;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 25px #bdbdbd;
+  border-radius: 10px;
+}
+.custom-button-login {
+background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+border-radius: 50px;
+color: hsl(0, 0%, 100%);
+padding: 10px;
+border: none;
+width: 40%;
+cursor: pointer;
+font-style: normal;
+font-weight: bold;
+font:  18px Open Sans lighter, sans-serif;
+}
+.custom-button-login:hover{
+  background:#233B7E;
+}
+.login-size{
+       font-size:x-small;
+   }
+.rememberMe-size{
+    font-size: small;
+    display: inline;
+    color: #3772D7;
+}
+   .form-control{
+    border-radius: 50px;
+    font:  15px  Open Sans Condensed, sans-serif;
+   }
+   .form-control:focus{
+    border-color: #3772D7;
+    box-shadow: none;
+    -webkit-box-shadow: none;} 
+
+
+@media only screen and (max-width: 800px) {
+    .custom-base-container{
+        width: 100%;
+        padding: 7%;
+   }
+   .login-size{
+       font-size:xx-small;
+   }
+}
+</style>
 {% endblock content %}

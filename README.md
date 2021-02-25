@@ -12,6 +12,7 @@ To create a virtual enviornment:
 **Mac OS/Linux:** 
         
         $ source /env/bin/activate
+        
 **Windows:** 
         
         $ .\env\Scripts\activate 
@@ -27,7 +28,32 @@ To create a virtual enviornment:
 To update **requirements.txt**:
 
         $ pip freeze > requirements.txt 
+
+## To build the most up-to-date Database:
+
+In the event of any error upon the launching the application, try deleting your local sqlite DB instance. 
+#### Note: Doing this will wipe the entire older instance of your local database meaning all users, profiles will be lost! 
+
+        $ rm database.db 
+
+To create a new database that adheres to all modifications made in "models.py" type:
         
+        $ python
+
+Import the database from the adviseme module:
+        
+        >> from adviseme import db
+
+Build the most uptodate version of the database: 
+        
+        >> db.create_all()
+
+To exit python iterpreter:
+        
+        >> exit()
+
+After creating the new compliant database you can begin populating it again. 
+
 ## To run the application:
 
         $ python run.py 
