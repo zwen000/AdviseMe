@@ -17,7 +17,7 @@
 
   {% if current_user.FacultyOwner.staff_role == 'Faculty Advisor'%}
     {% for note in notes %}
-      {%if note.Owner.credit_earned > 45 and note.be_advised ==False %}
+      {%if note.Owner.credit_earned > 45 and note.be_advised == False %}
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
