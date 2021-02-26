@@ -3,8 +3,8 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from adviseme import app, bcrypt, db
-from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm, UpdateStudentAccountForm
-from adviseme.models import User, Student, Faculty, Notes
+from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm, UpdateStudentAccountForm, CourseInfoForm
+from adviseme.models import User, Student, Faculty, Notes, Course
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/')
@@ -69,7 +69,6 @@ def login():
 @app.route('/studentinfo_fill', methods=['GET', 'POST'])
 def studentinfo_fill():
     form = StudentInfoForm()
-    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     if form.validate_on_submit():
         student = Student(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
@@ -80,12 +79,31 @@ def studentinfo_fill():
                           graduating=form.graduating.data)
         note = Notes(EMPLID=form.EMPLID.data)
         current_user.EMPLID=form.EMPLID.data
+        current_user.bio=form.bio.data
         db.session.add(student)
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
+        return redirect(url_for('courseinfo_fill'))
+
+    return render_template('studentinfo_fill.html', title='Student Form', form=form)
+
+@app.route('/courseinfo_fill', methods=['GET', 'POST'])
+def courseinfo_fill():
+    form = CourseInfoForm()
+
+    if form.validate_on_submit():
+
+
+
+        # db.session.commit()
+        flash('Info Updated', 'success')
         return redirect(url_for('student'))
-    return render_template('studentinfo_fill.html', title='Student Form', form=form, profile_image=profile_image)
+
+    return render_template('courseinfo_fill.html', title='Student Form', form=form)
+
+
+
 
 # Faculty fill out the basic info on the first time once they signed in
 @app.route('/facultyinfo_fill', methods=['GET', 'POST'])
@@ -141,12 +159,15 @@ def student():
 
         current_user.EMPLID = form.EMPLID.data
         current_user.email = form.email.data
+        current_user.bio = form.bio.data
+
         db.session.commit()                                     # commit changes to the database!
         flash('Your account info has been updated successfully!', 'success')
         return redirect(url_for('student'))
     elif request.method == 'GET':
         form.EMPLID.data = current_user.EMPLID
         form.email.data = current_user.email
+        form.bio.data = current_user.bio
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student.html", title="Student Profile", profile_image=profile_image, form=form)
@@ -157,6 +178,13 @@ def student():
 def faculty():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image)
+
+
+@app.route('/test')
+@login_required
+def test():
+    return render_template("advisementForm.html", title="Advisement Form")
+
 
 
 # Student can view all notes in this advisingNotesHome route

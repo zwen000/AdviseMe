@@ -1,0 +1,87 @@
+"""
+#######################################################
+# To Speed Up Database Testing!!! 
+#######################################################
+
+>>> from adviseme import db
+>>> from adviseme.models import *
+>>> db.create_all()
+
+
+>>> course_1.enrollee[0].grade_earned
+>>> []
+>>> student_1 = Student(EMPLID=23396284, firstname='Rehman', lastname='Arshad', middlename='M', credit_earned=100, credit_taken=12, graduating=False)
+>>> student_2 = Student(EMPLID=23396285, firstname='Sydul', lastname='Akhanji', middlename='', credit_earned=120, credit_taken=16, graduating=True)
+>>> student_3 = Student(EMPLID=27796285, firstname='Damarcos', lastname='Esteves', middlename='', credit_earned=100, credit_taken=12, graduating=False)
+
+>>> db.session.add(student_1)
+>>> db.session.add(student_2)
+>>> db.session.add(student_3)
+>>> db.session.commit()
+
+>>> course_1 = Course(id=1, serial='CSC 103', name='Intro to CS', description='C++', instructor='WES', credits=3)
+>>> course_2 = Course(id=2, serial='CSC 113', name='Intro to Python', description='Python', instructor='Ahemt Yuksel', credits=1)
+>>> course_3 = Course(id=3, serial='ENG 101', name='Intro to Modern English', description='Read Beowulf', instructor='Some White Person', credits=3)
+>>> course_4 = Course(id=4, serial='BIO 304', name='Evolutionary Biology', description='Reject Modernity, Return to Monkey', instructor='Some Monkey', credits=4)
+
+>>> course_1.enrollee.append(student_2)
+>>> course_1.enrollee.append(student_3)
+>>> course_4.enrollee.append(student_3)
+>>> course_3.enrollee.append(student_2)
+>>> course_4.enrollee.append(student_1)
+>>> db.session.commit()
+
+>>> course_1.enrollee[0].grade_earned
+
+>>> course_1.enrollee[0] = student_1 = Student(EMPLID=23396285, firstname='Sydul', lastname='Akhanji', middlename='', credit_earned=120, credit_taken=16, graduating=True)
+
+>>> grade_1 = Grade(id=1, grade='C')
+>>> grade_2 = Grade(id=2, grade='B') 
+>>> grade_3 = Grade(id=3, grade='A') 
+>>> grade_4 = Grade(id=4, grade='D+')
+
+>>> db.session.add(grade_1)
+>>> db.session.add(grade_2) 
+>>> db.session.add(grade_3) 
+>>> db.session.add(grade_4) 
+>>> db.session.commit()
+
+
+>>> db.session.commit()
+>>> course_1.enrollee
+[Student('23396285, Sydul, Akhanji, , 120, 16, True'), Student('23396284, Rehman, Arshad, M, 100, 12, False'), Student('27796285, Damarcos, Esteves, , 100, 12, False')]>>> course_1.enrollee[0]
+Student('23396285, Sydul, Akhanji, , 120, 16, True')
+>>> course_1.enrollee[0].grade_earned
+[]
+>>> course_1.enrollee[0].append(grade_2)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Student' object has no attribute 'append'
+>>> course_1.enrollee[0].grade_earned.append(grade_2)
+>>> course_1.enrollee[0].grade_earned
+[<Grade 2>]
+>>> course_1.enrollee[0].grade_earned[0]
+<Grade 2>
+>>> course_1.enrollee[0].grade_earned[0].grade
+'B'
+
+
+>>> course_1.enrollee[0].grade_earned.append(grade_2)
+
+>>> course_1.enrollee[0].grade_earned[0].grade
+'B'
+>>> course_1.enrollee[0].grade_earned.append(grade_3) 
+>>> course_1.enrollee[0].grade_earned.append(grade_1) 
+>>> course_1.enrollee[0].grade_earned.append(grade_4)
+>>> db.session.commit()
+>>> course_1.enrollee[0].grade_earned[1].grade
+'A'
+>>> course_1.enrollee[0].grade_earned[0].grade
+'B'
+>>> course_1.enrollee[0].grade_earned[2].grade
+'C'
+>>> course_1.enrollee[0].grade_earned[3].grade
+'D+'
+>>>
+
+"""
