@@ -20,23 +20,6 @@ class User(db.Model, UserMixin):
         return f"User('{self.email}')"
 
 
-<<<<<<< Updated upstream
-class Student(db.Model):
-    EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
-    firstname = db.Column(db.String(30), unique=True, nullable=False)
-    lastname = db.Column(db.String(30), unique=True, nullable=False)
-    middlename =db.Column(db.String(30), nullable=True)
-    credit_earned=db.Column(db.Integer, unique=False, nullable=False,default=0)
-    credit_taken=db.Column(db.Integer, unique=False, nullable=False,default=0)
-    graduating = db.Column(db.Boolean, nullable=False, default=False)
-    Notes = db.relationship('Notes', backref='Owner', lazy=True)
-    User = db.relationship('User', backref='StudentOwner', lazy=True)
-
-    def __repr__(self):
-        return f"Student('{self.EMPLID}')"
-
-=======
->>>>>>> Stashed changes
 class Faculty(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
     firstname = db.Column(db.String(30), unique=True, nullable=False)
