@@ -1,87 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
     {% for note in notes %}
-
-    <section >
-      <div class="container content-section my-5" style="max-width:80%;">
-         <div class="jumbotron bg-cover text-white" style="background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.6) 100%), url('../static/Images/adNoteBg.svg')" >
-        <div class="row align-items-end gutter-2">
-          <div class="col-lg-8" style="font-family:Roboto;">
-            <h2>Notes from Your Adivisor</h2>
-          </div>
-          <div class="col-lg-4 text-lg-right">
-    
-          </div>
-        </div>
-    
-        <hr class="my-4">
-    
-        <div class="row">
-    
-          <div class="col">
-            <div class="accordion accordion-minimal" id="accordion-2">
-    
-              <div class="card">
-                <div class="card-header" id="heading-2-1">
-                  <h2 class="display-1 mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-2-1" aria-expanded="false" aria-controls="collapse-2-1">
-                      Spring 2020
-                    </button>
-                  </h2>
-                </div>
-    
-                <div id="collapse-2-1" class="collapse" aria-labelledby="heading-2-1" data-parent="#accordion-2">
-                  <div class="card-body">
-                      <div class="list-group">
-                        <a href= "{{ url_for('advisingNotes', note_id=note.id) }}"  class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                              <h6 class="mb-1 col-8">Feb 26</h6>
-                            </div>
-                        </a>
-    
-                      </div>
-    
-                  </div>
-    
-                </div>
-    
-              </div>
-    
-    
-    
-              <div class="card">
-                <div class="card-header" id="heading-2-2">
-                  <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-2-2" aria-expanded="false" aria-controls="collapse-2-2">
-                      Fall 2020
-                    </button>
-                  </h2>
-                </div>
-    
-                <div id="collapse-2-2" class="collapse" aria-labelledby="heading-2-2" data-parent="#accordion-2">
-                  <div class="card-body">
-                      <div class="list-group">
-                        <a href= "{{ url_for('advisingNotes', note_id=note.id) }}"  class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                              <h6 class="mb-1 col-8">Feb 25</h6>
-                            </div>
-                        </a>
-    
-                      </div>
-    
-                  </div>
-                </div>
-              </div>
-    
-    
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ note.Owner.firstname }}</a>
             </div>
-    
+            <h2><a class="article-title" href="{{ url_for('advisingNotes', note_id=note.id) }}">Notes</a></h2>
           </div>
-    
-        </div>
-      </div>
-      </div>
-    </section>
-    
+        </article>
     {% endfor %}
 {% endblock content %}
