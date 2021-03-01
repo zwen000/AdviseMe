@@ -4,7 +4,7 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from adviseme import app, bcrypt, db
 from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm, UpdateStudentAccountForm, CourseInfoForm
-from adviseme.models import User, Student, Faculty, Notes, Course
+from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route('/')
@@ -44,7 +44,11 @@ def register():
 # Can login both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account.
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     form = LoginForm()                                                                          
+
     if form.validate_on_submit():                                                               
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
@@ -59,17 +63,44 @@ def login():
                 return redirect(next_page) if next_page else redirect(url_for('facultyinfo_fill'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-        if current_user.role == 'Student':
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('faculty'))
+
     return render_template('login.html', title='Login', form=form)
+
+
+
+
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me! 
+    _, f_ext = os.path.splitext(form_picture.filename)                              # the os module allows us to extract a file's extension
+    picture_fn = random_hex + f_ext                                                 # filename = hex value + file extension (.jpg, .png)
+    picture_path = os.path.join(app.root_path, 'static/Profile_Pics', picture_fn)   # File/path/to/save/picture! 
+
+    # This entire section of the code below just compresses the image to save space on our devices/the hosting sever (once deployed)!
+    #-----------------------------------------------    
+    output_size = (125, 125)
+    image_compressed = Image.open(form_picture)
+    image_compressed.thumbnail(output_size)
+    #-----------------------------------------------
+    
+    image_compressed.save(picture_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
+    
+    return picture_fn
+
+
 
 # Student fill out the basic info on the first time once they signed in
 @app.route('/studentinfo_fill', methods=['GET', 'POST'])
 def studentinfo_fill():
     form = StudentInfoForm()
+
     if form.validate_on_submit():
+
+        if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
+            picture_file = save_picture(form.picture.data)      # Save the image!
+            current_user.profile_image = picture_file           # Update the current user profile photo in the database! 
+            db.session.commit()                                     # commit changes to the database!
+
         student = Student(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
                           lastname=form.lastname.data,
@@ -84,23 +115,40 @@ def studentinfo_fill():
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('courseinfo_fill'))
+        return redirect(url_for('studentinfo_fill'))
 
-    return render_template('studentinfo_fill.html', title='Student Form', form=form)
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
+    return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
+
+
 
 @app.route('/courseinfo_fill', methods=['GET', 'POST'])
 def courseinfo_fill():
     form = CourseInfoForm()
+    courses = Course.query.all()
+    users = User.query.all()
 
+
+    """
     if form.validate_on_submit():
 
-
-
-        # db.session.commit()
+        course = Course(serial=form.serial.data,
+                        name=form.name.data, 
+                        instructor=form.instructor.data, 
+                        credits=form.credits.data)
+        db.session.add(course)
+        course.enrollee.append(current_user.StudentOwner)
+        db.session.commit()
+        course.enrollee.grade_earned.append(form.grade.data)
+        db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('student'))
+        return redirect(url_for('courseinfo_fill'))
+    elif request.method == 'GET':
+        print(current_user.StudentOwner)
+        print(current_user.CourseOwner)
+    """
 
-    return render_template('courseinfo_fill.html', title='Student Form', form=form)
+    return render_template('course_info_fill.html', title='Course Information', courses=courses, form=form, users=users)
 
 
 
@@ -109,6 +157,7 @@ def courseinfo_fill():
 @app.route('/facultyinfo_fill', methods=['GET', 'POST'])
 def facultyinfo_fill():
     form = FacultyInfoForm()
+    
     if form.validate_on_submit():
         faculty = Faculty(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
@@ -129,23 +178,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me! 
-    _, f_ext = os.path.splitext(form_picture.filename)                              # the os module allows us to extract a file's extension
-    picture_fn = random_hex + f_ext                                                 # filename = hex value + file extension (.jpg, .png)
-    picture_path = os.path.join(app.root_path, 'static/Profile_Pics', picture_fn)   # File/path/to/save/picture! 
-
-    # This entire section of the code below just compresses the image to save space on our devices/the hosting sever (once deployed)!
-    #-----------------------------------------------    
-    output_size = (125, 125)
-    image_compressed = Image.open(form_picture)
-    image_compressed.thumbnail(output_size)
-    #-----------------------------------------------
-    
-    image_compressed.save(picture_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
-    
-    return picture_fn
 
 @app.route('/student', methods=['GET', 'POST'])
 @login_required
@@ -179,11 +211,6 @@ def faculty():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image)
 
-
-@app.route('/test')
-@login_required
-def test():
-    return render_template("advisementForm.html", title="Advisement Form")
 
 
 

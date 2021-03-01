@@ -7,14 +7,27 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# This must be a many-to-many relationship:  (We need an associations table)
+# One student can take many classes, however a class can be taken my many students! 
+enrollements = db.Table('enrollements',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('student_id', db.Integer, db.ForeignKey('student.EMPLID')),
+    db.Column('school_id', db.Integer, db.ForeignKey('school.id')),
+    db.Column('department_id', db.Integer, db.ForeignKey('department.id')),
+    db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
+    db.Column('grade_id', db.Integer, db.ForeignKey('grade.id'))
+)
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     profile_image = db.Column(db.String(20), nullable=False, default='default.jpg')
-    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'),db.ForeignKey('faculty.EMPLID'))
     bio = db.Column(db.String(350), nullable=True)
     role = db.Column(db.String(30), nullable=False)
+    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'),db.ForeignKey('faculty.EMPLID'))
+    associated = db.relationship('Course', secondary=enrollements, backref='UserEnrolled', lazy='dynamic')
 
     def __repr__(self):
         return f"User('{self.email}')"
@@ -35,7 +48,7 @@ class Faculty(db.Model):
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    semster = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     academic_comment = db.Column(db.Text, nullable=False, default='')
     next_semester_comment = db.Column(db.Text, nullable=False, default='')
     be_advised = db.Column(db.Boolean, nullable=False, default=False)
@@ -47,16 +60,6 @@ class Notes(db.Model):
 
 
 
-
-# This must be a many-to-many relationship:  (We need an associations table)
-# One student can take many classes, however a class can be taken my many students! 
-enrollements = db.Table('enrollements',
-    db.Column('student_id', db.Integer, db.ForeignKey('student.EMPLID')),
-    db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
-    db.Column('grade_id', db.Integer, db.ForeignKey('grade.id'))
-)
-
-
 class Student(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
@@ -66,7 +69,7 @@ class Student(db.Model):
     credit_taken=db.Column(db.Integer, unique=False, nullable=False,default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
-    User = db.relationship('User', backref='StudentOwner', lazy=True)
+    user = db.relationship('User', backref='studentOwner', lazy=True)
 
     enrollement = db.relationship('Course', secondary=enrollements, backref='enrollee', lazy='dynamic')
 
@@ -74,13 +77,33 @@ class Student(db.Model):
         return f"Student('{self.EMPLID}, {self.firstname}, {self.lastname}, {self.middlename}, {self.credit_earned}, {self.credit_taken}, {self.graduating}')"
 
 
+class School(db.Model):
+    id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
+    name = db.Column(db.String(30), nullable=False)
+    attends = db.relationship('Student', secondary=enrollements, backref='goes_to', lazy='dynamic')    
+
+    def __repr__(self):
+        return f"Student('{self.id}, {self.name}')"
+
+
+class Department(db.Model):
+    id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
+    name = db.Column(db.String(30), nullable=False)
+    studies = db.relationship('Student', secondary=enrollements, backref='major', lazy='dynamic')
+
+    def __repr__(self):
+        return f"Student('{self.id}, {self.name}')"
+
+
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
     serial = db.Column(db.String(15), nullable=False)      # "CSC 103", "CSC 104", "CSC 211" 
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
-    instructor = db.Column(db.String(30), nullable=False)
+    instructor = db.Column(db.String(30), nullable=False, default='STAFF')
+    semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     credits = db.Column(db.Integer, nullable=False, default=0)
+    completion = db.relationship('Student', secondary=enrollements, backref='taken', lazy='dynamic')
 
     def __repr__(self):
         return f"Notes('{self.id}','{self.serial}','{self.name}','{self.description}','{self.instructor}','{self.credits}')"
@@ -88,8 +111,11 @@ class Course(db.Model):
 
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
-    grade = db.Column(db.String(15), nullable=False)
-    
+    grade = db.Column(db.String(15), nullable=False, default='in progress')
+    gpa_point = db.Column(db.Integer, nullable=False)
+
     performance = db.relationship('Student', secondary=enrollements, backref='grade_earned', lazy='dynamic')
 
+    def __repr__(self):
+        return f"Notes('{self.id}','{self.grade}','{self.gpa_point}')"    
 

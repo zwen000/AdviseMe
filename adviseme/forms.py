@@ -29,13 +29,14 @@ class LoginForm(FlaskForm):
 
 class StudentInfoForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
+    picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
     middlename =StringField('Middle Name', validators=[])
     credit_earned=IntegerField('Credit Earned', validators=[DataRequired()])
     credit_taken=IntegerField('Credit Taken', validators=[DataRequired()])
     graduating = BooleanField('Is Graduating?')
-    bio = TextAreaField('Student Bio (Optional)')
+    bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
     submit = SubmitField('Update')
 
     def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
@@ -44,14 +45,15 @@ class StudentInfoForm(FlaskForm):
             raise ValidationError('That EMPLID is already in use!')
 
 class CourseInfoForm(FlaskForm):
-    department = StringField('Department', validators=[ DataRequired() ])    # CSC, JWST, HIST, ENGR, MATH, CHEM
-    code = StringField('Course Code', validators=[ DataRequired() ])    # 103, 104, 211, 220, 221, 335, 342
-    semester = StringField('Semester', validators=[ DataRequired() ])            # Fall 2018, Spring 2019, Winter 2020, Summer 2021
+    serial = StringField('Course Code', validators=[ DataRequired() ])          # 103, 104, 211, 220, 221, 335, 342
     name = StringField('Course Name', validators=[ DataRequired() ]) 
     description = StringField('Description', validators=[ DataRequired() ])
     instructor = StringField('Instructor', validators=[ DataRequired() ])
-    grade = StringField('Grade', validators=[ DataRequired() ])
+    semester = StringField('Semester', validators=[ DataRequired() ])           # Fall 2018, Spring 2019, Winter 2020, Summer 2021
     credits = StringField('Credits awarded', validators=[ DataRequired() ])
+    grade = StringField('Completed (grade):') # No validators as this can be left blank. 
+    currently_enrolled = BooleanField('Currently Enrolled:')
+    intend_to_take = BooleanField('Intend to take:')
     submit = SubmitField('Submit')
 
 
@@ -75,9 +77,8 @@ class UpdateStudentAccountForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
-    bio = TextAreaField('Bio') # No validators here, since this is completely optional! 
+    bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
     submit = SubmitField('Update')
-
 
     def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
         if EMPLID.data != current_user.EMPLID:
