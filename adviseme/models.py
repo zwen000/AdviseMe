@@ -61,12 +61,12 @@ class Notes(db.Model):
 
 
 class Student(db.Model):
-    EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
+    EMPLID =db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
     lastname = db.Column(db.String(30), nullable=False)
     middlename = db.Column(db.String(30), nullable=True)
-    credit_earned=db.Column(db.Integer, unique=False, nullable=False,default=0)
-    credit_taken=db.Column(db.Integer, unique=False, nullable=False,default=0)
+    credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
+    credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
     user = db.relationship('User', backref='studentOwner', lazy=True)

@@ -29,14 +29,14 @@ class LoginForm(FlaskForm):
 
 class StudentInfoForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
-    picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
     middlename =StringField('Middle Name', validators=[])
     credit_earned=IntegerField('Credit Earned', validators=[DataRequired()])
     credit_taken=IntegerField('Credit Taken', validators=[DataRequired()])
-    graduating = BooleanField('Is Graduating?')
+    picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
     bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
+    graduating = BooleanField('Is Graduating?')
     submit = SubmitField('Update')
 
     def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
@@ -76,6 +76,12 @@ class advisingNotesForm(FlaskForm):
 class UpdateStudentAccountForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    firstname = StringField('First Name', validators=[DataRequired()])
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    middlename =StringField('Middle Name', validators=[])
+    credit_earned=IntegerField('Credit Earned', validators=[DataRequired()])
+    credit_taken=IntegerField('Credit Taken', validators=[DataRequired()])
+
     picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
     bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
     submit = SubmitField('Update')

@@ -19,22 +19,20 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-
-
                 <div class='form-group'>
                     {{ form.EMPLID.label(class="form-control-label") }}
-
+                    <!-- Standard Exception Handling: -->
                     {% if form.EMPLID.errors %}
-                        {{ form.EMPLID(class="form-control form-control-lg is-invalid") }}
+                      {{ form.EMPLID(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
-                            {% for error in form.EMPLID.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
+                          {% for error in form.EMPLID.errors %}
+                              <span>{{ error }}</span>
+                          {% endfor %}
                         </div>
-                    {% else %}
+                      {% else %}
                         {{ form.EMPLID(class="form-control form-control-lg") }}
                     {% endif %}
-                </div>
+                  </div>
                 <div class='form-group'>
                     {{ form.firstname.label(class="form-control-label") }}
                     

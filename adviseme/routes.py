@@ -69,7 +69,6 @@ def login():
 
 
 
-
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me! 
     _, f_ext = os.path.splitext(form_picture.filename)                              # the os module allows us to extract a file's extension
@@ -88,18 +87,17 @@ def save_picture(form_picture):
     return picture_fn
 
 
-
 # Student fill out the basic info on the first time once they signed in
 @app.route('/studentinfo_fill', methods=['GET', 'POST'])
 def studentinfo_fill():
     form = StudentInfoForm()
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
 
     if form.validate_on_submit():
-
         if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
             picture_file = save_picture(form.picture.data)      # Save the image!
             current_user.profile_image = picture_file           # Update the current user profile photo in the database! 
-            db.session.commit()                                     # commit changes to the database!
+            print("Execution Complete!")
 
         student = Student(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
@@ -117,7 +115,6 @@ def studentinfo_fill():
         flash('Info Updated', 'success')
         return redirect(url_for('studentinfo_fill'))
 
-    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
 
@@ -179,20 +176,26 @@ def logout():
 
 
 
-@app.route('/student', methods=['GET', 'POST'])
+@app.route('/student/edit', methods=['GET', 'POST'])
 @login_required
 def student():
     form = UpdateStudentAccountForm()
+    EMPLID=current_user.EMPLID
+    student = Student.query.filter_by(EMPLID=EMPLID).first()
 
     if form.validate_on_submit():
         if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
             picture_file = save_picture(form.picture.data)      # Save the image!
             current_user.profile_image = picture_file           # Update the current user profile photo in the database! 
-
-        current_user.EMPLID = form.EMPLID.data
+        
+        current_user.EMPLID=form.EMPLID.data
+        current_user.bio=form.bio.data
         current_user.email = form.email.data
-        current_user.bio = form.bio.data
-
+        student.firstname = form.firstname.data 
+        student.lastname = form.lastname.data 
+        student.middlename = form.middlename.data
+        student.credit_earned = form.credit_earned.data
+        student.credit_taken = form.credit_taken.data
         db.session.commit()                                     # commit changes to the database!
         flash('Your account info has been updated successfully!', 'success')
         return redirect(url_for('student'))
@@ -200,6 +203,11 @@ def student():
         form.EMPLID.data = current_user.EMPLID
         form.email.data = current_user.email
         form.bio.data = current_user.bio
+        form.firstname.data = student.firstname 
+        form.lastname.data = student.lastname
+        form.middlename.data = student.middlename
+        form.credit_earned.data = student.credit_earned
+        form.credit_taken.data = student.credit_taken
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student.html", title="Student Profile", profile_image=profile_image, form=form)
