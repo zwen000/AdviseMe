@@ -113,7 +113,7 @@ def studentinfo_fill():
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('studentinfo_fill'))
+        return redirect(url_for('student'))
 
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
@@ -123,8 +123,7 @@ def studentinfo_fill():
 def courseinfo_fill():
     form = CourseInfoForm()
     courses = Course.query.all()
-    users = User.query.all()
-
+    users = User.query.filter_by(EMPLID=current_user.EMPLID).first()
 
     """
     if form.validate_on_submit():
@@ -175,8 +174,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-
-@app.route('/student/edit', methods=['GET', 'POST'])
+@app.route('/student/profile/edit', methods=['GET', 'POST'])
 @login_required
 def student():
     form = UpdateStudentAccountForm()
