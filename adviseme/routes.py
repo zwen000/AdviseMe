@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from adviseme import app, bcrypt, db
-from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm, UpdateStudentAccountForm
+from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm, UpdateStudentAccountForm, NoteReviewForm
 from adviseme.models import User, Student, Faculty, Notes
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -41,12 +41,7 @@ def register():
             flash('Enter your citymail Please!', 'danger')
     return render_template('register.html', title='Register', form=form)
 
-<<<<<<< HEAD
-# Can login both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account
-# Once sign in, go direct to first time info fillout page.
-=======
 # Can login both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account.
->>>>>>> 43dd43a23724cf51226e6aaa8f5a29e4e76e1968
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()                                                                          
@@ -121,8 +116,6 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-<<<<<<< HEAD
-=======
 
 
 def save_picture(form_picture):
@@ -172,7 +165,6 @@ def faculty():
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image)
 
 
->>>>>>> 43dd43a23724cf51226e6aaa8f5a29e4e76e1968
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome')
 @login_required
@@ -181,25 +173,16 @@ def advisingNotesHome():
     notes=Notes.query.filter_by(EMPLID=EMPLID).all()
     return render_template('advisingNotesHome.html',notes=notes)
 
-<<<<<<< HEAD
-# Can view the direct note on the note
-=======
 # can view the direct note by clicking on the note if below 45 credits only see academic notes
->>>>>>> 43dd43a23724cf51226e6aaa8f5a29e4e76e1968
 @app.route('/advisingNotes/<int:note_id>')
 @login_required
 def advisingNotes(note_id):
     notes=Notes.query.get_or_404(note_id)
     return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
 
-<<<<<<< HEAD
-# faculty can see all the advising notes from students.
-# if user is academic advisor, only see students' note below 45 credits. elif user is faculty advisor, will see students' note above 45 credits.
-=======
 # faculty can see all the advising notes from students
 # if user is academic advisor, only see students' note below 45 credits.
 # elif user is faculty advisor, will see students' note above 45 credits
->>>>>>> 43dd43a23724cf51226e6aaa8f5a29e4e76e1968
 @app.route('/AdvisingHome')
 @login_required
 def AdvisingHome():
@@ -216,11 +199,40 @@ def academicAdvising(note_id):
         notes.academic_comment=form.academic_comment.data
         notes.next_semester_comment=form.next_semester_comment.data
         notes.be_advised=form.be_advised.data
+        if notes.Owner.credit_earned <= 45 and form.be_advised.data == True:
+            notes.approval = True
         db.session.commit()
         flash('Notes saved!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('AdvisingHome'))
     elif request.method == 'GET':
         form.academic_comment.data=notes.academic_comment
         form.next_semester_comment.data=notes.next_semester_comment
         form.be_advised.data=notes.be_advised
     return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
+
+# academic advisor review completed advising forms and notes in this page
+@app.route('/noteReviewHome')
+@login_required
+def noteReviewHome():
+    notes=Notes.query.filter_by(be_advised=True).all()
+    return render_template('noteReviewHome.html',notes=notes)
+
+
+#academic advisor approve advisement then leave academic notes
+@app.route('/noteReview/<int:note_id>', methods=['GET', 'POST'])
+@login_required
+def noteReview(note_id):
+    notes=Notes.query.get_or_404(note_id)
+    form = NoteReviewForm()
+    if form.validate_on_submit():
+        notes.academic_note=form.academic_note.data
+        notes.additional=form.additional.data
+        notes.approval=form.approval.data
+        db.session.commit()
+        flash('Confirmed!', 'success')
+        return redirect(url_for('noteReviewHome'))
+    elif request.method == 'GET':
+        form.academic_note.data=notes.academic_note
+        form.additional.data=notes.additional
+        form.approval.data=notes.approval
+    return render_template('noteReview.html', title='noteReview',notes=notes,form=form)

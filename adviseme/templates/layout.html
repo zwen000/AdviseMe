@@ -55,9 +55,16 @@
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}
                                 <!-- Navbar for Faculty-->
+                                {%if current_user.FacultyOwner.staff_role == 'Academic Advisor' %}
+                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Advisement</a>
+                                <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Note Review</a>
+                                <a class="nav-item nav-link" href="{{ url_for('facultyinfo_fill') }}">Fill Info</a>          <!-- Display for now (but faculty will only see it the first time they login)-->
+                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                                {% else %}
                                 <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Advisement</a>
                                 <a class="nav-item nav-link" href="{{ url_for('facultyinfo_fill') }}">Fill Info</a>          <!-- Display for now (but faculty will only see it the first time they login)-->
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                                {% endif %}
                             {% endif %}
                         {% else %}
                             <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
