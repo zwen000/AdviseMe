@@ -210,7 +210,7 @@ def academicAdvising(note_id):
         form.be_advised.data=notes.be_advised
     return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
 
-# academic advisor review completed advising forms and notes in this page
+# academic advisor should review completed advising forms and notes in this page
 @app.route('/noteReviewHome')
 @login_required
 def noteReviewHome():
@@ -218,7 +218,7 @@ def noteReviewHome():
     return render_template('noteReviewHome.html',notes=notes)
 
 
-#academic advisor approve advisement then leave academic notes
+# academic advisor approve advisement then leave academic notes
 @app.route('/noteReview/<int:note_id>', methods=['GET', 'POST'])
 @login_required
 def noteReview(note_id):
@@ -236,3 +236,8 @@ def noteReview(note_id):
         form.additional.data=notes.additional
         form.approval.data=notes.approval
     return render_template('noteReview.html', title='noteReview',notes=notes,form=form)
+
+@app.route('/workflow')
+@login_required
+def workflow():
+    return render_template('workflow.html', title="workflow")
