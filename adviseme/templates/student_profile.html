@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+{% block content %}
+<center>
+  <div class="content-section">
+<div class="row">
+    <div class="column border-right">
+      <div class="left-style">
+      <img class="rounded-circle profile-image" src="{{ profile_image }}">
+        <h2 class="account-heading"></h2>
+    <p class="p-custom">Degree: BS. Computer Science</p>
+    <p class="p-custom">Name: {{ current_user.StudentOwner.firstname }} {{ current_user.StudentOwner.middlename }} {{ current_user.StudentOwner.lastname }}</p>
+    <div id="Bio">
+      <p class="p-custom-2">Bio: I am an incoming EIO&T Full Time Analyst at Citi. In addition, I have taught for Girls Who Code and CUNY Tutor Corps {{ current_user.StudentOwner.Bio}}</p> 
+    </div>
+  </div>
+  </div>
+  
+    <div class="column">
+    <h1>Account Info</h1>
+    <p class="p-custom">Email: {{ current_user.email }}</p>
+    <p class="p-custom">Grade Level: Senior {{ current_user.StudentOwner.GradeLevel }}</p>
+    <p class="p-custom">EMPLID: {{ current_user.StudentOwner.EMPLID }}</p>
+    <p class="p-custom">Credits Completed: {{ current_user.StudentOwner.credit_earned }}</p>
+    <p class="p-custom">In Progress: {{ current_user.StudentOwner.credit_taken }}</p>
+    <p class="p-custom">GPA: 3.6 {{ current_user.StudentOwner.GPA }}</p>
+    <a href="/studentinfo_fill"><button class="custom-button-profile-edit">EDIT</button></a>
+</div>
+</div>
+</center>  
+<script>
+  /*JavaScript to only display Bio when it is not NULL*/
+if (current_user.StudentOwner.Bio != NULL) {
+    document.getElementById('Bio').style.display = 'block';
+} else {
+    document.getElementById('Bio').style.display = 'none';
+}
+</script>
+<style>
+/*CSS for My Profile */
+  body{
+
+    padding: 8%;
+  }
+  .profile-image{
+    width: 40%;
+  }
+  .column {
+  float: left;
+  width: 50%;
+  padding: 2%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.content-section{
+  width: 70%;
+  padding: 3%;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+border-radius: 15px;
+}
+.custom-button-profile-edit {
+    background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+    color: hsl(0, 0%, 100%);
+    padding: 10px;
+    border: none;
+    width: 40%;
+    cursor: pointer;
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+    }
+.custom-button-profile-edit:hover{
+      background-color: #3772D7;
+}
+
+
+h1{
+font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 22px;
+line-height: 33px;
+text-decoration-line: underline;
+
+color: #233B7E;
+}
+.checklist-header{
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 42px;
+    line-height: 33px;
+    text-decoration-line: underline;
+    
+    color: #233B7E;   
+}
+.p-custom{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 24px;
+
+color: #000000;
+}
+.p-custom-2{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 24px;
+
+color: #233B7E;
+}
+.important-info{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 10px;
+line-height: 24px;   
+display: inline; 
+}
+a{
+  color: white;
+}
+@media only screen and (max-width: 800px) {
+  .p-custom, .p-custom-2{
+    font-size: 100%;
+    color: #000000;
+  }
+  .column {
+  width: 100%;
+  padding: 4%;
+}
+.content-section{
+  width: 95%;
+  padding: 4%;
+}
+
+}
+
+</style>
+{% endblock content %}

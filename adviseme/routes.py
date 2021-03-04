@@ -135,7 +135,7 @@ def save_picture(form_picture):
     
     return picture_fn
 
-@app.route('/student', methods=['GET', 'POST'])
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def student():
     form = UpdateStudentAccountForm()
@@ -155,8 +155,19 @@ def student():
         form.email.data = current_user.email
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template("student.html", title="Student Profile", profile_image=profile_image, form=form)
+    return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
 
+#For students to edit profile:
+@app.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def profile_edit():
+    return render_template("student_profile_edit.html", title="Edit Student Profile")
+
+
+@app.route('/checklist')
+@login_required
+def checklist():
+    return render_template("checklist.html", title="Checklist")
 
 @app.route('/faculty')
 @login_required
