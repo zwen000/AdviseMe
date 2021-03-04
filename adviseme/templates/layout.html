@@ -37,6 +37,7 @@
                         {% if current_user.is_authenticated %}
                             {% if '@citymail.cuny.edu' in current_user.email %}
                                <a class="nav-item nav-link" href="{{ url_for('student') }}">My Profile</a>
+                               <a class="nav-item nav-link" href="{{ url_for('checklist') }}">Checklist</a>
                             {% else %}
                                 <a class="nav-item nav-link" href="{{ url_for('faculty') }}">My Profile</a>
                             {% endif %}
@@ -49,7 +50,8 @@
                         {% if current_user.is_authenticated %}
                             {% if '@citymail.cuny.edu' in current_user.email %}
                                 <!-- Navbar for Students-->
-                                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>                           <!-- Later this will be a dropdown under the Live Advisement Form-->
+                                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
+                                <a class="nav-item nav-link" href="{{ url_for('advisingNotesHome') }}">Advising Notes</a>
                                 <a class="nav-item nav-link" href="{{ url_for('studentinfo_fill') }}">Student Info Form</a>    <!-- Display for now (but students will only see it the first time they login)-->
                                 <a class="nav-item nav-link" href="{{ url_for('courseinfo_fill') }}">Course Info Form</a>
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
@@ -73,31 +75,18 @@
     <!-- Content Block Start -->
     <main role="main" class="container">
 
-        <div class="row">
-            <div class="col-md-8">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-            </div>
-        </div>
-
         <div>
             {% block content %}{% endblock %}
         </div>
     </main>
     <!-- Content Block End -->
-
-    <!-- This footer was conflicting and cutting off form data so I've commented it out, and it will be fixed in a subsequent css hotfix -- Ray
+    <div class="push"></div>
+</div>
+    <!--  Footer -->
     <div class="footer">
     <img  class ="c-size" src="{{ url_for('static', filename='/Images/copyright.png') }}"> <img src="{{ url_for('static', filename='/Images/AdviseMe.svg') }}"><p class="footer-font">  2021</p>
     </div>
-    -->
+
 
     <!-- Optional JavaScript; choose one of the two! -->
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

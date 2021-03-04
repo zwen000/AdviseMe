@@ -8,7 +8,7 @@ def load_user(user_id):
 
 
 # This must be a many-to-many relationship:  (We need an associations table)
-# One student can take many classes, however a class can be taken my many students! 
+# One student can take many classes, however a class can be taken my many students!
 enrollements = db.Table('enrollements',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('student_id', db.Integer, db.ForeignKey('student.EMPLID')),
@@ -35,8 +35,8 @@ class User(db.Model, UserMixin):
 
 class Faculty(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
-    firstname = db.Column(db.String(30), unique=True, nullable=False)
-    lastname = db.Column(db.String(30), unique=True, nullable=False)
+    firstname = db.Column(db.String(30), nullable=False)
+    lastname = db.Column(db.String(30), nullable=False)
     middlename =db.Column(db.String(30), nullable=True)
     staff_role =db.Column(db.String(30), nullable=False)
     User = db.relationship('User', backref='FacultyOwner', lazy=True)
@@ -80,7 +80,7 @@ class Student(db.Model):
 class School(db.Model):
     id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
     name = db.Column(db.String(30), nullable=False)
-    attends = db.relationship('Student', secondary=enrollements, backref='goes_to', lazy='dynamic')    
+    attends = db.relationship('Student', secondary=enrollements, backref='goes_to', lazy='dynamic')
 
     def __repr__(self):
         return f"Student('{self.id}, {self.name}')"
@@ -97,7 +97,7 @@ class Department(db.Model):
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
-    serial = db.Column(db.String(15), nullable=False)      # "CSC 103", "CSC 104", "CSC 211" 
+    serial = db.Column(db.String(15), nullable=False)      # "CSC 103", "CSC 104", "CSC 211"
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     instructor = db.Column(db.String(30), nullable=False, default='STAFF')
@@ -117,5 +117,4 @@ class Grade(db.Model):
     performance = db.relationship('Student', secondary=enrollements, backref='grade_earned', lazy='dynamic')
 
     def __repr__(self):
-        return f"Notes('{self.id}','{self.grade}','{self.gpa_point}')"    
-
+        return f"Notes('{self.id}','{self.grade}','{self.gpa_point}')"

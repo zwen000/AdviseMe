@@ -47,9 +47,9 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
 
-    form = LoginForm()                                                                          
+    form = LoginForm()
 
-    if form.validate_on_submit():                                                               
+    if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
@@ -57,10 +57,19 @@ def login():
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
                 return redirect(next_page) if next_page else redirect(url_for('studentinfo_fill'))
+
             elif current_user.role == 'Faculty' and current_user.EMPLID == None:
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
                 return redirect(next_page) if next_page else redirect(url_for('facultyinfo_fill'))
+            elif current_user.role == 'Student':
+                next_page = request.args.get('next')
+                flash('Login Successful. Welcome to AdviseMe', 'success')
+                return redirect(next_page) if next_page else redirect(url_for('student'))
+            elif current_user.role == 'Faculty':
+                next_page = request.args.get('next')
+                flash('Login Successful. Welcome to AdviseMe', 'success')
+                return redirect(next_page) if next_page else redirect(url_for('faculty'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
 
@@ -70,20 +79,20 @@ def login():
 
 
 def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me! 
+    random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me!
     _, f_ext = os.path.splitext(form_picture.filename)                              # the os module allows us to extract a file's extension
     picture_fn = random_hex + f_ext                                                 # filename = hex value + file extension (.jpg, .png)
-    picture_path = os.path.join(app.root_path, 'static/Profile_Pics', picture_fn)   # File/path/to/save/picture! 
+    picture_path = os.path.join(app.root_path, 'static/Profile_Pics', picture_fn)   # File/path/to/save/picture!
 
     # This entire section of the code below just compresses the image to save space on our devices/the hosting sever (once deployed)!
-    #-----------------------------------------------    
+    #-----------------------------------------------
     output_size = (125, 125)
     image_compressed = Image.open(form_picture)
     image_compressed.thumbnail(output_size)
     #-----------------------------------------------
-    
+
     image_compressed.save(picture_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
-    
+
     return picture_fn
 
 
@@ -96,7 +105,7 @@ def studentinfo_fill():
     if form.validate_on_submit():
         if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
             picture_file = save_picture(form.picture.data)      # Save the image!
-            current_user.profile_image = picture_file           # Update the current user profile photo in the database! 
+            current_user.profile_image = picture_file           # Update the current user profile photo in the database!
             print("Execution Complete!")
 
         student = Student(EMPLID=form.EMPLID.data,
@@ -113,7 +122,7 @@ def studentinfo_fill():
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('student_profile_edit'))
+        return redirect(url_for('student_profile'))
 
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
@@ -129,8 +138,8 @@ def courseinfo_fill():
     if form.validate_on_submit():
 
         course = Course(serial=form.serial.data,
-                        name=form.name.data, 
-                        instructor=form.instructor.data, 
+                        name=form.name.data,
+                        instructor=form.instructor.data,
                         credits=form.credits.data)
         db.session.add(course)
         course.enrollee.append(current_user.StudentOwner)
@@ -153,7 +162,7 @@ def courseinfo_fill():
 @app.route('/facultyinfo_fill', methods=['GET', 'POST'])
 def facultyinfo_fill():
     form = FacultyInfoForm()
-    
+
     if form.validate_on_submit():
         faculty = Faculty(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
@@ -184,13 +193,13 @@ def student_profile_edit():
     if form.validate_on_submit():
         if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
             picture_file = save_picture(form.picture.data)      # Save the image!
-            current_user.profile_image = picture_file           # Update the current user profile photo in the database! 
-        
+            current_user.profile_image = picture_file           # Update the current user profile photo in the database!
+
         current_user.EMPLID=form.EMPLID.data
         current_user.bio=form.bio.data
         current_user.email = form.email.data
-        student.firstname = form.firstname.data 
-        student.lastname = form.lastname.data 
+        student.firstname = form.firstname.data
+        student.lastname = form.lastname.data
         student.middlename = form.middlename.data
         student.credit_earned = form.credit_earned.data
         student.credit_taken = form.credit_taken.data
@@ -201,23 +210,48 @@ def student_profile_edit():
         form.EMPLID.data = current_user.EMPLID
         form.email.data = current_user.email
         form.bio.data = current_user.bio
-        form.firstname.data = student.firstname 
+        form.firstname.data = student.firstname
         form.lastname.data = student.lastname
         form.middlename.data = student.middlename
         form.credit_earned.data = student.credit_earned
         form.credit_taken.data = student.credit_taken
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template("student_profile_edit.html", title="Student Profile", profile_image=profile_image, form=form)
+    return render_template("student_profile_edit.html", title="Student Profile Edit", profile_image=profile_image, form=form)
 
+
+@app.route('/student/profile', methods=['GET', 'POST'])
+@login_required
+def student_profile():
+    form = UpdateStudentAccountForm()
+
+    if form.validate_on_submit():
+        if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
+            picture_file = save_picture(form.picture.data)      # Save the image!
+            current_user.profile_image = picture_file           # Update the current user profile photo in the database!
+
+        current_user.EMPLID = form.EMPLID.data
+        current_user.email = form.email.data
+        db.session.commit()                                     # commit changes to the database!
+        flash('Your account info has been updated successfully!', 'success')
+        return redirect(url_for('student'))
+    elif request.method == 'GET':
+        form.EMPLID.data = current_user.EMPLID
+        form.email.data = current_user.email
+
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
+    return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
+
+@app.route('/checklist')
+@login_required
+def checklist():
+    return render_template("checklist.html", title="Checklist")
 
 @app.route('/faculty')
 @login_required
 def faculty():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image)
-
-
 
 
 # Student can view all notes in this advisingNotesHome route
@@ -262,7 +296,3 @@ def academicAdvising(note_id):
         form.next_semester_comment.data=notes.next_semester_comment
         form.be_advised.data=notes.be_advised
     return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

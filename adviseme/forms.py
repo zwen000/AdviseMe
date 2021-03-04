@@ -11,12 +11,7 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
-    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
-        user = User.query.filter_by(EMPLID = EMPLID.data).first()
-        if user:
-            raise ValidationError('That EMPLID is already in use!')
-        
-    def validate_email(self, email):                # checks for duplicate emails! 
+    def validate_email(self, email):                # checks for duplicate emails!
         user = User.query.filter_by(email = email.data).first()
         if user:
             raise ValidationError('The email is already in use!')
@@ -35,23 +30,23 @@ class StudentInfoForm(FlaskForm):
     credit_earned=IntegerField('Credit Earned', validators=[DataRequired()])
     credit_taken=IntegerField('Credit Taken', validators=[DataRequired()])
     picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
-    bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
+    bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional!
     graduating = BooleanField('Is Graduating?')
     submit = SubmitField('Update')
 
-    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
+    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's
         user = User.query.filter_by(EMPLID = EMPLID.data).first()
         if user:
             raise ValidationError('That EMPLID is already in use!')
 
 class CourseInfoForm(FlaskForm):
     serial = StringField('Course Code', validators=[ DataRequired() ])          # 103, 104, 211, 220, 221, 335, 342
-    name = StringField('Course Name', validators=[ DataRequired() ]) 
+    name = StringField('Course Name', validators=[ DataRequired() ])
     description = StringField('Description', validators=[ DataRequired() ])
     instructor = StringField('Instructor', validators=[ DataRequired() ])
     semester = StringField('Semester', validators=[ DataRequired() ])           # Fall 2018, Spring 2019, Winter 2020, Summer 2021
     credits = StringField('Credits awarded', validators=[ DataRequired() ])
-    grade = StringField('Completed (grade):') # No validators as this can be left blank. 
+    grade = StringField('Completed (grade):') # No validators as this can be left blank.
     currently_enrolled = BooleanField('Currently Enrolled:')
     intend_to_take = BooleanField('Intend to take:')
     submit = SubmitField('Submit')
@@ -64,8 +59,13 @@ class FacultyInfoForm(FlaskForm):
     lastname = StringField('Last Name', validators=[DataRequired()])
     middlename =StringField('Middle Name', validators=[])
     staff_role =StringField('Staff Role', validators=[DataRequired()])
-    bio = TextAreaField('Student Bio (Optional)')   
+    bio = TextAreaField('Student Bio (Optional)')
     submit = SubmitField('Update')
+
+    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's
+        user = User.query.filter_by(EMPLID = EMPLID.data).first()
+        if user:
+            raise ValidationError('That EMPLID is already in use!')
 
 class advisingNotesForm(FlaskForm):
     academic_comment = StringField('Academic Comment', validators=[DataRequired()])
@@ -83,28 +83,28 @@ class UpdateStudentAccountForm(FlaskForm):
     credit_taken=IntegerField('Credit Taken', validators=[DataRequired()])
 
     picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
-    bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
+    bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional!
     submit = SubmitField('Update')
 
-    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's 
+    def validate_EMPLID(self, EMPLID):              # checks for duplicate EMPLID's
         if EMPLID.data != current_user.EMPLID:
             user = User.query.filter_by(EMPLID = EMPLID.data).first()
             if user:
                 raise ValidationError('That EMPLID is already in use!')
-        
+
     def validate_email(self, email):                # checks for duplicate emails!
         if email.data != current_user.email:
             user = User.query.filter_by(email = email.data).first()
             if user:
                 raise ValidationError('The email is already in use!')
-        
-        # Privellege Escalation Denial! 
+
+        # Privellege Escalation Denial!
         if current_user.role == 'Student':
             if ('@citymail.cuny.edu' not in email.data):
                 raise ValidationError('This email is not allowed!')
             if ('@ccny.cuny.edu' in email.data):
                 raise ValidationError('This email is not allowed!')
-        
+
         if current_user.role == 'Faculty':
             if ('@ccny.cuny.edu' not in email.data):
                 raise ValidationError('This email is not allowed!')
