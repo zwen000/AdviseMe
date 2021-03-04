@@ -113,7 +113,7 @@ def studentinfo_fill():
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('student'))
+        return redirect(url_for('student_profile_edit'))
 
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
@@ -176,7 +176,7 @@ def logout():
 
 @app.route('/student/profile/edit', methods=['GET', 'POST'])
 @login_required
-def student():
+def student_profile_edit():
     form = UpdateStudentAccountForm()
     EMPLID=current_user.EMPLID
     student = Student.query.filter_by(EMPLID=EMPLID).first()
@@ -208,7 +208,7 @@ def student():
         form.credit_taken.data = student.credit_taken
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template("student.html", title="Student Profile", profile_image=profile_image, form=form)
+    return render_template("student_profile_edit.html", title="Student Profile", profile_image=profile_image, form=form)
 
 
 @app.route('/faculty')
