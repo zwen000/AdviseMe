@@ -65,7 +65,7 @@ def login():
             elif current_user.role == 'Student':
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
-                return redirect(next_page) if next_page else redirect(url_for('student'))
+                return redirect(next_page) if next_page else redirect(url_for('student_profile'))
             elif current_user.role == 'Faculty':
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
@@ -205,7 +205,7 @@ def student_profile_edit():
         student.credit_taken = form.credit_taken.data
         db.session.commit()                                     # commit changes to the database!
         flash('Your account info has been updated successfully!', 'success')
-        return redirect(url_for('student'))
+        return redirect(url_for('student_profile'))
     elif request.method == 'GET':
         form.EMPLID.data = current_user.EMPLID
         form.email.data = current_user.email
@@ -234,7 +234,7 @@ def student_profile():
         current_user.email = form.email.data
         db.session.commit()                                     # commit changes to the database!
         flash('Your account info has been updated successfully!', 'success')
-        return redirect(url_for('student'))
+        return redirect(url_for('student_profile'))
     elif request.method == 'GET':
         form.EMPLID.data = current_user.EMPLID
         form.email.data = current_user.email
