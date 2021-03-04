@@ -68,6 +68,7 @@ class Student(db.Model):
     credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
     credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
+    GPA = db.Column(db.Integer, unique=False, nullable=False)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
     user = db.relationship('User', backref='studentOwner', lazy=True)
 
@@ -101,7 +102,7 @@ class Course(db.Model):
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     instructor = db.Column(db.String(30), nullable=False, default='STAFF')
-    semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Update this!!! 
     credits = db.Column(db.Integer, nullable=False, default=0)
     completion = db.relationship('Student', secondary=enrollements, backref='taken', lazy='dynamic')
 

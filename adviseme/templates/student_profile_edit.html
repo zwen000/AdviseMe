@@ -16,6 +16,16 @@
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Account Info</legend>
           
+        <div class="form-group">
+          {{ form.picture.label() }}
+          {{ form.picture(class="form-control-file") }}
+          <!-- Standard Exception Handling: -->
+          {% if form.picture.errors %}
+            {% for error in form.picture.errors %}
+              <span class="text-danger">{{ error }}</span><br>
+            {% endfor %}
+          {% endif %}
+        </div>
         <div class='form-group'>
           {{ form.bio.label(class="form-control-label") }}
           <!-- Standard Exception Handling: -->  
@@ -31,20 +41,6 @@
           {% endif %}
         </div>
 
-        <div class='form-group'>
-          {{ form.EMPLID.label(class="form-control-label") }}
-          <!-- Standard Exception Handling: -->
-          {% if form.EMPLID.errors %}
-            {{ form.EMPLID(class="form-control form-control-lg is-invalid") }}
-              <div class="invalid-feedback">
-                {% for error in form.EMPLID.errors %}
-                    <span>{{ error }}</span>
-                {% endfor %}
-              </div>
-            {% else %}
-              {{ form.EMPLID(class="form-control form-control-lg") }}
-          {% endif %}
-        </div>
         <div class='form-group'>
           {{ form.email.label(class="form-control-label") }}
           <!-- Standard Exception Handling: -->  
@@ -144,19 +140,6 @@
               {{ form.credit_taken(class="form-control form-control-lg") }}
           {% endif %}
       </div>
-
-
-
-        <div class="form-group">
-          {{ form.picture.label() }}
-          {{ form.picture(class="form-control-file") }}
-          <!-- Standard Exception Handling: -->
-          {% if form.picture.errors %}
-            {% for error in form.picture.errors %}
-              <span class="text-danger">{{ error }}</span><br>
-            {% endfor %}
-          {% endif %}
-        </div>
       </fieldset>            
       <div class="form-group">
           {{ form.submit(class="btn btn-outline-info") }}

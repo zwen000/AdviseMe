@@ -88,7 +88,7 @@ def save_picture(form_picture):
 
 
 # Student fill out the basic info on the first time once they signed in
-@app.route('/studentinfo_fill', methods=['GET', 'POST'])
+@app.route('/student/info/fill', methods=['GET', 'POST'])
 def studentinfo_fill():
     form = StudentInfoForm()
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -208,7 +208,7 @@ def student():
         form.credit_taken.data = student.credit_taken
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template("student.html", title="Student Profile", profile_image=profile_image, form=form)
+    return render_template("student_profile_edit.html", title="Student Profile Edit", profile_image=profile_image, form=form)
 
 
 @app.route('/faculty')
@@ -228,12 +228,14 @@ def advisingNotesHome():
     notes=Notes.query.filter_by(EMPLID=EMPLID).all()
     return render_template('advisingNotesHome.html',notes=notes)
 
+
 # can view the direct note by clicking on the note if below 45 credits only see academic notes
 @app.route('/advisingNotes/<int:note_id>')
 @login_required
 def advisingNotes(note_id):
     notes=Notes.query.get_or_404(note_id)
     return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
+
 
 # faculty can see all the advising notes from students
 # if user is academic advisor, only see students' note below 45 credits.
