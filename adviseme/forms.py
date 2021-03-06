@@ -73,6 +73,12 @@ class advisingNotesForm(FlaskForm):
     be_advised = BooleanField('Be advised?')
     submit = SubmitField('Approved')
 
+class NoteReviewForm(FlaskForm):
+    academic_note = StringField('Academic Note', validators=[DataRequired()])
+    additional = StringField('Additional information', validators=[DataRequired()])
+    approval = BooleanField('Approved?')
+    submit = SubmitField('Confirm')
+
 class UpdateStudentAccountForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
