@@ -1,5 +1,6 @@
 import os
 import secrets
+from datetime import date
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from adviseme import app, bcrypt, db
@@ -164,6 +165,25 @@ def faculty():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image)
 
+# function to get current semester 
+def get_semester(date):
+    year = str(date.year)
+    m = date.month * 100
+    d = date.day
+    md = m + d
+
+    if ((md >= 301) and (md <= 531)):
+        semester = 'Spring'  # spring
+    elif ((md > 531) and (md < 901)):
+        semester = 'Summer'  # summer
+    elif ((md >= 901) and (md <= 1130)):
+        semester = 'Fall'  # fall
+    elif ((md > 1130) and (md <= 229)):
+        semester = 'Winter'  # winter
+    else:
+        raise IndexError("Invalid date")
+
+    return semester +" "+ year
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome')
@@ -179,6 +199,7 @@ def advisingNotesHome():
 def advisingNotes(note_id):
     notes=Notes.query.get_or_404(note_id)
     return render_template('advisingNotes.html', title='advisingNotes',notes=notes)
+
 
 # faculty can see all the advising notes from students
 # if user is academic advisor, only see students' note below 45 credits.

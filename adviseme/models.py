@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from adviseme import db, login_manager
 from flask_login import UserMixin
 
@@ -48,14 +48,15 @@ class Faculty(db.Model):
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    semster = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    semester = db.Column(db.Date, nullable=False, default=date.today())
     academic_comment = db.Column(db.Text, nullable=False, default='')
     next_semester_comment = db.Column(db.Text, nullable=False, default='')
     be_advised = db.Column(db.Boolean, nullable=False, default=False)
     academic_note = db.Column(db.Text, nullable=False, default='')
     additional = db.Column(db.Text, nullable=False, default='')
     approval = db.Column(db.Boolean, nullable=False, default=False)
-    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), db.ForeignKey('faculty.EMPLID'), nullable=False)
+    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
+    FacultyEMPLID = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True)
     Student = db.relationship('Student', backref='advisingnote', lazy=True)
 
     def __repr__(self):
