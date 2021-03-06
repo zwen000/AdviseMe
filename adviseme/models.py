@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date,datetime
 from adviseme import db, login_manager
 from flask_login import UserMixin
 
