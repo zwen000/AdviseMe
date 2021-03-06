@@ -9,8 +9,41 @@
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">ACADEMIC NOTES</a>
           </div>
         {% else %}
-          <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">ACADEMIC NOTES</a>
+
+        <div class="container mt-5">
+            <div class="row">
+        
+            <div class="col-md-10 ml-auto col-xl-6 mr-auto">
+              <p class="category">Academic Advising Note</p>
+              <div class="card">
+                <div class="card-header">
+                  <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" style="background-color:#3872d7;">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Note: </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#p2" role="tab">Additional:</a>
+                    </li>
+        
+                  </ul>
+                </div>
+                <div class="card-body">
+                  <!-- Tab panes -->
+                  <div class="tab-content text-center">
+                    <div class="tab-pane active" id="p1" role="tabpanel">
+                      <p>{{ notes.academic_note }}</p>
+                    </div>
+                    <div class="tab-pane" id="p2" role="tabpanel">
+                      <p>{{ notes.additional }}</p>
+                    </div>
+        
+        
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Tabs on plain Card -->
+            </div>
           </div>
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">FACULTY NOTES</a>
