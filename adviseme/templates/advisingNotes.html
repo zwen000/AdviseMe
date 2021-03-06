@@ -18,6 +18,7 @@
 
           </ul>
         </div>
+
         <div class="card-body">
           <!-- Tab panes -->
           <div class="tab-content text-center">
@@ -32,13 +33,14 @@
             </div>
           </div>
         </div>
+
       </div>
       <!-- End Tabs on plain Card -->
     </div>
   </div>
 </div>
 
-{% if notes[0].Student.credit_earned > 45 %}
+{% if note.Student.credit_earned >= 45 %}
 <div class="container mt-5">
     <div class="row">
 
