@@ -25,7 +25,7 @@ def about():
 
 
 # Can register both students and faulties (only ccny or citymail email can sign up.)
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register/', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -48,7 +48,7 @@ def register():
 
 
 # Can login both students and faulties, if '@ccny.cuny.edu' would be faculty account, and '@citymail.cuny.edu' should be student account.
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -71,7 +71,7 @@ def login():
             elif current_user.role == 'Student':
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
-                return redirect(next_page) if next_page else redirect(url_for('student_profile'))
+                return redirect(next_page) if next_page else redirect(url_for('student'))
             elif current_user.role == 'Faculty':
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
@@ -199,17 +199,9 @@ def advisingNotesHome():
 @app.route('/advisingNotes/<int:note_id>')
 @login_required
 def advisingNotes(note_id):
-    notes = Notes.query.get_or_404(note_id)
-    # note=Notes.query.filter_by(id=note_id).first()
+    #note = Notes.query.get_or_404(note_id)
+    note=Notes.query.filter_by(id=note_id).first()
     return render_template('advisingNotes.html', title='advisingNotes', note=note)
-
-
-# @app.route('/advisingNotes/')
-# @login_required
-# def advisingNotes():
-#     #notes=Notes.query.get_or_404()
-#     notes = Notes.query.all()
-#     return render_template('advisingNotes.html', title='advisingNotes', notes=notes)
 
 
 # faculty can see all the advising notes from students
