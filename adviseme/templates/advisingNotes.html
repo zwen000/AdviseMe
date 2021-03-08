@@ -1,102 +1,101 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="container mt-5">
+<div class="container mt-5 pt-3" style="font-size:14px;">
     <div class="row">
 
-    <div class="col-md-10 ml-auto col-xl-6 mr-auto">
-      <p class="category">Academic Advising Note</p>
+    <div class="col-md-10 ml-auto col-xl-6 mr-auto pb-5">
       <div class="card">
         <div class="card-header">
           <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" style="background-color:#3872d7;">
             <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Note: </a>
+              <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Academic Advising Note </a>
             </li>
+            {% if note.Student.credit_earned >= 45 %}
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#p2" role="tab">Additional:</a>
+              <a class="nav-link" data-toggle="tab" href="#p2" role="tab">Faculty Advising Note</a>
             </li>
-
+            {% endif %}
           </ul>
         </div>
 
-        <div class="card-body">
+
+        <div class="card-body px-5">
           <!-- Tab panes -->
           <div class="tab-content text-center">
             <div class="tab-pane active" id="p1" role="tabpanel">
+              <p class="category">My advising notes are below:</p>
+              <p>{{ note.academic_note }}</p>
+              <hr>
+              <p class="category">Additional:</p>
               <p>{{ note.academic_note }}</p>
             </div>
             <div class="tab-pane" id="p2" role="tabpanel">
-              <p>{{ note.additional }}</p>
-            </div>
-
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <!-- End Tabs on plain Card -->
-    </div>
-  </div>
-</div>
-
-{% if note.Student.credit_earned >= 45 %}
-<div class="container mt-5">
-    <div class="row">
-
-
-    <div class="col-md-10 ml-auto col-xl-6 mr-auto">
-      <p class="category">Faculty Advising Note</p>
-      <!-- Tabs with Background on Card -->
-      <div class="card">
-        <div class="card-header">
-          <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" style="background-color:#3872d7;">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#q1" role="tab">1. I have reviewed the student's transcript and discussed academic performance.</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#q2" role="tab">2. I have reviewed the student's intended course schedule for next semester.</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#q3" role="tab">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</a>
-            </li>
-<!--            <li class="nav-item">-->
-<!--              <a class="nav-link" data-toggle="tab" href="#settings1" role="tab">Settings</a>-->
-<!--            </li>-->
-          </ul>
-        </div>
-        <div class="card-body">
-          <!-- Tab panes -->
-          <div class="tab-content text-center">
-            <div class="tab-pane active" id="q1" role="tabpanel">
-              <p>{{ note.academic_comment }}</p>
-            </div>
-            <div class="tab-pane" id="q2" role="tabpanel">
-              <p>{{ note.next_semester_comment }}</p>
-            </div>
-            <div class="tab-pane" id="q3" role="tabpanel">
+<!--              <span class="category2">Advisor Name: {{ Note}}</span>-->
+              <p class="category">1. I have reviewed the student's transcript and discussed academic performance.</p>
+              <p><span class="category2">Comments:</span> {{ note.academic_comment }}</p>
+              <hr>
+              <P class="category">2. I have reviewed the student's intended course schedule for next semester.</P>
+              <p><span class="category2">Recommended changes/comments:</span><br>{{ note.next_semester_comment }}</p>
+              <hr>
+              <P class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</P>
               {% if note.be_advised %}
                 <p>Yes</p>
               {% else %}
                 <p>No</p>
               {% endif %}
+
             </div>
+
 
             </div>
           </div>
         </div>
-      </div>
-      <!-- End Tabs on plain Card -->
-    </div>
-  </div>
 
-{% endif %}
+      </div>
+
+    </div>
+</div>
+
+
 
 </div>
 
 
 
 <style>
+
+<!--hr {-->
+<!--    overflow: visible;-->
+<!--    height: 30px;-->
+<!--    border-style: solid;-->
+<!--    border-color: black;-->
+<!--    border-width: 1px 0 0 0;-->
+<!--    border-radius: 20px;-->
+<!--}-->
+
+<!--hr:before {-->
+<!--    display: block;-->
+<!--    content: "";-->
+<!--    height: 30px;-->
+<!--    margin-top: -31px;-->
+<!--    border-style: solid;-->
+<!--    border-color: black;-->
+<!--    border-width: 0 0 1px 0;-->
+<!--    border-radius: 20px;-->
+<!--}-->
+
+.anwser {
+
+
+}
+
+hr {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0.5, 0.75), rgba(0, 0, 0, 0));
+
+}
 
 a {
     color: #f96332;
@@ -111,17 +110,22 @@ p {
     line-height: 1.61em;
     font-weight: 300;
     font-size: 1.2em;
+    text-align: left;
 }
 
 .category {
-    text-transform: capitalize;
     font-weight: 700;
     color: #9A9A9A;
 }
 
+.category2 {
+    font-weight: 600;
+    color: #3872d7;
+}
+
 body {
     color: #2c2c2c;
-    font-size: 14px;
+
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
@@ -245,7 +249,7 @@ body {
     background-color: transparent;
     border: 1px solid transparent;
     border-radius: 30px;
-    font-size: 14px;
+    font-size: inherit;
     padding: 11px 23px;
     line-height: 1.5;
 }
@@ -261,7 +265,7 @@ body {
 }
 
 .nav-tabs>.nav-item>.nav-link i.now-ui-icons {
-    font-size: 14px;
+
     position: relative;
     top: 1px;
     margin-right: 3px;
@@ -395,15 +399,6 @@ footer p a:hover{
         margin-bottom: 5px;
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 </style>
