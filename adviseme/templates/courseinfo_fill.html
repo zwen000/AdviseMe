@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Course Information Form: </legend>
+
+                <!-- 
+                <div class="form-group">
+                    <div class="col-xs-7">
+                        <label for="ex2">Staff Role:</label>
+                        <select id = "staff_role" name = "staff_role" class="selectpicker form-control " data-live-search="true" multiple>
+                            <option value="Faculty Advisor">Faculty Advisor</option>
+                            <option value="Academic Advisor">Academic Advisor</option>
+                            <option value="Dean">Dean</option>
+                            <option value="Chair">Chair</option>
+                        </select>
+                     </div>
+                </div>
+                -->
+
+                <div class='form-group'>
+                    {{ form.department.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.department.errors %}
+                        {{ form.department(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.department.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.department(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class='form-group'>
+                    {{ form.code.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.code.errors %}
+                        {{ form.code(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.code.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.code(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class='form-group'>
+                    {{ form.semester.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.semester.errors %}
+                        {{ form.semester(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.semester.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.semester(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class='form-group'>
+                    {{ form.name.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.name.errors %}
+                        {{ form.name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class='form-group'>
+                    {{ form.description.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.description.errors %}
+                        {{ form.description(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.description.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.description(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class='form-group'>
+                    {{ form.instructor.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.instructor.errors %}
+                        {{ form.instructor(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.instructor.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.instructor(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class='form-group'>
+                    {{ form.grade.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.grade.errors %}
+                        {{ form.grade(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.grade.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.grade(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <div class='form-group'>
+                    {{ form.credits.label(class="form-control-label") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.credits.errors %}
+                        {{ form.credits(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.credits.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.credits(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
