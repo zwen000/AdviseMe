@@ -5,13 +5,13 @@
 <div class="row">
     <div class="column border-right">
       <div class="left-style">
-      <img class="rounded-circle profile-image" src="{{ profile_image }}">
+      <img class="rounded-circle account-img" src="{{ profile_image }}">
         <h2 class="account-heading"></h2>
     <p class="p-custom">Degree: BS. Computer Science</p>
     <p class="p-custom">Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.middlename }} {{ current_user.studentOwner.lastname }}</p>
-    <div id="Bio">
+    {% if current_user.bio != "" %}
       <p class="p-custom-2">Bio: {{ current_user.bio}}</p> 
-    </div>
+    {% endif %}
   </div>
   </div>
   
@@ -19,13 +19,13 @@
     <h1>Account Info</h1>
     <p class="p-custom">Email: {{ current_user.email }}</p>
     
-    {% if current_user.studentOwner.credit_earned <= 30 %}
+    {% if current_user.studentOwner.credit_earned <= 31 %}
       <p class="p-custom">Grade Level: Freshman </p>
-    {% elif current_user.studentOwner.credit_earned <= 60 %}
+    {% elif current_user.studentOwner.credit_earned <= 63 %}
       <p class="p-custom">Grade Level: Sophomore </p>
-    {% elif current_user.studentOwner.credit_earned <= 90 %}
+    {% elif current_user.studentOwner.credit_earned <= 95 %}
       <p class="p-custom">Grade Level: Junior </p>
-    {% elif current_user.studentOwner.credit_earned <= 120 %}
+    {% elif current_user.studentOwner.credit_earned <= 136 %}
       <p class="p-custom">Grade Level: Senior </p>
     {% endif %}
     
@@ -36,24 +36,14 @@
     <a href="{{ url_for('student_profile_edit') }}"><button class="custom-button-profile-edit">EDIT</button></a>
 </div>
 </div>
-</center>  
-<script>
-  /*JavaScript to only display Bio when it is not NULL*/
-if (current_user.studentOwner.Bio != NULL) {
-    document.getElementById('Bio').style.display = 'block';
-} else {
-    document.getElementById('Bio').style.display = 'none';
-}
-</script>
+
 <style>
 /*CSS for My Profile */
   body{
 
     padding: 8%;
   }
-  .profile-image{
-    width: 40%;
-  }
+
   .column {
   float: left;
   width: 50%;
@@ -102,6 +92,11 @@ text-decoration-line: underline;
 
 color: #233B7E;
 }
+p:hover{
+  color: #3772D7;
+  font-size: large;
+}
+
 .checklist-header{
     font-family: Poppins;
     font-style: normal;
@@ -156,6 +151,5 @@ a{
 }
 
 }
-
 </style>
 {% endblock content %}

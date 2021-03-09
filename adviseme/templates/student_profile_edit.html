@@ -1,34 +1,55 @@
 {% extends "layout.html" %}
 {% block content %}
 <center>
-    <h1>Edit Student Profile!</h1>
-
     <div class="content-section">
-        <div class="media">
+        <div class="media" >
           <img class="rounded-circle account-img" src="{{ profile_image }}">
-          <div class="media-body">
-            <h2 class="account-heading">{{ current_user.studentOwner.firstname }}</h2>
-            <p class="text-secondary">{{ current_user.email }}</p>
+          <div class="form-group" style="padding-right: 15%; text-align: left;">
+            {{ form.picture.label() }}
+            {{ form.picture(class="form-control-file") }}
+            <!-- Standard Exception Handling: -->
+            {% if form.picture.errors %}
+              {% for error in form.picture.errors %}
+                <span class="text-danger">{{ error }}</span><br>
+              {% endfor %}
+            {% endif %}
           </div>
         </div>
         <form method="POST" action="" enctype="multipart/form-data">
           {{ form.hidden_tag() }}
+          <hr>
           <fieldset class="form-group">
             <legend class="border-bottom mb-4">Account Info</legend>
+            <div class="row">
+              <div class="column">
+                <div class='form-group'>
+                  {{ form.firstname.label(class="form-control-label") }}
+    
+                  {% if form.firstname.errors %}
+                  {{ form.firstname(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.firstname.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                      {{ form.firstname(class="form-control form-control-lg") }}
+                  {% endif %}
+              </div>
 
-            <div class='form-group'>
-              {{ form.bio.label(class="form-control-label") }}
-              <!-- Standard Exception Handling: -->
-              {% if form.bio.errors %}
-                {{ form.bio(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                  {% for error in form.bio.errors %}
-                      <span>{{ error }}</span>
-                  {% endfor %}
-                </div>
-              {% else %}
-                {{ form.bio(class="form-control form-control-lg") }}
-              {% endif %}
+              <div class='form-group'>
+                {{ form.credit_earned.label(class="form-control-label") }}
+  
+                {% if form.credit_earned.errors %}
+                    {{ form.credit_earned(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.credit_earned.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.credit_earned(class="form-control form-control-lg") }}
+                {% endif %}
             </div>
 
             <div class='form-group'>
@@ -45,6 +66,39 @@
                   {{ form.EMPLID(class="form-control form-control-lg") }}
               {% endif %}
             </div>
+
+              </div>
+              <div class="column">
+                <div class='form-group'>
+                  {{ form.lastname.label(class="form-control-label") }}
+    
+                  {% if form.lastname.errors %}
+                  {{ form.lastname(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.lastname.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                      {{ form.lastname(class="form-control form-control-lg") }}
+                  {% endif %}
+              </div>
+
+              <div class='form-group'>
+                {{ form.credit_taken.label(class="form-control-label") }}
+  
+                {% if form.credit_taken.errors %}
+                    {{ form.credit_taken(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.credit_taken.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.credit_taken(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+
             <div class='form-group'>
               {{ form.email.label(class="form-control-label") }}
               <!-- Standard Exception Handling: -->
@@ -59,118 +113,53 @@
                   {{ form.email(class="form-control form-control-lg") }}
               {% endif %}
             </div>
-
-            <div class='form-group'>
-              {{ form.EMPLID.label(class="form-control-label") }}
-
-              {% if form.EMPLID.errors %}
-                  {{ form.EMPLID(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.EMPLID.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-              {% else %}
-                  {{ form.EMPLID(class="form-control form-control-lg") }}
-              {% endif %}
-          </div>
-          <div class='form-group'>
-              {{ form.firstname.label(class="form-control-label") }}
-
-              {% if form.firstname.errors %}
-              {{ form.firstname(class="form-control form-control-lg is-invalid") }}
-              <div class="invalid-feedback">
-                  {% for error in form.firstname.errors %}
-                      <span>{{ error }}</span>
-                  {% endfor %}
               </div>
-              {% else %}
-                  {{ form.firstname(class="form-control form-control-lg") }}
-              {% endif %}
-          </div>
-          <div class='form-group'>
-              {{ form.lastname.label(class="form-control-label") }}
-
-              {% if form.lastname.errors %}
-              {{ form.lastname(class="form-control form-control-lg is-invalid") }}
-              <div class="invalid-feedback">
-                  {% for error in form.lastname.errors %}
-                      <span>{{ error }}</span>
-                  {% endfor %}
-              </div>
-              {% else %}
-                  {{ form.lastname(class="form-control form-control-lg") }}
-              {% endif %}
-          </div>
-          <div class='form-group'>
-              {{ form.middlename.label(class="form-control-label") }}
-
-              {% if form.middlename.errors %}
-              {{ form.middlename(class="form-control form-control-lg is-invalid") }}
-              <div class="invalid-feedback">
-                  {% for error in form.middlename.errors %}
-                      <span>{{ error }}</span>
-                  {% endfor %}
-              </div>
-              {% else %}
-                  {{ form.middlename(class="form-control form-control-lg") }}
-              {% endif %}
-          </div>
-          <div class='form-group'>
-              {{ form.credit_earned.label(class="form-control-label") }}
-
-              {% if form.credit_earned.errors %}
-                  {{ form.credit_earned(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.credit_earned.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-              {% else %}
-                  {{ form.credit_earned(class="form-control form-control-lg") }}
-              {% endif %}
-          </div>
-          <div class='form-group'>
-              {{ form.credit_taken.label(class="form-control-label") }}
-
-              {% if form.credit_taken.errors %}
-                  {{ form.credit_taken(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.credit_taken.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-              {% else %}
-                  {{ form.credit_taken(class="form-control form-control-lg") }}
-              {% endif %}
-          </div>
-
-
-
-            <div class="form-group">
-              {{ form.picture.label() }}
-              {{ form.picture(class="form-control-file") }}
-              <!-- Standard Exception Handling: -->
-              {% if form.picture.errors %}
-                {% for error in form.picture.errors %}
-                  <span class="text-danger">{{ error }}</span><br>
-                {% endfor %}
-              {% endif %}
             </div>
+
+          <div class='form-group'>
+            {{ form.bio.label(class="form-control-label") }}
+            <!-- Standard Exception Handling: -->
+            {% if form.bio.errors %}
+              {{ form.bio(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                {% for error in form.bio.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+              {{ form.bio(class="form-control form-control-lg") }}
+            {% endif %}
+          </div>
           </fieldset>
           <div class="form-group">
-              {{ form.submit(class="btn btn-outline-info") }}
+              {{ form.submit(class="btn custom-button-profile-update") }}
           </div>
         </form>
     </div>
 
 </center>
 <style>
+  body{
+    padding-top: 3%;
+  }
+  .column {
+  float: left;
+  width: 50%;
+  padding: 1%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
     legend{
         font-family: Poppins;
 font-style: normal;
 font-weight: bold;
-font-size: 22px;
+font-size: 25px;
+padding-bottom: 15px;
 
 color: #233B7E;
     }
@@ -179,11 +168,19 @@ color: #233B7E;
 font-style: normal;
 font-weight: bold;
 font-size: 100%;
-
     }
+
+.media{
+  padding-left: 20%;
+}
+label{
+  color: #233B7E;
+}
     .form-control{
     border-radius: 50px;
     font:  15px  Open Sans Condensed, sans-serif;
+    color: #3772D7;
+    text-align: center;
    }
    .form-control:focus{
     border-color: #3772D7;
@@ -192,9 +189,10 @@ font-size: 100%;
     .content-section{
   width: 60%;
   padding: 3%;
+  padding-bottom: 0%;
   background: #FFFFFF;
 box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
-border-radius: 15px;
+border-radius: 25px;
 }
 .custom-button-profile-update {
     background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
@@ -209,17 +207,25 @@ border-radius: 15px;
 font-style: normal;
 font-weight: bold;
     }
-    .custom-button-profile-edit:hover{
+    .custom-button-profile-update:hover{
         background-color: #233B7E;
         color: white;
     }
+
     @media only screen and (max-width: 800px) {
         legend{
             font-size: 20px;
         }
         .content-section{
-  width: 90%;
+  width: 95%;
+  padding: 6%;
         }
+      .media{
+        padding-left: 8%;
+      }
+      .account-img{
+        float: left;
+      }
     }
 </style>
 {% endblock content %}
