@@ -103,6 +103,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
     serial = db.Column(db.String(15), nullable=False)      # "CSC 103", "CSC 104", "CSC 211"
     name = db.Column(db.String(255), nullable=False)
+    type = db.Column(db.String(30), nullable=False)        # Course type: MATH, CSC, HIST, JWST, etc 
     description = db.Column(db.String(255), nullable=False)
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     credits = db.Column(db.Integer, nullable=False, default=0)

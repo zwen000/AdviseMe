@@ -30,38 +30,40 @@ db.session.commit()
 
 -- Computer Science:
 
-course_1 = Course(id=1, serial='CSC 10300', name='Intro to CS', description='C++', instructor='WES', credits=3)
-course_2 = Course(id=2, serial='CSC 10400', name='Discrete Math', description='Fundamental mathematics for CS', instructor='Stephen Lucci', credits=4)
-course_3 = Course(id=3, serial='CSC 113xx', name='Intro to Python', description='Python', instructor='Ahemt Yuksel', credits=1)
-course_4 = Course(id=4, serial='CSC 21100', name='Fundamentals to CS', description='Understanding binary logic', instructor='Izidor Gertner', credits=3)
-course_5 = Course(id=5, serial='CSC 21200', name='Data Structures', description='Data Structures for algorithms', instructor='WES', credits=3)  
-course_6 = Course(id=6, serial='CSC 21700', name='Probability and Stats for CS', description='Learn Statistical Analysis', instructor='Elahi Vahdani', credits=3)  
-course_7 = Course(id=7, serial='CSC 22000', name='Algorithms', description='Understanding the use of Data Structures for efficiency', instructor='George Wolberg', credits=3)  
-course_8 = Course(id=8, serial='CSC 22100', name='Software Design Lab', description='Use Java OOP to make GUI', instructor='Stan Li', credits=3)  
-course_9 = Course(id=9, serial='CSC 30100', name='Numerical Issues', description='Ensuring accuracy using computers', instructor='Erik Grimmelman', credits=3)
-course_10 = Course(id=10, serial='CSC 30400', name='Theoretical CS', description='FSM, PDA, Turing Machines', instructor='Stephen Lucci', credits=3)
-course_11 = Course(id=11, serial='CSC 32200', name='Software Engineering', description='Learn to use AGILE', instructor='Jie Wie', credits=4)
-course_12 = Course(id=12, serial='CSC 33500', name='Programming Languages Paradigms', description='Use Scheme to learn Functional Programming', instructor='Douglass Troeger', credits=3)
-course_13 = Course(id=13, serial='CSC 33600', name='Database Systems', description='Learn relational Databases in SQL', instructor='John Connor', credits=3)
-course_14 = Course(id=14, serial='CSC 33200', name='Operating Systems', description='Learn the Fundamentals of the Unix Operating System', instructor='Zain Mastadani', credits=4)
-course_15 = Course(id=15, serial='CSC 34200', name='Computer Organization', description='Learn MIPS, assembly, VHDL', instructor='Izidor Gertner', credits=3)
-course_16 = Course(id=16, serial='CSC 34300', name='Computer Organ. Lab', description='Apply MIPS, assembly, VHDL', instructor='Izidor Gertner', credits=1)
-course_17 = Course(id=17, serial='CSC 59866', name='Senior Design I', description=' ', instructor='Huy Vo', credits=3)
-course_18 = Course(id=18, serial='CSC 59867', name='Senior Design II', description=' ', instructor='Huy Vo', credits=3)
+course_1 = Course(id=1, serial='CSC 10300', name='Intro to CS', type='CSC', description='C++', credits=3)
+course_2 = Course(id=2, serial='CSC 10400', name='Discrete Math', type='CSC', description='Fundamental mathematics for CS', credits=4)
+course_3 = Course(id=3, serial='CSC 113xx', name='Intro to Python', type='CSC', description='Python', credits=1)
+course_4 = Course(id=4, serial='CSC 21100', name='Fundamentals to CS', type='CSC', description='Understanding binary logic', credits=3)
+course_5 = Course(id=5, serial='CSC 21200', name='Data Structures', type='CSC', description='Data Structures for algorithms', credits=3)  
+course_6 = Course(id=6, serial='CSC 21700', name='Probability and Stats for CS', type='CSC', description='Learn Statistical Analysis', credits=3)  
+course_7 = Course(id=7, serial='CSC 22000', name='Algorithms', type='CSC', description='Understanding the use of Data Structures for efficiency', credits=3)  
+course_8 = Course(id=8, serial='CSC 22100', name='Software Design Lab', type='CSC', description='Use Java OOP to make GUI', credits=3)  
+course_9 = Course(id=9, serial='CSC 30100', name='Numerical Issues', type='CSC', description='Ensuring accuracy using computers', credits=3)
+course_10 = Course(id=10, serial='CSC 30400', name='Theoretical CS', type='CSC', description='FSM, PDA, Turing Machines', credits=3)
+course_11 = Course(id=11, serial='CSC 32200', name='Software Engineering', type='CSC', description='Learn to use AGILE', credits=4)
+course_12 = Course(id=12, serial='CSC 33500', name='Programming Languages Paradigms', type='CSC', description='Use Scheme to learn Functional Programming', credits=3)
+course_13 = Course(id=13, serial='CSC 33600', name='Database Systems', type='CSC', description='Learn relational Databases in SQL', credits=3)
+course_14 = Course(id=14, serial='CSC 33200', name='Operating Systems', type='CSC', description='Learn the Fundamentals of the Unix Operating System', credits=4)
+course_15 = Course(id=15, serial='CSC 34200', name='Computer Organization', type='CSC', description='Learn MIPS, assembly, VHDL', credits=3)
+course_16 = Course(id=16, serial='CSC 34300', name='Computer Organ. Lab', type='CSC', description='Apply MIPS, assembly, VHDL', credits=1)
+course_17 = Course(id=17, serial='CSC 59866', name='Senior Design I', type='CSC', description=' ', credits=3)
+course_18 = Course(id=18, serial='CSC 59867', name='Senior Design II', type='CSC', description=' ', credits=3)
 
 -- Mathematics:
 
-course_1 = Course(id=19, serial='MATH 20100', name='Calculus I', description='Understanding relations, variance, and derivatives', instructor='Eli Amzalag', credits=3)
-course_2 = Course(id=20, serial='MATH 20200', name='Calculus II', description='L hospitals Rule, integrals', instructor='Dario Cardenas', credits=3)
-course_3 = Course(id=21, serial='MATH 20300', name='Calculus III', description='3 dimensional relations, and integrals', instructor='John Ademski', credits=4)
-course_4 = Course(id=22, serial='MATH 34600', name='Elements of Linear Algebra', description='Matrix mathematics', instructor='Jhevon Smith', credits=3)
+course_1 = Course(id=19, serial='MATH 20100', name='Calculus I', type='MATH', description='Understanding relations, variance, and derivatives', credits=3)
+course_2 = Course(id=20, serial='MATH 20200', name='Calculus II', type='MATH', description='L hospitals Rule, integrals', credits=3)
+course_3 = Course(id=21, serial='MATH 20300', name='Calculus III', type='MATH', description='3 dimensional relations, and integrals', credits=4)
+course_4 = Course(id=22, serial='MATH 34600', name='Elements of Linear Algebra', type='MATH', description='Matrix mathematics', credits=3)
 
--- Science:
+-- Science Electives:
 
-course_1 = Course(id=23, serial='MATH 20100', name='Calculus I', description='Understanding relations, variance, and derivatives', instructor='Eli Amzalag', credits=3)
-course_2 = Course(id=24, serial='MATH 20200', name='Calculus II', description='L hospitals Rule, integrals', instructor='Dario Cardenas', credits=3)
-course_3 = Course(id=25, serial='MATH 20300', name='Calculus III', description='3 dimensional relations, and integrals', instructor='John Ademski', credits=4)
-course_4 = Course(id=26, serial='MATH 34600', name='Elements of Linear Algebra', description='Matrix mathematics', instructor='Jhevon Smith', credits=3)
+course_1 = Course(id=23, serial='BIO 20100', name='Biological Foundations I', type='BIO', description='Understanding the basics of modern biology', credits=3)
+course_2 = Course(id=24, serial='BIO 20200', name='Biological Foundations II', type='BIO', description='Applying the basics of modern biology', credits=3)
+course_3 = Course(id=25, serial='CHEM 10300', name='General Chemistry I', type='CHEM', description='3 dimensional relations, and integrals', credits=4)
+course_4 = Course(id=26, serial='CHEM 10400', name='General Chemistry II', type='CHEM', description='Matrix mathematics', credits=3)
+course_5 = Course(id=27, serial='PHY 20700', name='General Physics I', type='PHY', description='Matrix mathematics', credits=3)
+course_6 = Course(id=28, serial='PHY 20800', name='General Physics II', type='PHY', description='Matrix mathematics', credits=3)
 
 db.session.add(course_1)
 ...
@@ -154,6 +156,7 @@ db.session.add(grade_9)
 db.session.add(grade_10)
 db.session.add(grade_11) 
 db.session.add(grade_12) 
+
 db.session.commit()
 
 ------------------------------------
