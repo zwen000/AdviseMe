@@ -16,3 +16,4 @@ __pycache__/
 # Custom Mac OS File (not needed)
 .DS_Store
 
+*.db
