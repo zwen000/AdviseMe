@@ -104,7 +104,6 @@ class Course(db.Model):
     serial = db.Column(db.String(15), nullable=False)      # "CSC 103", "CSC 104", "CSC 211"
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
-    instructor = db.Column(db.String(30), nullable=False, default='STAFF')
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     credits = db.Column(db.Integer, nullable=False, default=0)
     completion = db.relationship('Student', secondary=enrollements, backref='taken', lazy='dynamic')
