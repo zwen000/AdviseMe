@@ -1,0 +1,58 @@
+{% extends "layout.html"%}
+{% block content %}
+
+<div>
+    <!-- start of Table -->
+    <section>
+        <div class="container-fluid">       <!-- Container Grid -->
+            <div class="row mb-5">          <!-- Row -->
+                <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
+                    <div class="row">       <!-- Inner Grid -->
+                        <div class="col-12 mb-4">
+                            <h3 class="text-dark text-center mb-3">Course Information Form (CCNY)</h3>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <h5 class="text-dark text-center mb-3">{{ student.EMPLID, student.firstname, student.lastname, student.middlename, student.credit_earned, student.credit_taken }}</h3>
+                        </div>
+                        <table class="table table-striped bg-light text-center">
+                            <thead>
+                                <tr class="text-muted">
+                                    <th>Course Code:</th>
+                                    <th>Grade:</th>
+                                    <th>Enrolled:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                    <tr>
+                                        {{ form.csrf_token }}
+                                        <td>{{ form.course(class="form-control form-control-lg") }}</td>
+                                        <ul>
+                                        {% for error in form.course.errors %}
+                                            <li style="color:red;">{{ error }}</li>
+                                        {% endfor %}
+                                        </ul>
+
+                                        {{ form.csrf_token }}
+                                        <td>{{ form.grade(class="form-control form-control-lg") }}</td>
+                                        <ul>
+                                        {% for error in form.grade.errors %}
+                                            <li style="color:red;">{{ error }}</li>
+                                        {% endfor %}
+                                        </ul>
+                                    </tr>
+                                    <div class="form-group">
+                                        {{ form.submit(class="btn custom-button-profile-update") }}
+                                    </div>
+                                </form>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of Table -->
+</div>
+
+{% endblock content %} 
