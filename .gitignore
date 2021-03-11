@@ -7,12 +7,20 @@ database.db
 # Any file that ends with the .db extension
 *.db
 
+# This entire Directory! 
+/static/Profile_Pics/
+
 # VSCode:
-.vscode/
+/.vscode/
 
 # Pycache: 
-__pycache__/
+/__pycache__/
 
 # Custom Mac OS File (not needed)
 .DS_Store
 
+
+
+*.db
+adviseme/database.db
+*.pyc
