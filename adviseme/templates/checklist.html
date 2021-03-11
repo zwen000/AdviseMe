@@ -1151,18 +1151,18 @@ function checkMe_Math() {
 function checkMe_Science() {
   const science_cb = document.querySelectorAll(".ScienceCheckBox");
   const progress_S = document.querySelector(".progress-inner2");
-  const checklistProgressInterval_S = 100 / science_cb.length;
+  const checklistProgressInterval_S = 100 / 3;
   let width_S = 0;
   
-  for(let i = 0; i < science_cb.length; i++){
+  for(let i = 0; i < 4; i++){
     if(science_cb[i].checked){
       width_S += checklistProgressInterval_S;
     }
   }
     progress_S.style.width = `${width_S}%`;
-    whole_number_S = (width_S/100) * science_cb.length
+    whole_number_S = (width_S/100) * 3
 
-    document.getElementById("progress_count2").innerHTML = whole_number_S + "/" + science_cb.length;
+    document.getElementById("progress_count2").innerHTML = whole_number_S + "/3";
 }
 
 /*Progress Counter for Liberal Arts*/
