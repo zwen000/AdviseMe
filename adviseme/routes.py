@@ -88,7 +88,12 @@ def save_picture(form_picture):
 
 
 # Student fill out the basic info on the first time once they signed in
+<<<<<<< Updated upstream
 @app.route('/student/info/fill', methods=['GET', 'POST'])
+=======
+@app.route('/studentinfo_fill', methods=['GET', 'POST'])
+@login_required
+>>>>>>> Stashed changes
 def studentinfo_fill():
     form = StudentInfoForm()
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -119,15 +124,15 @@ def studentinfo_fill():
 
 
 
-@app.route('/courseinfo_fill', methods=['GET', 'POST'])
+@app.route('/course/info', methods=['GET'])
+@login_required
 def courseinfo_fill():
-    form = CourseInfoForm()
     courses = Course.query.all()
-    users = User.query.filter_by(EMPLID=current_user.EMPLID).first()
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
 
-    """
-    if form.validate_on_submit():
+    return render_template('course_info_fill.html', title='Course Information', courses=courses, student=student)
 
+<<<<<<< Updated upstream
         course = Course(serial=form.serial.data,
                         name=form.name.data, 
                         instructor=form.instructor.data, 
@@ -136,21 +141,59 @@ def courseinfo_fill():
         course.enrollee.append(current_user.StudentOwner)
         db.session.commit()
         course.enrollee.grade_earned.append(form.grade.data)
-        db.session.commit()
-        flash('Info Updated', 'success')
-        return redirect(url_for('courseinfo_fill'))
-    elif request.method == 'GET':
-        print(current_user.StudentOwner)
-        print(current_user.CourseOwner)
-    """
+=======
 
-    return render_template('course_info_fill.html', title='Course Information', courses=courses, form=form, users=users)
+
+@app.route('/course/info/edit', methods=['GET', 'POST'])
+@login_required
+def courseinfo_edit():
+    form = CourseInfoForm()
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+
+
+
+    if form.validate_on_submit():
+        course = Course.query.filter_by(serial=form.course.data.serial).first()
+        course.enrollee.append(student)
+        # if student.taken 
+        course.grade_awarded.append(form.grade.data)
+>>>>>>> Stashed changes
+        db.session.commit()
+        # course.grade_awarded! Might be a way to solve this duplication issue. 
+
+        for enrollee in course.enrollee:
+            if enrollee.EMPLID == student.EMPLID:
+                enrollee.grade_earned.append(form.grade.data)
+                # db.session.commit()
+                for grade in enrollee.grade_earned:
+                    print(enrollee.grade_earned)
+                    print(grade.grade)
+                    break
+            else:
+                break
+
+        # course.enrollee.grade_earned.append(form.grade.data.grade)
+        # print(course.enrollee.grade_earned.grade)
+                
+        return redirect(url_for('student_profile'))
+
+    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
+
+
+
+
+
 
 
 
 
 # Faculty fill out the basic info on the first time once they signed in
+<<<<<<< Updated upstream
 @app.route('/facultyinfo_fill', methods=['GET', 'POST'])
+=======
+@app.route('/facultyinfo_fill/', methods=['GET', 'POST'])
+@login_required
+>>>>>>> Stashed changes
 def facultyinfo_fill():
     form = FacultyInfoForm()
     

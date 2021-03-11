@@ -3,7 +3,8 @@ from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from adviseme.models import User, Student
+from wtforms_sqlalchemy.fields import QuerySelectField 
+from adviseme.models import *
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -44,7 +45,16 @@ class StudentInfoForm(FlaskForm):
         if user:
             raise ValidationError('That EMPLID is already in use!')
 
+
+
+def course_query():
+    return Course.query
+
+def grade_query():
+    return Grade.query
+
 class CourseInfoForm(FlaskForm):
+<<<<<<< Updated upstream
     serial = StringField('Course Code', validators=[ DataRequired() ])          # 103, 104, 211, 220, 221, 335, 342
     name = StringField('Course Name', validators=[ DataRequired() ]) 
     description = StringField('Description', validators=[ DataRequired() ])
@@ -54,6 +64,10 @@ class CourseInfoForm(FlaskForm):
     grade = StringField('Completed (grade):') # No validators as this can be left blank. 
     currently_enrolled = BooleanField('Currently Enrolled:')
     intend_to_take = BooleanField('Intend to take:')
+=======
+    course =QuerySelectField(query_factory=course_query, allow_blank=True, get_label='serial') 
+    grade = QuerySelectField(query_factory=grade_query, allow_blank=True, get_label='grade')
+>>>>>>> Stashed changes
     submit = SubmitField('Submit')
 
 

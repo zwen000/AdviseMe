@@ -10,10 +10,7 @@ def load_user(user_id):
 # This must be a many-to-many relationship:  (We need an associations table)
 # One student can take many classes, however a class can be taken my many students! 
 enrollements = db.Table('enrollements',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('student_id', db.Integer, db.ForeignKey('student.EMPLID')),
-    db.Column('school_id', db.Integer, db.ForeignKey('school.id')),
-    db.Column('department_id', db.Integer, db.ForeignKey('department.id')),
     db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
     db.Column('grade_id', db.Integer, db.ForeignKey('grade.id'))
 )
@@ -27,7 +24,6 @@ class User(db.Model, UserMixin):
     bio = db.Column(db.String(350), nullable=True)
     role = db.Column(db.String(30), nullable=False)
     EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'),db.ForeignKey('faculty.EMPLID'))
-    associated = db.relationship('Course', secondary=enrollements, backref='UserEnrolled', lazy='dynamic')
 
     def __repr__(self):
         return f"User('{self.email}')"
@@ -78,6 +74,7 @@ class Student(db.Model):
         return f"Student('{self.EMPLID}, {self.firstname}, {self.lastname}, {self.middlename}, {self.credit_earned}, {self.credit_taken}, {self.graduating}')"
 
 
+<<<<<<< Updated upstream
 class School(db.Model):
     id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
     name = db.Column(db.String(30), nullable=False)
@@ -103,11 +100,21 @@ class Course(db.Model):
     description = db.Column(db.String(255), nullable=False)
     instructor = db.Column(db.String(30), nullable=False, default='STAFF')
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Update this!!! 
+=======
+class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)            # Auto-increment Primary Key
+    serial = db.Column(db.String(15), unique=True, nullable=False)      # "CSC 103", "CSC 104", "CSC 212"
+    name = db.Column(db.String(255), nullable=False)            # Intro to CS, Discrete Math, Data Structures
+    type = db.Column(db.String(30), nullable=False)             # Course type: MATH, CSC, HIST, JWST, etc 
+    description = db.Column(db.String(255), nullable=False)     # C++, Learn Discrete math 
+    semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+>>>>>>> Stashed changes
     credits = db.Column(db.Integer, nullable=False, default=0)
     completion = db.relationship('Student', secondary=enrollements, backref='taken', lazy='dynamic')
+    evaluation_score = db.relationship('Grade', secondary=enrollements, backref='course', lazy='dynamic')
 
     def __repr__(self):
-        return f"Notes('{self.id}','{self.serial}','{self.name}','{self.description}','{self.instructor}','{self.credits}')"
+        return f"Notes('{self.id}','{self.serial}','{self.name}','{self.type}','{self.description}','{self.credits}')"
 
 
 class Grade(db.Model):
@@ -115,6 +122,7 @@ class Grade(db.Model):
     grade = db.Column(db.String(15), nullable=False, default='in progress')
     gpa_point = db.Column(db.Integer, nullable=False)
 
+    student_eval = db.relationship('Course', secondary=enrollements, backref='grade_awarded', lazy='dynamic') 
     performance = db.relationship('Student', secondary=enrollements, backref='grade_earned', lazy='dynamic')
 
     def __repr__(self):

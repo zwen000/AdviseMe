@@ -9,125 +9,36 @@
                 <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
                     <div class="row">       <!-- Inner Grid -->
                         <div class="col-12 mb-4">
-                            <h3 class="text-dark text-center mb-3">CCNY Student Advisement Form</h3>
+                            <h3 class="text-dark text-center mb-3">Course Information Form (CCNY)</h3>
+                        </div>
+                        <div class="col-12 mb-4">
+                            <h5 class="text-dark text-center mb-3">{{ student.EMPLID, student.firstname, student.lastname, student.middlename, student.credit_earned, student.credit_taken }}</h3>
                         </div>
                         <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
                                     <th>    </th>
-                                    <th>{{ form.serial.label(class="form-control-label") }}</th>
-                                    <th>{{ form.name.label(class="form-control-label") }}</th>
-                                    <th>{{ form.instructor.label(class="form-control-label") }}</th>
-                                    <th>{{ form.credits.label(class="form-control-label") }}</th>
-                                    <th>{{ form.grade.label(class="form-control-label") }}</th>
-                                    <th>{{ form.currently_enrolled.label(class="form-control-label") }}</th>
-                                    <th>{{ form.intend_to_take.label(class="form-control-label") }}</th>
+                                    <th>Course Code:</th>
+                                    <th>Course Name:</th>
+                                    <th>Credits awarded:</th>
+                                    <th>Grade:</th>
+                                    <th>Currently Enrolled:</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th>Math</th>
-                                    <td>   
-                                        {% if form.serial.errors %}
-                                            {{ form.serial(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                            {% for error in form.serial.errors %}
-                                                <span>{{ error }}</span>
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                    {% for course in courses %}
+                                        <tr>
+                                            <th>   </th> <!-- Must be left blank for formatting purposes! -->
+                                            <td>{{ course.serial }}</td>
+                                            <td>{{ course.name }}</td>
+                                            <td>{{ course.credits }}</td>
+                                            {% for grade in course.grade_awarded %}
+                                                <td>{{ grade.grade }}</td>
                                             {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.serial(class="form-control form-control-lg") }}
-                                        {% endif %} 
-                                    </td>
-                                    <td> 
-                                        {% if form.name.errors %}
-                                            {{ form.name(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.name.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.name(class="form-control form-control-lg") }}
-                                        {% endif %} 
-                                    </td>
-                                    <td>
-                                        {% if form.instructor.errors %}
-                                            {{ form.instructor(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.instructor.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.instructor(class="form-control form-control-lg") }}
-                                        {% endif %} 
-                                    </td>
-                                    <td>
-                                        {% if form.credits.errors %}
-                                            {{ form.credits(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.credits.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.credits(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        {% if form.grade.errors %}
-                                            {{ form.grade(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.grade.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.grade(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        {% if form.currently_enrolled.errors %}
-                                            {{ form.currently_enrolled(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.currently_enrolled.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.currently_enrolled(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        {% if form.intend_to_take.errors %}
-                                            {{ form.intend_to_take(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.intend_to_take.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.intend_to_take(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        <div class="form-group">
-                                            {{ form.submit(class="btn btn-outline-info") }}
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                                {% for course in courses %}
-                                    <tr>
-                                        <th>   </th> <!-- Must be left blank for formatting purposes! -->
-                                        <td>{{ course.serial }}</td>
-                                        <td>{{ course.name }}</td>
-                                        <td>{{ course.instructor }}</td>
-                                        <td>{{ course.credits }}</td>
-                                    </tr>
-                                {% endfor %}
-
+                                        </tr>
+                                    {% endfor %}
+                                </form>
                             </tbody>
                         </table>
                     </div>

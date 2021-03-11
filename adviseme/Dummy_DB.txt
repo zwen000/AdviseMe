@@ -82,12 +82,16 @@ db.session.commit()
   course_1.enrollee[0] = student_1 = Student(EMPLID=23396285, firstname='Sydul', lastname='Akhanji', middlename='', credit_earned=120, credit_taken=16, graduating=True)
 
 
-  course_1.enrollee
-[Student('23396285, Sydul, Akhanji, , 120, 16, True'), Student('23396284, Rehman, Arshad, M, 100, 12, False'), Student('27796285, Damarcos, Esteves, , 100, 12, False')]  course_1.enrollee[0]
+course_1.enrollee
+[Student('23396285, Sydul, Akhanji, , 120, 16, True'), Student('23396284, Rehman, Arshad, M, 100, 12, False'), Student('27796285, Damarcos, Esteves, , 100, 12, False')]  
+
+course_1.enrollee[0]
 Student('23396285, Sydul, Akhanji, , 120, 16, True')
-  course_1.enrollee[0].grade_earned
+
+course_1.enrollee[0].grade_earned
 []
-  course_1.enrollee[0].append(grade_2)
+
+course_1.enrollee[0].append(grade_2)
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 AttributeError: 'Student' object has no attribute 'append'
