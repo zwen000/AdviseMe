@@ -54,20 +54,8 @@ def grade_query():
     return Grade.query
 
 class CourseInfoForm(FlaskForm):
-<<<<<<< Updated upstream
-    serial = StringField('Course Code', validators=[ DataRequired() ])          # 103, 104, 211, 220, 221, 335, 342
-    name = StringField('Course Name', validators=[ DataRequired() ]) 
-    description = StringField('Description', validators=[ DataRequired() ])
-    instructor = StringField('Instructor', validators=[ DataRequired() ])
-    semester = StringField('Semester', validators=[ DataRequired() ])           # Fall 2018, Spring 2019, Winter 2020, Summer 2021
-    credits = StringField('Credits awarded', validators=[ DataRequired() ])
-    grade = StringField('Completed (grade):') # No validators as this can be left blank. 
-    currently_enrolled = BooleanField('Currently Enrolled:')
-    intend_to_take = BooleanField('Intend to take:')
-=======
     course =QuerySelectField(query_factory=course_query, allow_blank=True, get_label='serial') 
     grade = QuerySelectField(query_factory=grade_query, allow_blank=True, get_label='grade')
->>>>>>> Stashed changes
     submit = SubmitField('Submit')
 
 

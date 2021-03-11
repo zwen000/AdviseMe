@@ -74,33 +74,6 @@ class Student(db.Model):
         return f"Student('{self.EMPLID}, {self.firstname}, {self.lastname}, {self.middlename}, {self.credit_earned}, {self.credit_taken}, {self.graduating}')"
 
 
-<<<<<<< Updated upstream
-class School(db.Model):
-    id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
-    name = db.Column(db.String(30), nullable=False)
-    attends = db.relationship('Student', secondary=enrollements, backref='goes_to', lazy='dynamic')    
-
-    def __repr__(self):
-        return f"Student('{self.id}, {self.name}')"
-
-
-class Department(db.Model):
-    id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
-    name = db.Column(db.String(30), nullable=False)
-    studies = db.relationship('Student', secondary=enrollements, backref='major', lazy='dynamic')
-
-    def __repr__(self):
-        return f"Student('{self.id}, {self.name}')"
-
-
-class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
-    serial = db.Column(db.String(15), nullable=False)      # "CSC 103", "CSC 104", "CSC 211" 
-    name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    instructor = db.Column(db.String(30), nullable=False, default='STAFF')
-    semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)  # Update this!!! 
-=======
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)            # Auto-increment Primary Key
     serial = db.Column(db.String(15), unique=True, nullable=False)      # "CSC 103", "CSC 104", "CSC 212"
@@ -108,7 +81,6 @@ class Course(db.Model):
     type = db.Column(db.String(30), nullable=False)             # Course type: MATH, CSC, HIST, JWST, etc 
     description = db.Column(db.String(255), nullable=False)     # C++, Learn Discrete math 
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
->>>>>>> Stashed changes
     credits = db.Column(db.Integer, nullable=False, default=0)
     completion = db.relationship('Student', secondary=enrollements, backref='taken', lazy='dynamic')
     evaluation_score = db.relationship('Grade', secondary=enrollements, backref='course', lazy='dynamic')
