@@ -151,7 +151,6 @@ def courseinfo_edit():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
 
 
-
     if form.validate_on_submit():
         course = Course.query.filter_by(serial=form.course.data.serial).first()
         course.enrollee.append(student)
