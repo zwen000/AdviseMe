@@ -88,12 +88,8 @@ def save_picture(form_picture):
 
 
 # Student fill out the basic info on the first time once they signed in
-<<<<<<< Updated upstream
-@app.route('/student/info/fill', methods=['GET', 'POST'])
-=======
 @app.route('/studentinfo_fill', methods=['GET', 'POST'])
 @login_required
->>>>>>> Stashed changes
 def studentinfo_fill():
     form = StudentInfoForm()
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -132,16 +128,6 @@ def courseinfo_fill():
 
     return render_template('course_info_fill.html', title='Course Information', courses=courses, student=student)
 
-<<<<<<< Updated upstream
-        course = Course(serial=form.serial.data,
-                        name=form.name.data, 
-                        instructor=form.instructor.data, 
-                        credits=form.credits.data)
-        db.session.add(course)
-        course.enrollee.append(current_user.StudentOwner)
-        db.session.commit()
-        course.enrollee.grade_earned.append(form.grade.data)
-=======
 
 
 @app.route('/course/info/edit', methods=['GET', 'POST'])
@@ -157,7 +143,6 @@ def courseinfo_edit():
         course.enrollee.append(student)
         # if student.taken 
         course.grade_awarded.append(form.grade.data)
->>>>>>> Stashed changes
         db.session.commit()
         # course.grade_awarded! Might be a way to solve this duplication issue. 
 
@@ -188,12 +173,8 @@ def courseinfo_edit():
 
 
 # Faculty fill out the basic info on the first time once they signed in
-<<<<<<< Updated upstream
-@app.route('/facultyinfo_fill', methods=['GET', 'POST'])
-=======
 @app.route('/facultyinfo_fill/', methods=['GET', 'POST'])
 @login_required
->>>>>>> Stashed changes
 def facultyinfo_fill():
     form = FacultyInfoForm()
     
