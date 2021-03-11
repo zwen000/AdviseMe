@@ -48,11 +48,21 @@ class Faculty(db.Model):
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # faculty advisor data stored
     semester = db.Column(db.Date, nullable=False, default=date.today())     # to store the exact day on current semester
     academic_comment = db.Column(db.Text, nullable=False, default='')       # comment for academic from advising notes
     next_semester_comment = db.Column(db.Text, nullable=False, default='')  # comment for next semester
     be_advised = db.Column(db.Boolean, nullable=False, default=False)       # boolean check for notes if it's done
     academic_note = db.Column(db.Text, nullable=False, default='')          # after notes are done by faculty then send to academic advisor
+    # no.4 question boolean check
+    tutorial = db.Column(db.Boolean, nullable=False, default=False)         # tutorial services
+    counseling = db.Column(db.Boolean, nullable=False, default=False)       # counseling
+    consultation = db.Column(db.Boolean, nullable=False, default=False)     # faculty consultation
+    career = db.Column(db.Boolean, nullable=False, default=False)           # career advisement
+    scholarships = db.Column(db.Boolean, nullable=False, default=False)     # scholarship
+    internship = db.Column(db.Boolean, nullable=False, default=False)       # internship oppotunities
+    followup = db.Column(db.Boolean, nullable=False, default=False)         # follow-up advisement sessions
+    # academic advisor data stored
     additional = db.Column(db.Text, nullable=False, default='')             # additional suggest/comment from academic advisor
     approval = db.Column(db.Boolean, nullable=False, default=False)         # check if it's done by advisor
     EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
