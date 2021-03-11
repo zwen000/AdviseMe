@@ -115,10 +115,13 @@ db.session.add(grade_9)
 db.session.add(grade_10)
 db.session.add(grade_11) 
 db.session.add(grade_12) 
+db.session.add(grade_13) 
+db.session.add(grade_14) 
+db.session.add(grade_15)  
 
 db.session.commit()
 
-
+"""
 # -- School 
 
 school_1 = School(id=1, name='The City College of New York')
@@ -163,6 +166,8 @@ db.session.add(department_7)
 db.session.add(department_8)
 
 db.session.commit()
+
+"""
 
 #-----------------------------------------------------------------
 #-----------------------------------------------------------------
