@@ -134,15 +134,49 @@ def studentinfo_fill():
 
 
 
-@app.route('/course/info', methods=['GET'])
+@app.route('/course/info', methods=['GET', 'POST'])
 @login_required
 def courseinfo_fill():
     courses = Course.query.all()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    scores = Enrollement.query.all()
 
-    return render_template('course_info_fill.html', title='Course Information', courses=courses, student=student)
+    student.GPA = 0
+    num_of_courses = db.session.query(Enrollement).count() 
+    
+    for score in scores:
+        student.GPA += int(score.GPA_point)
+
+    print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
+    student.GPA /= num_of_courses
+
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
+    return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student, scores=scores)
 
 
+
+
+def evaluate_GPA(grade):
+    switcher = {
+        "A+": 4.0,
+        "A": 4.0,
+        "A-": 3.7,
+        "B+": 3.3,
+        "B": 3.0,
+        "B-": 2.7,
+        "C+": 2.3,
+        "C": 2.0,
+        "C-": 1.7,
+        "D+": 1.3,
+        "D": 1.0,
+        "F": 0.0,
+    }
+
+    # get() method of dictionary data type returns  
+    # value of passed argument if it is present  
+    # in dictionary otherwise second argument will 
+    # be assigned as default value of passed argument 
+    return switcher.get(grade, "in progress") 
 
 @app.route('/course/info/edit', methods=['GET', 'POST'])
 @login_required
@@ -153,27 +187,31 @@ def courseinfo_edit():
 
     if form.validate_on_submit():
         course = Course.query.filter_by(serial=form.course.data.serial).first()
-        course.enrollee.append(student)
-        # if student.taken 
-        course.grade_awarded.append(form.grade.data)
-        db.session.commit()
-        # course.grade_awarded! Might be a way to solve this duplication issue. 
 
-        for enrollee in course.enrollee:
-            if enrollee.EMPLID == student.EMPLID:
-                enrollee.grade_earned.append(form.grade.data)
-                # db.session.commit()
-                for grade in enrollee.grade_earned:
-                    print(enrollee.grade_earned)
-                    print(grade.grade)
-                    break
-            else:
-                break
+        enrollement = Enrollement(student_id=current_user.EMPLID,
+                                    course_id = course.id,
+                                    grade = form.grade.data,
+                                    GPA_point = evaluate_GPA(form.grade.data))
+
+        print(enrollement)
+
+        db.session.add(enrollement)
+        db.session.commit()
+        return redirect(url_for('courseinfo_fill'))
+
+        """
+        for person in enrollement:
+            if person.student_id == student.EMPLID:
+                if person.course_id == course.id:
+                    person.grade = str(form.grade.data)
+                    person.GPA_point = int(3.0)
+                    db.session.commit()
 
         # course.enrollee.grade_earned.append(form.grade.data.grade)
         # print(course.enrollee.grade_earned.grade)
-                
-        return redirect(url_for('student_profile'))
+                    
+        return redirect(url_for('courseinfo_fill'))
+        """
 
     return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
 

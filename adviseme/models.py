@@ -7,15 +7,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# This must be a many-to-many relationship:  (We need an associations table)
-# One student can take many classes, however a class can be taken my many students! 
-enrollements = db.Table('enrollements',
-    db.Column('student_id', db.Integer, db.ForeignKey('student.EMPLID')),
-    db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
-    db.Column('grade_id', db.Integer, db.ForeignKey('grade.id'))
-)
-
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -56,6 +47,27 @@ class Notes(db.Model):
 
 
 
+"""
+
+# This must be a many-to-many relationship:  (We need an associations table)
+# One student can take many classes, however a class can be taken my many students! 
+enrollements = db.Table('enrollements',
+    db.Column('student_id', db.Integer, db.ForeignKey('student.EMPLID')),
+    db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
+    db.Column('GPA_point', db.Integer),
+    db.Column('grade', db.String(15))
+)
+"""
+ 
+class Enrollement(db.Model):
+    student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
+    grade = db.Column(db.String(15))
+    GPA_point = db.Column(db.Integer)
+
+    student = db.relationship('Student', back_populates='courses', lazy=True)
+    course = db.relationship('Course', back_populates='students', lazy=True)
+
 class Student(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
@@ -68,35 +80,23 @@ class Student(db.Model):
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
     user = db.relationship('User', backref='studentOwner', lazy=True)
 
-    enrollement = db.relationship('Course', secondary=enrollements, backref='enrollee', lazy='dynamic')
+    courses = db.relationship('Enrollement', back_populates='student', lazy=True)
 
     def __repr__(self):
         return f"Student('{self.EMPLID}, {self.firstname}, {self.lastname}, {self.middlename}, {self.credit_earned}, {self.credit_taken}, {self.graduating}')"
 
 
 class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)            # Auto-increment Primary Key
+    id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     serial = db.Column(db.String(15), unique=True, nullable=False)      # "CSC 103", "CSC 104", "CSC 212"
-    name = db.Column(db.String(255), nullable=False)            # Intro to CS, Discrete Math, Data Structures
-    type = db.Column(db.String(30), nullable=False)             # Course type: MATH, CSC, HIST, JWST, etc 
-    description = db.Column(db.String(255), nullable=False)     # C++, Learn Discrete math 
+    name = db.Column(db.String(255), nullable=False)                    # Intro to CS, Discrete Math, Data Structures
+    type = db.Column(db.String(30), nullable=False)                     # Course type: MATH, CSC, HIST, JWST, etc 
+    description = db.Column(db.String(255), nullable=False)             # C++, Learn Discrete math 
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     credits = db.Column(db.Integer, nullable=False, default=0)
-    completion = db.relationship('Student', secondary=enrollements, backref='taken', lazy='dynamic')
-    evaluation_score = db.relationship('Grade', secondary=enrollements, backref='course', lazy='dynamic')
+    
+    students = db.relationship('Enrollement', back_populates='course', lazy=True)
 
     def __repr__(self):
         return f"Notes('{self.id}','{self.serial}','{self.name}','{self.type}','{self.description}','{self.credits}')"
-
-
-class Grade(db.Model):
-    id = db.Column(db.Integer, primary_key=True)           # Auto-increment Primary Key
-    grade = db.Column(db.String(15), nullable=False, default='in progress')
-    gpa_point = db.Column(db.Integer, nullable=False)
-
-    student_eval = db.relationship('Course', secondary=enrollements, backref='grade_awarded', lazy='dynamic') 
-    performance = db.relationship('Student', secondary=enrollements, backref='grade_earned', lazy='dynamic')
-
-    def __repr__(self):
-        return f"Notes('{self.id}','{self.grade}','{self.gpa_point}')"    
 

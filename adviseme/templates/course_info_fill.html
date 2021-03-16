@@ -11,8 +11,14 @@
                         <div class="col-12 mb-4">
                             <h3 class="text-dark text-center mb-3">Course Information Form (CCNY)</h3>
                         </div>
+                        <div class="rounded mx-auto d-block">
+                            <img class="rounded-circle account-img" src="{{ profile_image }}">
+                        </div>
                         <div class="col-12 mb-4">
-                            <h5 class="text-dark text-center mb-3">{{ student.EMPLID, student.firstname, student.lastname, student.middlename, student.credit_earned, student.credit_taken }}</h3>
+                            <h5 class="text-dark text-center mb-3">EMPLID:   {{ student.EMPLID }}</h5>
+                            <h5 class="text-dark text-center mb-3">Name: {{ student.firstname, student.middlename, student.lastname }}</h5>
+                            <h5 class="text-dark text-center mb-3">Credits Earned: {{ student.credit_earned }}</h5>
+                            <h5 class="text-dark text-center mb-3">Currently Taking: {{ student.credit_taken }}</h5>
                         </div>
                         <table class="table table-striped bg-light text-center">
                             <thead>
@@ -22,6 +28,7 @@
                                     <th>Course Name:</th>
                                     <th>Credits awarded:</th>
                                     <th>Grade:</th>
+                                    <th>GPA_point: (for testing purposes ONLY)</th>
                                     <th>Currently Enrolled:</th>
                                 </tr>
                             </thead>
@@ -33,12 +40,19 @@
                                             <td>{{ course.serial }}</td>
                                             <td>{{ course.name }}</td>
                                             <td>{{ course.credits }}</td>
-                                            {% for grade in course.grade_awarded %}
-                                                <td>{{ grade.grade }}</td>
+                                            {% for score in scores %}
+                                                {% if course.id == score.course_id %}
+                                                    <td>{{ score.grade }}</td>
+                                                    <td>{{ score.GPA_point }}</td>
+                                                {% endif %}
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
                                 </form>
+                                <tr>
+                                    <td>Commulative GPA:</td>
+                                    <td>{{ student.GPA }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

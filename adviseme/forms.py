@@ -51,11 +51,12 @@ def course_query():
     return Course.query
 
 def grade_query():
-    return Grade.query
+    grades = ['A', 'B', 'C', 'D', 'F'] 
+    return grades
 
 class CourseInfoForm(FlaskForm):
     course =QuerySelectField(query_factory=course_query, allow_blank=True, get_label='serial') 
-    grade = QuerySelectField(query_factory=grade_query, allow_blank=True, get_label='grade')
+    grade = StringField('grade:' )
     submit = SubmitField('Submit')
 
 
