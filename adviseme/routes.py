@@ -187,16 +187,23 @@ def courseinfo_edit():
 
     if form.validate_on_submit():
         course = Course.query.filter_by(serial=form.course.data.serial).first()
+        enrollement = Enrollement.query.filter_by(
+                                    student_id=current_user.EMPLID,
+                                    course_id = course.id).first()
+        
 
-        enrollement = Enrollement(student_id=current_user.EMPLID,
+        print(enrollement)
+        if not enrollement:
+            enrollement = Enrollement(student_id=current_user.EMPLID,
                                     course_id = course.id,
                                     grade = form.grade.data,
                                     GPA_point = evaluate_GPA(form.grade.data))
-
-        print(enrollement)
-
-        db.session.add(enrollement)
+            db.session.add(enrollement)
+        else:
+            enrollement.grade = form.grade.data
+            enrollement.GPA_point = evaluate_GPA(form.grade.data)
         db.session.commit()
+        
         return redirect(url_for('courseinfo_fill'))
 
         """
