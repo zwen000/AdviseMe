@@ -62,9 +62,9 @@ enrollements = db.Table('enrollements',
 class Enrollement(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
-    course_type = db.Column(db.String(30), nullable=False)                     # Course type: MATH, CSC, HIST, JWST, etc 
     grade = db.Column(db.String(15))
     GPA_point = db.Column(db.Integer)
+    QPA_point = db.Column(db.Integer)
 
     student = db.relationship('Student', back_populates='courses', lazy=True)
     course = db.relationship('Course', back_populates='students', lazy=True)
@@ -78,6 +78,7 @@ class Student(db.Model):
     credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
     GPA = db.Column(db.Integer, unique=False, nullable=True)
+    QPA = db.Column(db.Integer, unique=False, nullable=True)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
     user = db.relationship('User', backref='studentOwner', lazy=True)
 
@@ -91,7 +92,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     serial = db.Column(db.String(15), unique=True, nullable=False)      # "CSC 103", "CSC 104", "CSC 212"
     name = db.Column(db.String(255), nullable=False)                    # Intro to CS, Discrete Math, Data Structures
-    type = db.Column(db.String(30), nullable=False)                     # Course type: MATH, CSC, HIST, JWST, etc 
+    dept = db.Column(db.String(30), nullable=False)                     # Course type: MATH, CSC, HIST, JWST, etc 
     description = db.Column(db.String(255), nullable=False)             # C++, Learn Discrete math 
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     credits = db.Column(db.Integer, nullable=False, default=0)
@@ -99,5 +100,5 @@ class Course(db.Model):
     students = db.relationship('Enrollement', back_populates='course', lazy=True)
 
     def __repr__(self):
-        return f"Notes('{self.id}','{self.serial}','{self.name}','{self.type}','{self.description}','{self.credits}')"
+        return f"Notes('{self.id}','{self.serial}','{self.name}','{self.dept}','{self.description}','{self.credits}')"
 

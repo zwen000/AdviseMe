@@ -32,7 +32,11 @@
     <p class="p-custom">EMPLID: {{ current_user.studentOwner.EMPLID }}</p>
     <p class="p-custom">Credits Completed: {{ current_user.studentOwner.credit_earned }}</p>
     <p class="p-custom">In Progress: {{ current_user.studentOwner.credit_taken }}</p>
-    <p class="p-custom">GPA: 3.6 {{ current_user.studentOwner.GPA }}</p>
+    {% if current_user.studentOwner.GPA == None %}
+      <p class="p-custom">Not calculated yet!</p>
+    {% else %}
+      <p class="p-custom">GPA: {{ current_user.studentOwner.GPA }}</p>
+    {% endif %}
     <a href="{{ url_for('student_profile_edit') }}"><button class="custom-button-profile-edit">EDIT</button></a>
 </div>
 </div>

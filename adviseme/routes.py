@@ -118,7 +118,6 @@ def studentinfo_fill():
                           firstname=form.firstname.data,
                           lastname=form.lastname.data,
                           middlename=form.middlename.data,
-                          credit_earned=form.credit_earned.data,
                           credit_taken=form.credit_taken.data,
                           graduating=form.graduating.data)
         note = Notes(EMPLID=form.EMPLID.data)
@@ -147,13 +146,57 @@ def courseinfo_fill():
     for score in scores:
         student.GPA += int(score.GPA_point)
 
-    print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
-    student.GPA /= num_of_courses
+    if num_of_courses == 0:             # divide by zero error check! 
+        print("No classes added yet!")
+    else:
+        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
+        student.GPA /= num_of_courses
+        db.session.commit()
+
+    student.QPA = 0
+    for value in scores:
+        if value.course_id >= 1:
+            student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
+        elif qpa.course_id >= 19:
+            student.QPA += 0
+            print("id 19 and above are not CS courses!")
+        else:
+            student.QPA += 0
+            print("There cannot be any id's less than 0 or infinity!")
+
+    print("The QPA should be: ", student.QPA)    
+    db.session.commit()
+
+    # CS_courses = Course.query.filter_by(dept="CSC").count()
+    # print(CS_courses)
+
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student, scores=scores)
 
 
+
+def evaluate_QPA(grade):
+    switcher = {
+        "A+": 2.0,
+        "A": 2.0,
+        "A-": 2.0,
+        "B+": 1.0,
+        "B": 1.0,
+        "B-": 1.0,
+        "C+": 0.0,
+        "C": 0.0,
+        "C-": 0.0,
+        "D+": -1.0,
+        "D": -1.0,
+        "F": -2.0,
+    }
+
+    # get() method of dictionary data type returns  
+    # value of passed argument if it is present  
+    # in dictionary otherwise second argument will 
+    # be assigned as default value of passed argument 
+    return switcher.get(grade, "in progress") 
 
 
 def evaluate_GPA(grade):
@@ -184,24 +227,36 @@ def courseinfo_edit():
     form = CourseInfoForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
 
-
     if form.validate_on_submit():
         course = Course.query.filter_by(serial=form.course.data.serial).first()
         enrollement = Enrollement.query.filter_by(
                                     student_id=current_user.EMPLID,
                                     course_id = course.id).first()
         
-
         print(enrollement)
         if not enrollement:
             enrollement = Enrollement(student_id=current_user.EMPLID,
                                     course_id = course.id,
                                     grade = form.grade.data,
-                                    GPA_point = evaluate_GPA(form.grade.data))
+                                    GPA_point = evaluate_GPA(form.grade.data),
+                                    QPA_point = evaluate_QPA(form.grade.data))
             db.session.add(enrollement)
+
+            if form.grade.data == "F":
+                student.credit_earned += 0
+            else:
+                student.credit_earned += course.credits
+                db.session.commit()                
         else:
+            if form.grade.data == "F":
+                student.credit_earned += 0
+            else:
+                student.credit_earned += course.credits
+                db.session.commit()
             enrollement.grade = form.grade.data
             enrollement.GPA_point = evaluate_GPA(form.grade.data)
+            enrollement.QPA_point = evaluate_QPA(form.grade.data)
+
         db.session.commit()
         
         return redirect(url_for('courseinfo_fill'))

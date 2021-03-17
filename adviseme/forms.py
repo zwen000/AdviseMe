@@ -33,7 +33,6 @@ class StudentInfoForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
     middlename =StringField('Middle Name', validators=[])
-    credit_earned=IntegerField('Credit Earned', validators=[DataRequired()])
     credit_taken=IntegerField('Credit Taken', validators=[DataRequired()])
     picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
     bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
