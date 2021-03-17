@@ -1,7 +1,114 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1>Workflow</h1>
+
+<div class="myprogress py-5">
+  <!--    rbg(0,0,255)-->
+  <div class="circle align-middle" style="background-color:#233B7E;">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="rgb(255,255,255)"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span class="align-middle" >Filled out Advisement Form</span>
+  </div>
+
+  <span class="progress" >
+    <div class="progress-bar w-100" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+  </span>
+
+  <div class="circle align-middle" style="background-color:#233B7E;">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="rgb(255,255,255)"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span>Faculty Advisor Revision</span>
+  </div>
+  <span class="progress" >
+    <div class="progress-bar w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+  </span>
+
+  <div class="circle align-middle">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="currentColor"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span>Acaademic Advisor Revision</span>
+  </div>
+  <span class="progress" >
+    <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+  </span>
 
 
+  <div class="circle align-middle">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="currentColor"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span>Enrollment Approved</span>
+  </div>
+</div>
+
+<style>
+.myprogress {
+  min-width: 100%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 200px;
+}
+
+
+.myprogress .circle,
+.myprogress .bar {
+  display: inline-block;
+  background: #FFF;
+  width: 120px;
+  height: 120px;
+  border-radius: 80px;
+  border: 7px solid #233B7E;
+
+}
+
+
+.myprogress .bar{
+  position: relative;
+  width: 80px;
+  height: 5px;
+  top: -5px;
+  border: 0px solid #d5d5da;
+  background:#000;
+}
+
+.myprogress .progress{
+ position: relative;
+ width: 180px;
+ height: 10px;
+ border: 0px solid #d5d5da;
+ top: -5px;
+
+  display: inline-flex;
+  background: #FFF;
+
+  border: 2px solid #233B7E;
+}
+
+.myprogress .circle .label {
+  display: inline-block;
+  width: 90px;
+  height: 40px;
+  line-height: 30px;
+  border-radius: 40px;
+  font-size: 24px;
+}
+.myprogress .circle .title {
+  color: #b5b5ba;
+  font-size: 16px;
+  line-height: 100px;
+}
+
+
+</style>
 {% endblock content %}

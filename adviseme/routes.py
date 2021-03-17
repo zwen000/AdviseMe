@@ -357,7 +357,7 @@ def noteReview(note_id):
         form.approval.data=notes.approval
     return render_template('noteReview.html', title='noteReview',notes=notes,form=form)
 
-@app.route('/workflow')
+@app.route('/workflow/')
 @login_required
 def workflow():
     return render_template('workflow.html', title="workflow")
