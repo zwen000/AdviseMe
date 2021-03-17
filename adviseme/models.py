@@ -62,6 +62,7 @@ enrollements = db.Table('enrollements',
 class Enrollement(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
+    course_type = db.Column(db.String(30), nullable=False)                     # Course type: MATH, CSC, HIST, JWST, etc 
     grade = db.Column(db.String(15))
     GPA_point = db.Column(db.Integer)
 

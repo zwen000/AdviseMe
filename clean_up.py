@@ -1,7 +1,14 @@
+import os
+import sys
+import shutil
+
 from adviseme import db
 from adviseme.models import *
 
-db.create_all()
+
+os.remove("./adviseme/database.db")             # Deletes the old 'database.db' file! 
+shutil.rmtree("./adviseme/__pycache__")         # Deletes '__pycache__' directory and all its contents.
+db.create_all()                                 # Create the new 'database.db' file from 'models.py' 
 
 
 # -- Computer Science:
@@ -85,17 +92,23 @@ db.session.commit()
 
 
 
-#-----------------------------------------------------------------
-#-----------------------------------------------------------------
 
 
+
+
+#-----------------------------------------------------------------
+
+"""
 # Only use this file by running: 
 
 #------------------------------------
-# $ python rebuild_DB.py
+# $ python clean_up.py
 #------------------------------------
 
 # This will re-create the DB file. And initialize the Databse with some starting data! 
 # Make sure to run this every time any changes are made
 # To models.py, before you plan to execute run.py 
 
+"""
+
+#-----------------------------------------------------------------
