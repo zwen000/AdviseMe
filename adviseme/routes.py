@@ -221,19 +221,18 @@ def evaluate_GPA(grade):
     # be assigned as default value of passed argument 
     return switcher.get(grade, "in progress") 
 
-@app.route('/course/info/edit', methods=['GET', 'POST'])
+@app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
 @login_required
-def courseinfo_edit():
+def courseinfo_edit(course_id):
     form = CourseInfoForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    course = Course.query.get_or_404(course_id)
 
     if form.validate_on_submit():
-        course = Course.query.filter_by(serial=form.course.data.serial).first()
         enrollement = Enrollement.query.filter_by(
                                     student_id=current_user.EMPLID,
                                     course_id = course.id).first()
         
-        print(enrollement)
         if not enrollement:
             enrollement = Enrollement(student_id=current_user.EMPLID,
                                     course_id = course.id,
@@ -280,7 +279,7 @@ def courseinfo_edit():
         return redirect(url_for('courseinfo_fill'))
         """
 
-    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
+    return render_template('course_info_edit.html', title='Course Information', student=student,form=form)
 
 
 

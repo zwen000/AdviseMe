@@ -39,11 +39,12 @@
                                         <tr>
                                             <th>   </th> <!-- Must be left blank for formatting purposes! -->
                                             <td>{{ course.serial }}</td>
-                                            <td>{{ course.name }}</td>
+                                            <td><a class="article-title" href="{{ url_for('courseinfo_edit', course_id = course.id) }}">{{ course.name }}</a></td>
                                             <td>{{ course.credits }}</td>
                                             {% for score in scores %}
                                                 {% if course.id == score.course_id %}
                                                     <td>{{ score.grade }}</td>
+                                                    
                                                     <td>{{ score.GPA_point }}</td>
                                                     <td>{{ score.QPA_point }}</td>
                                                 {% endif %}
