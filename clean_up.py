@@ -6,8 +6,15 @@ from adviseme import db
 from adviseme.models import *
 
 
-os.remove("./adviseme/database.db")             # Deletes the old 'database.db' file! 
+file = "./adviseme/database.db"
+
+if os.path.isfile(file):
+    os.remove(file)         # Deletes the old 'database.db' file if it exists.
+else:    ## Show an error ##
+    print("Error: %s file not found" % file)
+
 shutil.rmtree("./adviseme/__pycache__")         # Deletes '__pycache__' directory and all its contents.
+
 db.create_all()                                 # Create the new 'database.db' file from 'models.py' 
 
 
