@@ -39,7 +39,7 @@
                                         <tr>
                                             <th>   </th> <!-- Must be left blank for formatting purposes! -->
                                             <td>{{ course.serial }}</td>
-                                            <td><a class="article-title" href="{{ url_for('courseinfo_edit', course_id = course.id) }}">{{ course.name }}</a></td>
+                                            <td><a href="{{ url_for('courseinfo_edit', course_id = course.id) }}">{{ course.name }}</a></td>
                                             <td>{{ course.credits }}</td>
                                             {% for score in scores %}
                                                 {% if course.id == score.course_id %}
@@ -78,7 +78,7 @@
 
 <style>
     a:hover {
-        background-color: gray;
+        color: blue;
     }
 </style>
 {% endblock content %} 
