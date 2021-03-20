@@ -479,49 +479,50 @@ def student_profile():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
 
-#@app.route('/checklist')
-#@login_required
-#def checklist():
-#    courses = Course.query.all()
-#    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
-#    scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
-#
-#    student.GPA = 0     # This is the default initial value in the DB anyway 
-#    num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count() 
-#    
-#    for score in scores:
-#        if score.GPA_point:
-#            student.GPA += int(score.GPA_point)
-#
-#    if num_of_courses == 0:             # divide by zero error check! 
-#        print("No classes added yet!")
-#    else:
-#        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
-#        student.GPA /= student.credit_earned
-#        student.GPA = round(student.GPA,3)
-#        db.session.commit()
-#
-#    student.QPA = 0
-#    for value in scores:
-#        if value.QPA_point:
-#            if value.course_id >= 1:
-#                student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
-#            elif value.course_id >= 19:
-#                student.QPA += 0
-#                print("id 19 and above are not CS courses!")
-#            else:
-#                student.QPA += 0
-#                print("There cannot be any id's less than 0 or infinity!")
-#
-#    print("The QPA should be: ", student.QPA)    
-#    db.session.commit()
-#
-#    # CS_courses = Course.query.filter_by(dept="CSC").count()
-#    # print(CS_courses)
-#
-#
-#    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-#    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores)
+@app.route('/checklist')
+@login_required
+def checklist():
+    courses = Course.query.all()
+    cscourses = Course.query.filter_by(dept='CSC').all()
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
+
+    student.GPA = 0     # This is the default initial value in the DB anyway 
+    num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count() 
+    
+    for score in scores:
+        if score.GPA_point:
+            student.GPA += int(score.GPA_point)
+
+    if num_of_courses == 0:             # divide by zero error check! 
+        print("No classes added yet!")
+    else:
+        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
+        student.GPA /= student.credit_earned
+        student.GPA = round(student.GPA,3)
+        db.session.commit()
+
+    student.QPA = 0
+    for value in scores:
+        if value.QPA_point:
+            if value.course_id >= 1:
+                student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
+            elif value.course_id >= 19:
+                student.QPA += 0
+                print("id 19 and above are not CS courses!")
+            else:
+                student.QPA += 0
+                print("There cannot be any id's less than 0 or infinity!")
+
+    print("The QPA should be: ", student.QPA)    
+    db.session.commit()
+
+    # CS_courses = Course.query.filter_by(dept="CSC").count()
+    # print(CS_courses)
+
+
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
+    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses,cscourses=cscourses, student=student, scores=scores)
 
 @app.route('/faculty/')
 @login_required
