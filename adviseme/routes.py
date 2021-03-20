@@ -382,7 +382,7 @@ def courseinfo_edit(course_id):
     form.grade.choices = [(option.value) for option in Grade.query.all()]
 
     if form.validate_on_submit():
-        grades=(course_id,form.grade.data,current_user.EMPLID)
+        grades=(course_id,form.grade.data)
         stored_grade(grades)
         
         return redirect(url_for('courseinfo_fill'))
