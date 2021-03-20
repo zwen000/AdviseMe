@@ -91,3 +91,7 @@ class Course(db.Model):
     def __repr__(self):
         return f"Notes('{self.id}','{self.serial}','{self.name}','{self.dept}','{self.description}','{self.credits}')"
 
+
+class Grade(db.Model):
+    id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
+    value = db.Column(db.String(15))

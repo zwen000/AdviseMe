@@ -128,6 +128,40 @@ AttributeError: 'Student' object has no attribute 'append'
 ### Grade ### 
 ------------------------------------
 
+grade_1 = Grade(id=1, value='A+')
+grade_2 = Grade(id=2, value='A')
+grade_3 = Grade(id=3, value='A-')
+grade_4 = Grade(id=4, value='B+')
+grade_5 = Grade(id=5, value='B')
+grade_6 = Grade(id=6, value='B-')
+grade_7 = Grade(id=7, value='C+')
+grade_8 = Grade(id=8, value='C')
+grade_9 = Grade(id=9, value='C-')
+grade_10 = Grade(id=10, value='D+')
+grade_11 = Grade(id=11, value='D')
+grade_12 = Grade(id=12, value='F')
+
+
+db.session.add(grade_1)
+db.session.add(grade_2) 
+db.session.add(grade_3) 
+db.session.add(grade_4) 
+db.session.add(grade_5) 
+db.session.add(grade_6) 
+db.session.add(grade_7) 
+db.session.add(grade_8) 
+db.session.add(grade_9) 
+db.session.add(grade_10) 
+db.session.add(grade_11) 
+db.session.add(grade_12) 
+
+
+db.session.commit()
+
+------------------------------------
+### Grade (Old legacy model) ### 
+------------------------------------
+
 grade_1 = Grade(id=0, grade='A+', gpa_point=4.0)
 grade_2 = Grade(id=1, grade='A', gpa_point=4.0)  
 grade_3 = Grade(id=2, grade='A-', gpa_point=3.7) 
@@ -156,6 +190,8 @@ db.session.add(grade_9)
 db.session.add(grade_10)
 db.session.add(grade_11) 
 db.session.add(grade_12) 
+db.session.add(grade_13) 
+db.session.add(grade_14) 
 
 db.session.commit()
 

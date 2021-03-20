@@ -12,7 +12,7 @@
                             <h3 class="text-dark text-center mb-3">Course Information Form (CCNY)</h3>
                         </div>
                         <div class="col-12 mb-4">
-                            <h5 class="text-dark text-center mb-3">{{ student.EMPLID, student.firstname, student.lastname, student.middlename, student.credit_earned, student.credit_taken }}</h3>
+                            <h5 class="text-dark text-center mb-3">{{ student.EMPLID, student.firstname, student.lastname, student.credit_earned, student.credit_taken }}</h3>
                         </div>
                         <table class="table table-striped bg-light text-center">
                             <thead>
@@ -24,7 +24,6 @@
                             <tbody>
                                 <form method="POST" action="" enctype="multipart/form-data">
                                     <tr>
-
                                         {{ form.csrf_token }}
                                         <td>{{ form.grade(class="form-control form-control-lg") }}</td>
                                         <ul>

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, IntegerField
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms_sqlalchemy.fields import QuerySelectField 
 from adviseme.models import *
@@ -44,18 +44,11 @@ class StudentInfoForm(FlaskForm):
             raise ValidationError('That EMPLID is already in use!')
 
 
-"""
-def course_query():
-    return Course.query
-"""
-
-def grade_query():
-    grades = ['A', 'B', 'C', 'D', 'F'] 
-    return grades
-
+# Although you would think, that just hardcoding the grade values in the choices array would be good enough, this 
+# needs to be query'd and connected to a grade table so a user can pick a grade choice ... 
+ 
 class CourseInfoForm(FlaskForm):
-    # course =QuerySelectField(query_factory=course_query, allow_blank=True, get_label='serial') 
-    grade = StringField('grade:' )
+    grade = SelectField('grade: ', choices=[])
     submit = SubmitField('Submit')
 
 
