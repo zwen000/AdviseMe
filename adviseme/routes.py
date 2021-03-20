@@ -4,7 +4,7 @@ from datetime import date
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from adviseme import app, bcrypt, db
-from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm, UpdateStudentAccountForm, CourseInfoForm
+from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -83,7 +83,6 @@ def login():
 
 
 
-
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me!
     _, f_ext = os.path.splitext(form_picture.filename)                              # the os module allows us to extract a file's extension
@@ -130,18 +129,37 @@ def studentinfo_fill():
 
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
-"""
-@app.route('/course/info/test', methods=['GET', 'POST'])
+
+@app.route('/course/creation/form', methods=['GET', 'POST'])
 def test():
-    form = CourseInfoForm()
-    form.grade.choices = [(option.id, option.value) for option in Grade.query.all()]
+    form = CourseCreationForm()
+    courses = Course.query.all()
 
     if form.validate_on_submit():
-        print("Todd Howard: Everything Just Works!")
+        course = Course(    serial=form.serial.data, 
+                            name=form.name.data, 
+                            dept=form.dept.data, 
+                            description=form.description.data, 
+                            designation=form.designation.data,
+                            credits=form.credits.data)
+        db.session.add(course)
+        flash('Your course has been created!', 'success')
+        db.session.commit()
+        return redirect(url_for('test'))
+    """
+    elif request.method == 'GET':
+        form.id.data = course.id
+        form.serial.data = course.serial
+        form.name.data = course.name
+        form.dept.data = course.dept
+        form.description.data = course.description
+        form.designation.data = course.designation
+        form.credits.data = course.credits
+    """
 
-    return render_template('test.html', form=form)
+    return render_template('course_creation_form.html', courses=courses, form=form)
 
-"""
+
 
 @app.route('/course/info', methods=['GET', 'POST'])
 @login_required
