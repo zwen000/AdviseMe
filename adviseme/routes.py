@@ -130,42 +130,49 @@ def studentinfo_fill():
 
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
+"""
+@app.route('/course/info/test', methods=['GET', 'POST'])
+def test():
+    form = CourseInfoForm()
+    form.grade.choices = [(option.id, option.value) for option in Grade.query.all()]
 
+    if form.validate_on_submit():
+        print("Todd Howard: Everything Just Works!")
+
+    return render_template('test.html', form=form)
+
+"""
 
 @app.route('/course/info', methods=['GET', 'POST'])
 @login_required
 def courseinfo_fill():
     courses = Course.query.all()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
-    scores = Enrollement.query.filter_by(
-                                        student_id=current_user.EMPLID
-                                        ).all()
+    scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
-    student.GPA = 0
+    student.GPA = 0     # This is the default initial value in the DB anyway 
     num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count() 
     
     for score in scores:
-        if score.currently_enrolled == False:
-            student.GPA += int(score.GPA_point)
+        student.GPA += int(score.GPA_point)
 
     if num_of_courses == 0:             # divide by zero error check! 
         print("No classes added yet!")
     else:
         print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
-        student.GPA /= num_of_courses
+        student.GPA /= student.credit_earned
         db.session.commit()
 
     student.QPA = 0
     for value in scores:
-        if value.currently_enrolled == False:
-            if value.course_id >= 1:
-                student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
-            elif value.course_id >= 19:
-                student.QPA += 0
-                print("id 19 and above are not CS courses!")
-            else:
-                student.QPA += 0
-                print("There cannot be any id's less than 0 or infinity!")
+        if value.course_id >= 1:
+            student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
+        elif value.course_id >= 19:
+            student.QPA += 0
+            print("id 19 and above are not CS courses!")
+        else:
+            student.QPA += 0
+            print("There cannot be any id's less than 0 or infinity!")
 
     print("The QPA should be: ", student.QPA)    
     db.session.commit()
@@ -231,6 +238,8 @@ def courseinfo_edit(course_id):
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     course = Course.query.get_or_404(course_id)
 
+    form.grade.choices = [(option.value) for option in Grade.query.all()]
+
     if form.validate_on_submit():
         enrollement = Enrollement.query.filter_by(
                                     student_id=current_user.EMPLID,
@@ -240,15 +249,12 @@ def courseinfo_edit(course_id):
             enrollement = Enrollement(student_id=current_user.EMPLID,
                                     course_id = course.id,
                                     grade = form.grade.data,
+                                    GPA_point = int(course.credits*evaluate_GPA(form.grade.data)),
                                     attempt=True)
-            enrollement.currently_enrolled=form.currently_enrolled.data
-
-            if form.currently_enrolled.data == False :
-                enrollement.GPA_point = evaluate_GPA(form.grade.data)
-                if course.id < 19:
-                    enrollement.QPA_point = evaluate_QPA(form.grade.data)
-                else:
-                    enrollement.QPA_point = 0 
+            if course.id < 19:
+                enrollement.QPA_point = evaluate_QPA(form.grade.data)
+            else:
+                enrollement.QPA_point = 0 
 
             db.session.add(enrollement)
 
@@ -275,19 +281,18 @@ def courseinfo_edit(course_id):
                     student.credit_earned += 0
                 else: 
                     student.credit_earned += 0
-            enrollement.currently_enrolled=form.currently_enrolled.data
-            if form.currently_enrolled.data == False:
-                enrollement.grade = form.grade.data
-                enrollement.GPA_point = evaluate_GPA(form.grade.data)
-                if course.id < 19:
-                    enrollement.QPA_point = evaluate_QPA(form.grade.data)
-                else:
-                    enrollement.QPA_point = 0
+
+            enrollement.grade = form.grade.data
+            enrollement.GPA_point = evaluate_GPA(form.grade.data)
+            if course.id < 19:
+                enrollement.QPA_point = evaluate_QPA(form.grade.data)
+            else:
+                enrollement.QPA_point = 0
             db.session.commit()
         
         return redirect(url_for('courseinfo_fill'))
 
-    return render_template('course_info_edit.html', title='Course Information', student=student,form=form)
+    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
 
 
 
