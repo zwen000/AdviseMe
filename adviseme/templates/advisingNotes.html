@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 
+
+{% if note.Student.credit_earned >= 45 %}
 <div class="container mt-5 pt-3" style="font-size:14px;">
     <div class="row">
 
@@ -11,39 +13,133 @@
             <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Academic Advising Note </a>
             </li>
-            {% if note.Student.credit_earned >= 45 %}
+
             <li class="nav-item">
               <a class="nav-link" data-toggle="tab" href="#p2" role="tab">Faculty Advising Note</a>
             </li>
-            {% endif %}
+
           </ul>
         </div>
 
 
-        <div class="card-body px-5">
+        <div class="card-body px-4">
           <!-- Tab panes -->
           <div class="tab-content text-center">
+
             <div class="tab-pane active" id="p1" role="tabpanel">
+              <p><span class="category2">Adviser Name: </span> {{ note.Reviewer.firstname }} {{ note.Reviewer.lastname }}</p>
               <p class="category">My advising notes are below:</p>
-              <p>{{ note.academic_note }}</p>
+              <div class="answer px-3">
+                <p>{{ note.academic_note }}</p>
+              </div>
               <hr>
+
               <p class="category">Additional:</p>
-              <p>{{ note.academic_note }}</p>
+              <div class="answer px-3">
+                <p>{{ note.academic_note }}</p>
+              </div>
             </div>
+
+
             <div class="tab-pane" id="p2" role="tabpanel">
-<!--              <span class="category2">Advisor Name: {{ Note}}</span>-->
+              <p><span class="category2">Adviser Name: </span> {{ note.Reviewer.firstname }} {{ note.Reviewer.lastname }}</p>
               <p class="category">1. I have reviewed the student's transcript and discussed academic performance.</p>
-              <p><span class="category2">Comments:</span> {{ note.academic_comment }}</p>
+              <div class="answer px-3">
+                <p><span class="category2">Comments:</span> {{ note.academic_comment }}</p>
+              </div>
               <hr>
-              <P class="category">2. I have reviewed the student's intended course schedule for next semester.</P>
-              <p><span class="category2">Recommended changes/comments:</span><br>{{ note.next_semester_comment }}</p>
+
+              <p class="category">2. I have reviewed the student's intended course schedule for next semester.</p>
+              <div class="answer px-3">
+                <p><span class="category2">Recommended changes/comments:</span><br>{{ note.next_semester_comment }}</p>
+              </div>
               <hr>
-              <P class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</P>
-              {% if note.be_advised %}
-                <p>Yes</p>
-              {% else %}
-                <p>No</p>
-              {% endif %}
+
+              <p class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</p>
+                <div class="answer px-3">
+                  {% if note.be_advised %}
+                    <p>Yes.</p>
+                  {% else %}
+                    <p>No.</p>
+                  {% endif %}
+                </div>
+                <hr>
+
+              <p class="category">4. I have reviewed the student's intended course schedule for next semester.</p>
+              <div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Tutorial Services <label class="checkbox">
+                                      {% if note.tutorial %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="default"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Counseling (Psychological, Financial, Personal, etc) <label class="checkbox">
+                                      {% if note.counseling %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Faculty Consultation(Office Hours) <label class="checkbox">
+                                      {% if note.consultation %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Career Advisement <label class="checkbox">
+                                      {% if note.career %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Scholarships <label class="checkbox">
+                                      {% if note.scholarships %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Internship Opportunities <label class="checkbox">
+                                      {% if note.internship %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Follow-up Advisement Sessions <label class="checkbox">
+                                      {% if note.followup %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                </ul>
+              </div>
 
             </div>
 
@@ -59,12 +155,153 @@
 
 
 
+
+{% else %}
+<div class="container mt-5 pt-3" style="font-size:14px;">
+    <div class="row">
+
+    <div class="col-md-10 ml-auto col-xl-6 mr-auto pb-5">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" style="background-color:#3872d7;">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Academic Advising Note </a>
+            </li>
+
+
+          </ul>
+        </div>
+
+
+        <div class="card-body px-4">
+          <!-- Tab panes -->
+          <div class="tab-content text-center">
+            <p><span class="category2">Adviser Name: </span> {{ note.Reviewer.firstname }} {{ note.Reviewer.lastname }}</p>
+            <p class="category">1. I have reviewed the student's transcript and discussed academic performance.</p>
+              <div class="answer px-3">
+                <p><span class="category2">Comments:</span> {{ note.academic_comment }}</p>
+              </div>
+              <hr>
+
+              <p class="category">2. I have reviewed the student's intended course schedule for next semester.</p>
+              <div class="answer px-3">
+                <p><span class="category2">Recommended changes/comments:</span><br>{{ note.next_semester_comment }}</p>
+              </div>
+              <hr>
+
+              <p class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</p>
+                <div class="answer px-3">
+                  {% if note.be_advised %}
+                    <p>Yes.</p>
+                  {% else %}
+                    <p>No.</p>
+                  {% endif %}
+                </div>
+                <hr>
+
+              <p class="category">4. I have reviewed the student's intended course schedule for next semester.</p>
+              <div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        Tutorial Services <label class="checkbox">
+                                      {% if note.tutorial %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="default"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Counseling (Psychological, Financial, Personal, etc) <label class="checkbox">
+                                      {% if note.counseling %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Faculty Consultation(Office Hours) <label class="checkbox">
+                                      {% if note.consultation %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Career Advisement <label class="checkbox">
+                                      {% if note.career %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Scholarships <label class="checkbox">
+                                      {% if note.scholarships %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Internship Opportunities <label class="checkbox">
+                                      {% if note.internship %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                    <li class="list-group-item">
+                        Follow-up Advisement Sessions <label class="checkbox">
+                                      {% if note.followup %}
+                                        <input type="checkbox" checked="checked2" disabled/>
+                                      {% else %}
+                                        <input type="checkbox" disabled/>
+                                      {% endif %}
+                                        <span class="primary"></span>
+                                    </label>
+                    </li>
+                </ul>
+              </div>
+            </div>
+
+
+
+
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
 </div>
+
+{% endif %}
 
 
 
 <style>
 
+
+
+.answer {
+    background-color: #DCDCDC;
+    font-weight: 400;
+}
 
 hr {
     border: 0;
@@ -375,6 +612,24 @@ footer p a:hover{
         margin-bottom: 5px;
     }
 }
+
+  @keyframes check {0% {height: 0;width: 0;}
+    25% {height: 0;width: 10px;}
+    50% {height: 20px;width: 10px;}
+  }
+  .checkbox{background-color:#fff;display:inline-block;height:28px;margin:0 .25em;width:28px;border-radius:4px;border:1px solid #ccc;float:right}
+  .checkbox span{display:block;height:28px;position:relative;width:28px;padding:0}
+  .checkbox span:after{-moz-transform:scaleX(-1) rotate(135deg);-ms-transform:scaleX(-1) rotate(135deg);-webkit-transform:scaleX(-1) rotate(135deg);transform:scaleX(-1) rotate(135deg);-moz-transform-origin:left top;-ms-transform-origin:left top;-webkit-transform-origin:left top;transform-origin:left top;border-right:4px solid #fff;border-top:4px solid #fff;content:'';display:block;height:20px;left:3px;position:absolute;top:15px;width:10px}
+
+  .checkbox span:hover:after{border-color:#999}
+  .checkbox input{display:none}
+  .checkbox input:checked + span:after{-webkit-animation:check .8s;-moz-animation:check .8s;-o-animation:check .8s;animation:check .8s;border-color:#555}
+
+.checkbox input:checked + .default:after{border-color:#444}
+
+.checkbox input:checked + .primary:after {
+  border-color:#2196F3
+  }
 
 
 </style>

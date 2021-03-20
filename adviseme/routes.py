@@ -52,7 +52,7 @@ def register():
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('/studentinfo_fill'))
 
     form = LoginForm()
 
@@ -126,7 +126,7 @@ def studentinfo_fill():
         db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
-        return redirect(url_for('student_profile'))
+        return redirect(url_for('courseinfo_fill'))
 
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
@@ -409,7 +409,6 @@ def facultyinfo_fill():
         faculty = Faculty(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
                           lastname=form.lastname.data,
-                          middlename=form.middlename.data,
                           staff_role=form.staff_role.data)
         db.session.add(faculty)
         current_user.EMPLID = form.EMPLID.data
@@ -444,9 +443,6 @@ def student_profile_edit():
         current_user.email = form.email.data
         student.firstname = form.firstname.data
         student.lastname = form.lastname.data
-        student.middlename = form.middlename.data
-        student.credit_earned = form.credit_earned.data
-        student.credit_taken = form.credit_taken.data
         db.session.commit()                                     # commit changes to the database!
         flash('Your account info has been updated successfully!', 'success')
         return redirect(url_for('student_profile'))
@@ -456,9 +452,6 @@ def student_profile_edit():
         form.bio.data = current_user.bio
         form.firstname.data = student.firstname
         form.lastname.data = student.lastname
-        form.middlename.data = student.middlename
-        form.credit_earned.data = student.credit_earned
-        form.credit_taken.data = student.credit_taken
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student_profile_edit.html", title="Student Profile Edit", profile_image=profile_image, form=form)
@@ -633,7 +626,7 @@ def noteReview(note_id):
         form.approval.data=notes.approval
     return render_template('noteReview.html', title='noteReview',notes=notes,form=form)
 
-@app.route('/workflow')
+@app.route('/workflow/')
 @login_required
 def workflow():
     return render_template('workflow.html', title="workflow")
