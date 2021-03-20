@@ -55,6 +55,7 @@ class Enrollement(db.Model):
     QPA_point = db.Column(db.Integer)
     attempt = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     passed = db.Column(db.Boolean, unique=False, nullable=False, default=False)
+    currently_enrolled = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     
     student = db.relationship('Student', back_populates='courses', lazy=True)
     course = db.relationship('Course', back_populates='students', lazy=True)
@@ -91,7 +92,3 @@ class Course(db.Model):
     def __repr__(self):
         return f"Notes('{self.id}','{self.serial}','{self.name}','{self.dept}','{self.description}','{self.credits}')"
 
-
-class Grade(db.Model):
-    id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
-    value = db.Column(db.String(15))
