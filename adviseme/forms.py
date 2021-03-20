@@ -32,7 +32,6 @@ class StudentInfoForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
-    middlename =StringField('Middle Name', validators=[])
     credit_taken=IntegerField('Credit Taken', validators=[DataRequired()])
     picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
     bio = TextAreaField('Student Bio (Optional)') # No validators here, since this is completely optional! 
@@ -45,16 +44,17 @@ class StudentInfoForm(FlaskForm):
             raise ValidationError('That EMPLID is already in use!')
 
 
-
+"""
 def course_query():
     return Course.query
+"""
 
 def grade_query():
     grades = ['A', 'B', 'C', 'D', 'F'] 
     return grades
 
 class CourseInfoForm(FlaskForm):
-    course =QuerySelectField(query_factory=course_query, allow_blank=True, get_label='serial') 
+    # course =QuerySelectField(query_factory=course_query, allow_blank=True, get_label='serial') 
     grade = StringField('grade:' )
     submit = SubmitField('Submit')
 

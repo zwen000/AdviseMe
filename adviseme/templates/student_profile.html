@@ -33,7 +33,7 @@
     <p class="p-custom">Credits Completed: {{ current_user.studentOwner.credit_earned }}</p>
     <p class="p-custom">In Progress: {{ current_user.studentOwner.credit_taken }}</p>
     {% if current_user.studentOwner.GPA == None %}
-      <p class="p-custom">Not calculated yet!</p>
+      <p class="p-custom">GPA (not calculated yet)</p>
     {% else %}
       <p class="p-custom">GPA: {{ current_user.studentOwner.GPA }}</p>
     {% endif %}

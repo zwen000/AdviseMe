@@ -17,7 +17,6 @@
                         <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
-                                    <th>Course Code:</th>
                                     <th>Grade:</th>
                                     <th>Enrolled:</th>
                                 </tr>
@@ -25,13 +24,6 @@
                             <tbody>
                                 <form method="POST" action="" enctype="multipart/form-data">
                                     <tr>
-                                        {{ form.csrf_token }}
-                                        <td>{{ form.course(class="form-control form-control-lg") }}</td>
-                                        <ul>
-                                        {% for error in form.course.errors %}
-                                            <li style="color:red;">{{ error }}</li>
-                                        {% endfor %}
-                                        </ul>
 
                                         {{ form.csrf_token }}
                                         <td>{{ form.grade(class="form-control form-control-lg") }}</td>

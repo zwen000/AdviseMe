@@ -117,7 +117,6 @@ def studentinfo_fill():
         student = Student(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
                           lastname=form.lastname.data,
-                          middlename=form.middlename.data,
                           credit_taken=form.credit_taken.data,
                           graduating=form.graduating.data)
         note = Notes(EMPLID=form.EMPLID.data)
@@ -237,7 +236,8 @@ def courseinfo_edit(course_id):
             enrollement = Enrollement(student_id=current_user.EMPLID,
                                     course_id = course.id,
                                     grade = form.grade.data,
-                                    GPA_point = evaluate_GPA(form.grade.data))
+                                    GPA_point = evaluate_GPA(form.grade.data),
+                                    attempt=True)
             if course.id < 19:
                 enrollement.QPA_point = evaluate_QPA(form.grade.data)
             else:
@@ -247,14 +247,28 @@ def courseinfo_edit(course_id):
 
             if form.grade.data == "F":
                 student.credit_earned += 0
+                enrollement.attempt = True
+                enrollement.passed = False
             else:
                 student.credit_earned += course.credits
+                enrollement.attempt = True
+                enrollement.passed = True
             db.session.commit()                
         else:
-            if form.grade.data == "F":
-                student.credit_earned += 0
-            else:
-                student.credit_earned += course.credits
+            if enrollement.attempt == True:
+                if enrollement.passed == False and form.grade.data == "F":      # Failed the course the first time, retook it and failed again! (FF)
+                    student.credit_earned += 0
+                elif enrollement.passed == True and form.grade.data == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
+                    student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
+                    enrollement.passed = False                                  
+                elif enrollement.passed == False and form.grade.data != "F":    # Failed the course the first time, retook it and passed!       (FP)
+                    student.credit_earned += course.credits
+                    enrollement.passed = True
+                elif enrollement.passed == True and form.grade.data != "F":     # Passed the course the first time, retook it and passed again! (PP)
+                    student.credit_earned += 0
+                else: 
+                    student.credit_earned += 0
+
             enrollement.grade = form.grade.data
             enrollement.GPA_point = evaluate_GPA(form.grade.data)
             if course.id < 19:
@@ -264,20 +278,6 @@ def courseinfo_edit(course_id):
             db.session.commit()
         
         return redirect(url_for('courseinfo_fill'))
-
-        """
-        for person in enrollement:
-            if person.student_id == student.EMPLID:
-                if person.course_id == course.id:
-                    person.grade = str(form.grade.data)
-                    person.GPA_point = int(3.0)
-                    db.session.commit()
-
-        # course.enrollee.grade_earned.append(form.grade.data.grade)
-        # print(course.enrollee.grade_earned.grade)
-                    
-        return redirect(url_for('courseinfo_fill'))
-        """
 
     return render_template('course_info_edit.html', title='Course Information', student=student,form=form)
 

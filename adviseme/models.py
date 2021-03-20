@@ -47,25 +47,15 @@ class Notes(db.Model):
 
 
 
-"""
-
-# This must be a many-to-many relationship:  (We need an associations table)
-# One student can take many classes, however a class can be taken my many students! 
-enrollements = db.Table('enrollements',
-    db.Column('student_id', db.Integer, db.ForeignKey('student.EMPLID')),
-    db.Column('course_id', db.Integer, db.ForeignKey('course.id')),
-    db.Column('GPA_point', db.Integer),
-    db.Column('grade', db.String(15))
-)
-"""
- 
 class Enrollement(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
     grade = db.Column(db.String(15))
     GPA_point = db.Column(db.Integer)
     QPA_point = db.Column(db.Integer)
-
+    attempt = db.Column(db.Boolean, unique=False, nullable=False, default=False)
+    passed = db.Column(db.Boolean, unique=False, nullable=False, default=False)
+    
     student = db.relationship('Student', back_populates='courses', lazy=True)
     course = db.relationship('Course', back_populates='students', lazy=True)
 
@@ -73,7 +63,6 @@ class Student(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
     lastname = db.Column(db.String(30), nullable=False)
-    middlename = db.Column(db.String(30), nullable=True)
     credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
     credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
