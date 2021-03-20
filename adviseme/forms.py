@@ -47,10 +47,13 @@ class StudentInfoForm(FlaskForm):
 # Although you would think, that just hardcoding the grade values in the choices array would be good enough, this 
 # needs to be query'd and connected to a grade table so a user can pick a grade choice ... 
  
+
+class SubmitForm(FlaskForm):
+    submit = SubmitField('Submit')
+    
 class CourseInfoForm(FlaskForm):
     grade = SelectField('grade: ', choices=[])
     submit = SubmitField('Submit')
-
 
 
 class FacultyInfoForm(FlaskForm):

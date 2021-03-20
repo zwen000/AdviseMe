@@ -99,19 +99,20 @@ db.session.commit()
 
 
 # -- Grade Options:
-
-grade_1 = Grade(id=1, value='A+')
-grade_2 = Grade(id=2, value='A')
-grade_3 = Grade(id=3, value='A-')
-grade_4 = Grade(id=4, value='B+')
-grade_5 = Grade(id=5, value='B')
-grade_6 = Grade(id=6, value='B-')
-grade_7 = Grade(id=7, value='C+')
-grade_8 = Grade(id=8, value='C')
-grade_9 = Grade(id=9, value='C-')
-grade_10 = Grade(id=10, value='D+')
-grade_11 = Grade(id=11, value='D')
-grade_12 = Grade(id=12, value='F')
+grade_1 = Grade(id=1, value='Not Taken')
+grade_2 = Grade(id=2, value='Currently_Enrolled')
+grade_3 = Grade(id=3, value='A+')
+grade_4 = Grade(id=4, value='A')
+grade_5 = Grade(id=5, value='A-')
+grade_6 = Grade(id=6, value='B+')
+grade_7 = Grade(id=7, value='B')
+grade_8 = Grade(id=8, value='B-')
+grade_9 = Grade(id=9, value='C+')
+grade_10 = Grade(id=10, value='C')
+grade_11 = Grade(id=11, value='C-')
+grade_12 = Grade(id=12, value='D+')
+grade_13 = Grade(id=13, value='D')
+grade_14 = Grade(id=14, value='F')
 
 
 db.session.add(grade_1)
@@ -126,6 +127,8 @@ db.session.add(grade_9)
 db.session.add(grade_10) 
 db.session.add(grade_11) 
 db.session.add(grade_12) 
+db.session.add(grade_13) 
+db.session.add(grade_14) 
 
 
 db.session.commit()
