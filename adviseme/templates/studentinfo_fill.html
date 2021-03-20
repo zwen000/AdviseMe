@@ -48,20 +48,6 @@
                     {% endif %}
                 </div>
                 <div class='form-group'>
-                    {{ form.middlename.label(class="form-control-label") }}
-
-                    {% if form.middlename.errors %}
-                    {{ form.middlename(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.middlename.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                        {{ form.middlename(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class='form-group'>
                     {{ form.lastname.label(class="form-control-label") }}
 
                     {% if form.lastname.errors %}

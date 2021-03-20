@@ -8,7 +8,7 @@
       <img class="rounded-circle account-img" src="{{ profile_image }}">
         <h2 class="account-heading"></h2>
     <p class="p-custom">Degree: BS. Computer Science</p>
-    <p class="p-custom">Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.middlename }} {{ current_user.studentOwner.lastname }}</p>
+    <p class="p-custom">Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.lastname }}</p>
     {% if current_user.bio != "" %}
       <p class="p-custom-2">Bio: {{ current_user.bio}}</p> 
     {% endif %}
