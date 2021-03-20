@@ -522,7 +522,7 @@ def checklist():
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses,cscourses=cscourses, student=student, scores=scores)
+    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores,cscourses=cscourses)
 
 @app.route('/faculty/')
 @login_required
