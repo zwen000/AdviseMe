@@ -1,4 +1,5 @@
 import os
+import math
 import secrets
 from datetime import date
 from PIL import Image
@@ -117,7 +118,6 @@ def studentinfo_fill():
         student = Student(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
                           lastname=form.lastname.data,
-                          credit_taken=form.credit_taken.data,
                           graduating=form.graduating.data)
         note = Notes(EMPLID=form.EMPLID.data)
         current_user.EMPLID=form.EMPLID.data
@@ -166,48 +166,58 @@ def courseinfo_fill():
             if not enrollement:
                 enrollement = Enrollement(student_id=current_user.EMPLID,
                                         course_id = course_id,
-                                        grade = grade,
-                                        GPA_point = int(course.credits*evaluate_GPA(grade)),
-                                        attempt=True)
-                if course_id < 19:
-                    enrollement.QPA_point = evaluate_QPA(grade)
+                                        grade = grade)
+                if grade == 'Not Taken':
+                    pass
+                elif grade =='Currently_Enrolled':
+                    student.credit_taken += course.credits
+                    enrollement.attempt = True
                 else:
-                    enrollement.QPA_point = 0 
+                    enrollement.GPA_point = int(course.credits*evaluate_GPA(grade))
+                    if course_id < 19 :
+                        enrollement.QPA_point = evaluate_QPA(grade)
+                    else:
+                        enrollement.QPA_point = 0 
+                    
+                    if grade == "F":
+                        student.credit_earned += 0
+                        enrollement.attempt = True
+                        enrollement.passed = False
+                    else:
+                        student.credit_earned += course.credits
+                        enrollement.attempt = True
+                        enrollement.passed = True
 
                 db.session.add(enrollement)
-
-                if grade == "F":
-                    student.credit_earned += 0
-                    enrollement.attempt = True
-                    enrollement.passed = False
-                else:
-                    student.credit_earned += course.credits
-                    enrollement.attempt = True
-                    enrollement.passed = True
                 db.session.commit()
-            elif enrollement.grade == grade:
+            elif enrollement.grade == grade:                              # Skip the case of course grade remains the same
                 continue               
             else:
-                if enrollement.attempt == True:
-                    if enrollement.passed == False and grade == "F":      # Failed the course the first time, retook it and failed again! (FF)
-                        student.credit_earned += 0
-                    elif enrollement.passed == True and grade == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
-                        student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
-                        enrollement.passed = False                                  
-                    elif enrollement.passed == False and grade != "F":    # Failed the course the first time, retook it and passed!       (FP)
-                        student.credit_earned += course.credits
-                        enrollement.passed = True
-                    elif enrollement.passed == True and grade != "F":     # Passed the course the first time, retook it and passed again! (PP)
-                        student.credit_earned += 0
-                    else: 
-                        student.credit_earned += 0
-
-                enrollement.grade = grade
-                enrollement.GPA_point = evaluate_GPA(grade)
-                if course_id < 19:
-                    enrollement.QPA_point = evaluate_QPA(grade)
+                if grade == 'Not Taken':
+                    pass
+                elif grade =='Currently_Enrolled':
+                    student.credit_taken += course.credits
+                    enrollement.attempt = True
                 else:
-                    enrollement.QPA_point = 0
+                    if enrollement.attempt == True:
+                        if enrollement.passed == False and grade == "F":      # Failed the course the first time, retook it and failed again! (FF)
+                            student.credit_earned += 0
+                        elif enrollement.passed == True and grade == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
+                            student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
+                            enrollement.passed = False                                  
+                        elif enrollement.passed == False and grade != "F":    # Failed the course the first time, retook it and passed!       (FP)
+                            student.credit_earned += course.credits
+                            enrollement.passed = True
+                        elif enrollement.passed == True and grade != "F":     # Passed the course the first time, retook it and passed again! (PP)
+                            student.credit_earned += 0
+                        else: 
+                            student.credit_earned += 0
+                    enrollement.grade = grade
+                    enrollement.GPA_point = evaluate_GPA(grade)
+                    if course_id < 19:
+                        enrollement.QPA_point = evaluate_QPA(grade)
+                    else:
+                        enrollement.QPA_point = 0
                 db.session.commit()
         all_grade.clear()                                         # Clear the list when all data store into db
         return redirect(url_for('checklist'))
@@ -412,6 +422,7 @@ def facultyinfo_fill():
 # function for logout
 @app.route('/logout')
 def logout():
+    all_grade.clear()                                         # Clear the list before student log out
     logout_user()
     return redirect(url_for('home'))
 
@@ -475,46 +486,49 @@ def student_profile():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
 
-@app.route('/checklist')
-@login_required
-def checklist():
-    courses = Course.query.all()
-    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
-    scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
-
-    student.GPA = 0     # This is the default initial value in the DB anyway 
-    num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count() 
-    
-    for score in scores:
-        student.GPA += int(score.GPA_point)
-
-    if num_of_courses == 0:             # divide by zero error check! 
-        print("No classes added yet!")
-    else:
-        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
-        student.GPA /= student.credit_earned
-        db.session.commit()
-
-    student.QPA = 0
-    for value in scores:
-        if value.course_id >= 1:
-            student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
-        elif value.course_id >= 19:
-            student.QPA += 0
-            print("id 19 and above are not CS courses!")
-        else:
-            student.QPA += 0
-            print("There cannot be any id's less than 0 or infinity!")
-
-    print("The QPA should be: ", student.QPA)    
-    db.session.commit()
-
-    # CS_courses = Course.query.filter_by(dept="CSC").count()
-    # print(CS_courses)
-
-
-    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores)
+#@app.route('/checklist')
+#@login_required
+#def checklist():
+#    courses = Course.query.all()
+#    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+#    scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
+#
+#    student.GPA = 0     # This is the default initial value in the DB anyway 
+#    num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count() 
+#    
+#    for score in scores:
+#        if score.GPA_point:
+#            student.GPA += int(score.GPA_point)
+#
+#    if num_of_courses == 0:             # divide by zero error check! 
+#        print("No classes added yet!")
+#    else:
+#        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
+#        student.GPA /= student.credit_earned
+#        student.GPA = round(student.GPA,3)
+#        db.session.commit()
+#
+#    student.QPA = 0
+#    for value in scores:
+#        if value.QPA_point:
+#            if value.course_id >= 1:
+#                student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
+#            elif value.course_id >= 19:
+#                student.QPA += 0
+#                print("id 19 and above are not CS courses!")
+#            else:
+#                student.QPA += 0
+#                print("There cannot be any id's less than 0 or infinity!")
+#
+#    print("The QPA should be: ", student.QPA)    
+#    db.session.commit()
+#
+#    # CS_courses = Course.query.filter_by(dept="CSC").count()
+#    # print(CS_courses)
+#
+#
+#    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
+#    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores)
 
 @app.route('/faculty/')
 @login_required
