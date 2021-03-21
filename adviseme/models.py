@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime,date
 from adviseme import db, login_manager
 from flask_login import UserMixin
 
@@ -22,9 +22,8 @@ class User(db.Model, UserMixin):
 
 class Faculty(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False,primary_key=True)
-    firstname = db.Column(db.String(30), unique=True, nullable=False)
-    lastname = db.Column(db.String(30), unique=True, nullable=False)
-    middlename =db.Column(db.String(30), nullable=True)
+    firstname = db.Column(db.String(30), nullable=False)
+    lastname = db.Column(db.String(30), nullable=False)
     staff_role =db.Column(db.String(30), nullable=False)
     User = db.relationship('User', backref='FacultyOwner', lazy=True)
     Notes = db.relationship('Notes', backref='Reviewer', lazy=True)
@@ -35,11 +34,25 @@ class Faculty(db.Model):
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    academic_comment = db.Column(db.Text, nullable=False, default='')
-    next_semester_comment = db.Column(db.Text, nullable=False, default='')
-    be_advised = db.Column(db.Boolean, nullable=False, default=False)
-    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), db.ForeignKey('faculty.EMPLID'), nullable=False)
+    # faculty advisor data stored
+    semester = db.Column(db.Date, nullable=False, default=date.today())     # to store the exact day on current semester
+    academic_comment = db.Column(db.Text, nullable=False, default='')       # comment for academic from advising notes
+    next_semester_comment = db.Column(db.Text, nullable=False, default='')  # comment for next semester
+    be_advised = db.Column(db.Boolean, nullable=False, default=False)       # boolean check for notes if it's done
+    academic_note = db.Column(db.Text, nullable=False, default='')          # after notes are done by faculty then send to academic advisor
+    # no.4 question boolean check
+    tutorial = db.Column(db.Boolean, nullable=False, default=False)         # tutorial services
+    counseling = db.Column(db.Boolean, nullable=False, default=False)       # counseling
+    consultation = db.Column(db.Boolean, nullable=False, default=False)     # faculty consultation
+    career = db.Column(db.Boolean, nullable=False, default=False)           # career advisement
+    scholarships = db.Column(db.Boolean, nullable=False, default=False)     # scholarship
+    internship = db.Column(db.Boolean, nullable=False, default=False)       # internship oppotunities
+    followup = db.Column(db.Boolean, nullable=False, default=False)         # follow-up advisement sessions
+    # academic advisor data stored
+    additional = db.Column(db.Text, nullable=False, default='')             # additional suggest/comment from academic advisor
+    approval = db.Column(db.Boolean, nullable=False, default=False)         # check if it's done by advisor
+    EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
+    FacultyEMPLID = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True)    # separate student and faculty ID!!!
     Student = db.relationship('Student', backref='advisingnote', lazy=True)
 
     def __repr__(self):
@@ -74,7 +87,7 @@ class Student(db.Model):
     courses = db.relationship('Enrollement', back_populates='student', lazy=True)
 
     def __repr__(self):
-        return f"Student('{self.EMPLID}, {self.firstname}, {self.lastname}, {self.middlename}, {self.credit_earned}, {self.credit_taken}, {self.graduating}')"
+        return f"Student('{self.EMPLID}, {self.firstname}, {self.lastname}, {self.credit_earned}, {self.credit_taken}, {self.graduating}')"
 
 
 class Course(db.Model):
