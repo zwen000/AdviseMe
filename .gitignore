@@ -24,3 +24,5 @@ database.db
 *.db
 adviseme/database.db
 *.pyc
+adviseme/database.db
+*.db
