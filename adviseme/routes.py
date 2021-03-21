@@ -223,13 +223,9 @@ def courseinfo_fill():
         return redirect(url_for('checklist'))
     elif request.method == 'GET':
         scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
-        for score in scores:
-            s = (score.course_id,score.grade)
-            stored_grade(s)
-
-
+        
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student,all_grade=all_grade, form=form)
+    return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student, scores= scores, all_grade=all_grade, form=form)
 
 #@app.route('/course/info', methods=['GET', 'POST'])
 #@login_required
