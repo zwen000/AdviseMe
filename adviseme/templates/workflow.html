@@ -1,172 +1,114 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="container px-1 px-md-4 py-5 mx-auto">
-    <div class="card">
-        <div class="row d-flex justify-content-between px-3 top">
-            <div class="d-flex">
-                <h5>Workflow <span class="text-primary font-weight-bold"></span></h5>
-            </div>
-        </div> <!-- Add class 'active' to progress -->
-        <div class="row d-flex justify-content-center">
-            <div class="col-12">
-                <ul id="progressbar" class="text-center">
-                    <li class="active step0 "></li>
-                    <li class="active step0"></li>
-                    <li class="step0"></li>
-                    <li class="step0"></li>
-                </ul>
-            </div>
-        </div>
-        <div class="row justify-content-between top">
-            <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/9nnc9Et.png">
-                <div class="d-flex flex-column">
-                    <p class="font-weight-bold">Fill out<br>Advisement Form</p>
-                </div>
-            </div>
-            <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/u1AzR7w.png">
-                <div class="d-flex flex-column">
-                    <p class="font-weight-bold">Faculty Advisor<br>Revision</p>
-                </div>
-            </div>
-            <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/TkPm63y.png">
-                <div class="d-flex flex-column">
-                    <p class="font-weight-bold">Acadmedic Advisor<br>Revision</p>
-                </div>
-            </div>
-            <div class="row d-flex icon-content"> <img class="icon" src="https://i.imgur.com/HdsziHP.png">
-                <div class="d-flex flex-column">
-                    <p class="font-weight-bold">Enrollment<br>Approved</p>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<div class="myprogress py-5">
+  <!--    rbg(0,0,255)-->
+  <div class="circle align-middle" style="background-color:#233B7E;">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="rgb(255,255,255)"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span class="align-middle" >Filled out Advisement Form</span>
+  </div>
+
+  <span class="progress" >
+    <div class="progress-bar w-100" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+  </span>
+
+  <div class="circle align-middle" style="background-color:#233B7E;">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="rgb(255,255,255)"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span>Faculty Advisor Revision</span>
+  </div>
+  <span class="progress" >
+    <div class="progress-bar w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+  </span>
+
+  <div class="circle align-middle">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="currentColor"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span>Acaademic Advisor Revision</span>
+  </div>
+  <span class="progress" >
+    <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+  </span>
+
+
+  <div class="circle align-middle">
+    <span class="title" >
+      <svg xmlns={{ url_for('static', filename="Images/check.svg") }} width="110" height="110" fill="currentColor"  viewBox="0 0 16 16">
+        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+      </svg>
+    </span>
+    <span>Enrollment Approved</span>
+  </div>
 </div>
 
-<style>body {
-    color: #000;
-    overflow-x: hidden;
-    height: 100%;
-    background-color: #8C9EFF;
-    background-repeat: no-repeat
+<style>
+.myprogress {
+  min-width: 100%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 200px;
 }
 
-.card {
-    z-index: 0;
-    background-color: #ECEFF1;
-    padding-bottom: 20px;
-    margin-top: 90px;
-    margin-bottom: 90px;
-    border-radius: 10px
+
+.myprogress .circle,
+.myprogress .bar {
+  display: inline-block;
+  background: #FFF;
+  width: 120px;
+  height: 120px;
+  border-radius: 80px;
+  border: 7px solid #233B7E;
+
 }
 
-.top {
-    padding-top: 40px;
-    padding-left: 13% !important;
-    padding-right: 13% !important
+
+.myprogress .bar{
+  position: relative;
+  width: 80px;
+  height: 5px;
+  top: -5px;
+  border: 0px solid #d5d5da;
+  background:#000;
 }
 
-#progressbar {
-    margin-bottom: 30px;
-    overflow: hidden;
-    color: #455A64;
-    padding-left: 0px;
-    margin-top: 30px
+.myprogress .progress{
+ position: relative;
+ width: 180px;
+ height: 10px;
+ border: 0px solid #d5d5da;
+ top: -5px;
+
+  display: inline-flex;
+  background: #FFF;
+
+  border: 2px solid #233B7E;
 }
 
-#progressbar li {
-    list-style-type: none;
-    font-size: 13px;
-    width: 25%;
-    float: left;
-    position: relative;
-    font-weight: 400
+.myprogress .circle .label {
+  display: inline-block;
+  width: 90px;
+  height: 40px;
+  line-height: 30px;
+  border-radius: 40px;
+  font-size: 24px;
+}
+.myprogress .circle .title {
+  color: #b5b5ba;
+  font-size: 16px;
+  line-height: 100px;
 }
 
-#progressbar .step0:before {
-    font-family: FontAwesome;
-    content: "\f10c";
-    color: #fff
-}
 
-#progressbar li:before {
-    width: 40px;
-    height: 40px;
-    line-height: 45px;
-    display: block;
-    font-size: 20px;
-    background: #C5CAE9;
-    border-radius: 50%;
-    margin: auto;
-    padding: 0px
-}
-
-#progressbar li:after {
-    content: '';
-    width: 100%;
-    height: 12px;
-    background: #C5CAE9;
-    position: absolute;
-    left: 0;
-    top: 16px;
-    z-index: -1
-}
-
-#progressbar li:last-child:after {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    position: absolute;
-    left: -50%
-}
-
-#progressbar li:nth-child(2):after,
-#progressbar li:nth-child(3):after {
-    left: -50%
-}
-
-#progressbar li:first-child:after {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    position: absolute;
-    left: 50%
-}
-
-#progressbar li:last-child:after {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px
-}
-
-#progressbar li:first-child:after {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px
-}
-
-#progressbar li.active:before,
-#progressbar li.active:after {
-    background: #651FFF
-}
-
-#progressbar li.active:before {
-    font-family: FontAwesome;
-    content: "\f00c"
-}
-
-.icon {
-    width: 60px;
-    height: 60px;
-    margin-right: 15px
-}
-
-.icon-content {
-    padding-bottom: 20px
-}
-
-@media screen and (max-width: 992px) {
-    .icon-content {
-        width: 50%
-    }
-}
 </style>
-
-
 {% endblock content %}
