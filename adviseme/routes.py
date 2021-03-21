@@ -133,6 +133,7 @@ def studentinfo_fill():
 @app.route('/course/creation/form', methods=['GET', 'POST'])
 def test():
     form = CourseCreationForm()
+    # courses = db.session.query(Enrollement).join(Course).filter(enrollement.course_id == course.id)
     courses = Course.query.all()
 
     if form.validate_on_submit():
@@ -177,7 +178,7 @@ def courseinfo_fill():
     if num_of_courses == 0:             # divide by zero error check! 
         print("No classes added yet!")
     else:
-        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )    
+        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/student.credit_earned )    
         student.GPA /= student.credit_earned
         db.session.commit()
 
@@ -358,7 +359,6 @@ def student_profile_edit():
         current_user.email = form.email.data
         student.firstname = form.firstname.data
         student.lastname = form.lastname.data
-        student.middlename = form.middlename.data
         student.credit_earned = form.credit_earned.data
         student.credit_taken = form.credit_taken.data
         db.session.commit()                                     # commit changes to the database!
@@ -370,7 +370,6 @@ def student_profile_edit():
         form.bio.data = current_user.bio
         form.firstname.data = student.firstname
         form.lastname.data = student.lastname
-        form.middlename.data = student.middlename
         form.credit_earned.data = student.credit_earned
         form.credit_taken.data = student.credit_taken
 
@@ -400,10 +399,7 @@ def student_profile():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
 
-@app.route('/checklist')
-@login_required
-def checklist():
-    return render_template("checklist.html", title="Checklist")
+
 
 @app.route('/faculty/')
 @login_required
