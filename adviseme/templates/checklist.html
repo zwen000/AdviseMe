@@ -15,34 +15,26 @@
                     <div class="progress-inner4"><p id="progress_count4"></p></div>
                 </div>
             </button>
-            {% for cscourse in cscourses %}
                 <div class="content">
-                    <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()" />
-                    <label class="checkbox" for="course_serial">{{cscourse.serial}}</label>
-                    <p style="display: inline; float: right;">
-                        <a class="btn plus-sign" data-toggle="collapse" href="#collapseCS1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                            +
-                        </a>
-                    </p>
-                      <div class="collapse" id="collapseCS1">
-                        <div class="card card-body">
-                            <ul>
-                                <li>{{cscourse.name}}</li>
-                                <li>Course Description:{{cscourse.description}} </li> 
-                                <li>Course Credit: {{cscourse.credits}} </li>
-                                {% for score in scores %}
-                                    {% if score.grade and cscourse.id == score.course_id %}
-                                        <li>Grade:{{score.grade}} </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        
-                        </div>
-                      </div>
-
-                </div>
-            {% endfor %}
-          </section>
+                    {% for cscourse in cscourses %}
+                            <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
+                            <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
+                            <div class="content2">
+                                <ul>
+                                    <li>Course Name: {{cscourse.name}}</li>
+                                    <li>Course Description: {{cscourse.description}} </li> 
+                                    <li>Course Credit: {{cscourse.credits}} </li>
+                                    {% for score in scores %}
+                                        {% if score.grade and cscourse.id == score.course_id %}
+                                            <li>Grade: {{score.grade}} </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        <hr>
+            {% endfor %}  
+            </div>
+            </section>
         <br>
       
 <!--CS Electives Checklist -->
