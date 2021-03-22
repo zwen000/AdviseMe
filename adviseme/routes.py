@@ -5,7 +5,7 @@ from datetime import date
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from adviseme import app, bcrypt, db
-from adviseme.forms import RegistrationForm, LoginForm, advisingNotesForm, StudentInfoForm, FacultyInfoForm, UpdateStudentAccountForm, CourseInfoForm, SubmitForm
+from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -52,7 +52,7 @@ def register():
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('/studentinfo_fill'))
+        return redirect(url_for('studentinfo_fill'))
 
     form = LoginForm()
 
@@ -81,7 +81,6 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
 
     return render_template('login.html', title='Login', form=form)
-
 
 
 
@@ -130,18 +129,37 @@ def studentinfo_fill():
 
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
-"""
-@app.route('/course/info/test', methods=['GET', 'POST'])
+
+@app.route('/course/creation/form', methods=['GET', 'POST'])
 def test():
-    form = CourseInfoForm()
-    form.grade.choices = [(option.id, option.value) for option in Grade.query.all()]
+    form = CourseCreationForm()
+    courses = Course.query.all()
 
     if form.validate_on_submit():
-        print("Todd Howard: Everything Just Works!")
+        course = Course(    serial=form.serial.data, 
+                            name=form.name.data, 
+                            dept=form.dept.data, 
+                            description=form.description.data, 
+                            designation=form.designation.data,
+                            credits=form.credits.data)
+        db.session.add(course)
+        flash('Your course has been created!', 'success')
+        db.session.commit()
+        return redirect(url_for('test'))
+    """
+    elif request.method == 'GET':
+        form.id.data = course.id
+        form.serial.data = course.serial
+        form.name.data = course.name
+        form.dept.data = course.dept
+        form.description.data = course.description
+        form.designation.data = course.designation
+        form.credits.data = course.credits
+    """
 
-    return render_template('test.html', form=form)
+    return render_template('course_creation_form.html', courses=courses, form=form)
 
-"""
+
 all_grade=[]
 def stored_grade(alist):
     all_grade.append(alist)
@@ -223,13 +241,9 @@ def courseinfo_fill():
         return redirect(url_for('checklist'))
     elif request.method == 'GET':
         scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
-        for score in scores:
-            s = (score.course_id,score.grade)
-            stored_grade(s)
-
-
+        
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student,all_grade=all_grade, form=form)
+    return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student, scores= scores, all_grade=all_grade, form=form)
 
 #@app.route('/course/info', methods=['GET', 'POST'])
 #@login_required
@@ -294,7 +308,7 @@ def evaluate_QPA(grade):
     # value of passed argument if it is present  
     # in dictionary otherwise second argument will 
     # be assigned as default value of passed argument 
-    return switcher.get(grade, "in progress") 
+    return switcher.get(grade, "Not_Taken") 
 
 
 def evaluate_GPA(grade):
@@ -317,7 +331,7 @@ def evaluate_GPA(grade):
     # value of passed argument if it is present  
     # in dictionary otherwise second argument will 
     # be assigned as default value of passed argument 
-    return switcher.get(grade, "in progress") 
+    return switcher.get(grade, "Not_Taken") 
 
 #@app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
 #@login_required

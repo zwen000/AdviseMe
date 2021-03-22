@@ -29,7 +29,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class StudentInfoForm(FlaskForm):
-    EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
+    EMPLID = IntegerField('EMPLID', validators=[DataRequired()])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
     picture = FileField('Update Profile Image', validators=[ FileAllowed(['jpg', 'png']) ])
@@ -54,6 +54,19 @@ class CourseInfoForm(FlaskForm):
     grade = SelectField('grade: ', choices=[])
     submit = SubmitField('Submit')
 
+class CourseCreationForm(FlaskForm):
+    serial = StringField('Course Serial:', validators=[DataRequired()])
+    name = StringField('Course Name:', validators=[DataRequired()])
+    dept = StringField('Department:', validators=[DataRequired()])
+    description = TextAreaField('Course Description: (Optional)')
+    designation = StringField('Designation:', validators=[DataRequired()])
+    credits = IntegerField('Course id:', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+    def validate_Course_ID(self, id):              # checks for duplicate Course id's 
+        course = Course.query.filter_by(id=id.data).first()
+        if course:
+            raise ValidationError('That Course ID is already in use!')
 
 class FacultyInfoForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
@@ -91,15 +104,3 @@ class UpdateStudentAccountForm(FlaskForm):
             if user:
                 raise ValidationError('The email is already in use!')
         
-        # Privellege Escalation Denial! 
-        if current_user.role == 'Student':
-            if ('@citymail.cuny.edu' not in email.data):
-                raise ValidationError('This email is not allowed!')
-            if ('@ccny.cuny.edu' in email.data):
-                raise ValidationError('This email is not allowed!')
-        
-        if current_user.role == 'Faculty':
-            if ('@ccny.cuny.edu' not in email.data):
-                raise ValidationError('This email is not allowed!')
-            if ('@citymail.cuny.edu' in email.data):
-                raise ValidationError('This email is not allowed!')
