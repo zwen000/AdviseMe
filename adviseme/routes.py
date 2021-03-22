@@ -407,11 +407,14 @@ def courseinfo_edit(course_id):
 
     if form.validate_on_submit():
         grades=(course_id,form.grade.data)
+        for id, grade in all_grade:
+            if course_id == id :
+                all_grade.remove((id,grade))
         stored_grade(grades)
         
         return redirect(url_for('courseinfo_fill'))
 
-    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
+    return render_template('course_info_edit.html', title='Course Information', student=student,course=course, form=form)
 
 
 # Faculty fill out the basic info on the first time once they signed in

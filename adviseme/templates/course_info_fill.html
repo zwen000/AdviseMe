@@ -76,15 +76,7 @@
                                     {% endfor %}
                                  
                                     
-                                    <div class="form-group">
-                                        {{ form.csrf_token }}
-                                        {{ form.submit(class="btn custom-button-profile-update") }}
-                                        <ul>
-                                        {% for error in form.submit.errors %}
-                                            <li style="color:red;">{{ error }}</li>
-                                        {% endfor %}
-                                        </ul>
-                                    </div>
+
 
                                 </form>
 
@@ -96,6 +88,17 @@
         </div>
     </section>
     <!-- End of Table -->
+    <form method="POST" action="" enctype="multipart/form-data">
+    <div class="form-group">
+        {{ form.csrf_token }}
+        {{ form.submit(class="btn custom-button-profile-update") }}
+        <ul>
+        {% for error in form.submit.errors %}
+            <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</form>
 </div>
 </div>
 </center>
