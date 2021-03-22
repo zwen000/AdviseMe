@@ -498,6 +498,7 @@ def student_profile():
 def checklist():
     courses = Course.query.all()
     cscourses = Course.query.filter_by(dept='CSC').all()
+    mathcourses = Course.query.filter_by(dept='MATH').all()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
@@ -536,7 +537,7 @@ def checklist():
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores,cscourses=cscourses)
+    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores,cscourses=cscourses, mathcourses = mathcourses)
 
 @app.route('/faculty/')
 @login_required
