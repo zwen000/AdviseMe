@@ -130,11 +130,20 @@ def studentinfo_fill():
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
 
-@app.route('/course/creation/form', methods=['GET', 'POST'])
-def test():
+@app.route('/student/course/info', methods=['GET', 'POST'])
+def student_course_info():
     form = CourseCreationForm()
-    # courses = db.session.query(Enrollement).join(Course).filter(enrollement.course_id == course.id)
-    courses = Course.query.all()
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
+    
+    courses = []
+    for courseObj in student_info:
+        # print(courseObj)
+        courses += Course.query.filter_by(id=courseObj.course_id)
+    
+    """
+    for i in courses:
+        print(i)
+    """
 
     if form.validate_on_submit():
         course = Course(    serial=form.serial.data, 
@@ -146,19 +155,9 @@ def test():
         db.session.add(course)
         flash('Your course has been created!', 'success')
         db.session.commit()
-        return redirect(url_for('test'))
-    """
-    elif request.method == 'GET':
-        form.id.data = course.id
-        form.serial.data = course.serial
-        form.name.data = course.name
-        form.dept.data = course.dept
-        form.description.data = course.description
-        form.designation.data = course.designation
-        form.credits.data = course.credits
-    """
+        return redirect(url_for('student_course_info'))
 
-    return render_template('course_creation_form.html', courses=courses, form=form)
+    return render_template('student_course_info.html', courses=courses, student_info=student_info, form=form)
 
 
 all_grade=[]
@@ -502,14 +501,14 @@ def student_profile():
 @login_required
 def checklist():
     courses = Course.query.all()
-    cscourses = Course.query.filter_by(dept='CSC').all()
-    mathcourses = Course.query.filter_by(dept='MATH').all()
-    
-    """
-    group_a = Course.query.filter_by(designation="").all()  # Group A Technical Electives
-    group_b = Course.query.filter_by(designation="").all()  # Group B Technical Electives 
-    group_c = Course.query.filter_by(designation="").all()  # Group C Technical Electives
-    """
+    cs_courses = Course.query.filter_by(dept='CSC').all()
+    math_courses = Course.query.filter_by(dept='MATH').all()
+
+    science_courses = Course.query.filter_by(designation="Science Elective").all()      # Science Electives
+    group_a = Course.query.filter_by(designation="Group A Technical Elective").all()    # Group A Technical Electives
+    group_b = Course.query.filter_by(designation="Group B Technical Elective").all()    # Group B Technical Electives 
+    group_c = Course.query.filter_by(designation="Group C Technical Elective").all()    # Group C Technical Electives
+    liberal_art = Course.query.filter_by(designation="Liberal Art").all()               # Liberal Art 
 
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
@@ -533,8 +532,8 @@ def checklist():
     for value in scores:
         if value.QPA_point:
             if value.course_id >= 1:
-                student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
-            elif value.course_id >= 19:
+                student.QPA += int(value.QPA_point)         # course_id (1-38) in the database are all CS courses!  
+            elif value.course_id >= 38:
                 student.QPA += 0
                 print("id 19 and above are not CS courses!")
             else:
@@ -544,12 +543,22 @@ def checklist():
     print("The QPA should be: ", student.QPA)    
     db.session.commit()
 
-    # CS_courses = Course.query.filter_by(dept="CSC").count()
+    # CS_courses = Course.query.filter_by(dept="CSC").count() # There are 38 CS_courses in the database!
     # print(CS_courses)
 
-
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores,cscourses=cscourses, mathcourses = mathcourses)
+    return render_template('checklist.html', title='Checklist', 
+                            profile_image=profile_image, 
+                            courses=courses, 
+                            student=student, 
+                            scores=scores, 
+                            cs_courses=cs_courses, 
+                            group_a=group_a, 
+                            group_b=group_b, 
+                            group_c=group_c, 
+                            liberal_art=liberal_art, 
+                            science_courses=science_courses, 
+                            math_courses=math_courses)
 
 @app.route('/faculty/')
 @login_required

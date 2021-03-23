@@ -57,7 +57,7 @@ course_34 = Course(id=34, serial='CSC 42000', name='Compiler Construction', dept
 course_35 = Course(id=35, serial='CSC 43000', name='Distributed Computing', dept='CSC', description='Learn the fundamentals of a distributed system', designation="Group C Technical Elective", credits=3)
 course_36 = Course(id=36, serial='CSC 43500', name='Concurrency in Operating Systems', dept='CSC', description='Intermediate Unix Operating Systems course', designation="Group C Technical Elective", credits=3)
 course_37 = Course(id=37, serial='CSC 43800', name='Real-Time Computing Systems', dept='CSC', description='Understanding the fundamentals of real time computing systems', designation="Group C Technical Elective", credits=3)
-course_38 = Course(id=38, serial='CSc 47300', name='Website and Web Applications', dept='CSC', description='Full Stack development course in AGILE', designation="Group C Technical Elective", credits=3)
+course_38 = Course(id=38, serial='CSC 47300', name='Website and Web Applications', dept='CSC', description='Full Stack development course in AGILE', designation="Group C Technical Elective", credits=3)
 
 
 CS_courses = [course_1, course_2, course_3, course_4, course_5, course_6, course_7, course_8, course_9, course_10, course_11, course_12, course_13, course_14, course_15, course_16, course_17, course_18, course_19, course_20, course_21, course_22, course_23, course_24, course_25, course_26, course_27, course_28, course_29, course_30, course_31, course_32, course_33, course_34, course_35, course_36, course_37, course_38]
@@ -104,9 +104,9 @@ db.session.commit()
 
 # -- General Ed courses: 
 
-course_49 = Course(id=49, serial='ENGL 11000', name='Freshman Composition', dept='ENGL', description='Fundamental English reading, writing, comprehention', designation="Core Requirement", credits=3)
-course_50 = Course(id=50, serial='SPEECH 11100', name='Foundations of Speech Communication', dept='THEATRE/SPEECH', description='Apply public speaking skills', designation="Core Requirement", credits=3)
-course_51 = Course(id=51, serial='ENGL 21007', name='Writing for Engineering', dept='ENGL', description='Learn to write Scientific and scholarly articles on engineering', designation="Core Requirement", credits=3)
+course_49 = Course(id=49, serial='ENGL 11000', name='Freshman Composition', dept='ENGL', description='Fundamental English reading, writing, comprehention', designation="Liberal Art", credits=3)
+course_50 = Course(id=50, serial='SPEECH 11100', name='Foundations of Speech Communication', dept='THEATRE/SPEECH', description='Apply public speaking skills', designation="Liberal Art", credits=3)
+course_51 = Course(id=51, serial='ENGL 21007', name='Writing for Engineering', dept='ENGL', description='Learn to write Scientific and scholarly articles on engineering', designation="Liberal Art", credits=3)
 
 db.session.add(course_49)
 db.session.add(course_50)
