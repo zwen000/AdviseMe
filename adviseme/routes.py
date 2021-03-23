@@ -242,6 +242,7 @@ def courseinfo_fill():
         return redirect(url_for('checklist'))
     elif request.method == 'GET':
         scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
+
         
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student, scores= scores, all_grade=all_grade, form=form)
@@ -499,6 +500,14 @@ def student_profile():
 def checklist():
     courses = Course.query.all()
     cscourses = Course.query.filter_by(dept='CSC').all()
+    mathcourses = Course.query.filter_by(dept='MATH').all()
+    
+    """
+    group_a = Course.query.filter_by(designation="").all()  # Group A Technical Electives
+    group_b = Course.query.filter_by(designation="").all()  # Group B Technical Electives 
+    group_c = Course.query.filter_by(designation="").all()  # Group C Technical Electives
+    """
+
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
