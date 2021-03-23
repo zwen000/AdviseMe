@@ -60,24 +60,8 @@ course_37 = Course(id=37, serial='CSC 43800', name='Real-Time Computing Systems'
 course_38 = Course(id=38, serial='CSc 47300', name='Website and Web Applications', dept='CSC', description='Full Stack development course in AGILE', designation="Group C Technical Elective", credits=3)
 
 
-db.session.add(course_1)
-db.session.add(course_2)
-db.session.add(course_3)
-db.session.add(course_4)
-db.session.add(course_5)
-db.session.add(course_6)
-db.session.add(course_7)
-db.session.add(course_8)
-db.session.add(course_9)
-db.session.add(course_10)
-db.session.add(course_11)
-db.session.add(course_12)
-db.session.add(course_13)
-db.session.add(course_14)
-db.session.add(course_15)
-db.session.add(course_16)
-db.session.add(course_17)
-db.session.add(course_18)
+CS_courses = [course_1, course_2, course_3, course_4, course_5, course_6, course_7, course_8, course_9, course_10, course_11, course_12, course_13, course_14, course_15, course_16, course_17, course_18, course_19, course_20, course_21, course_22, course_23, course_24, course_25, course_26, course_27, course_28, course_29, course_30, course_31, course_32, course_33, course_34, course_35, course_36, course_37, course_38]
+db.session.add_all(CS_courses)
 
 db.session.commit()
 
@@ -116,6 +100,38 @@ db.session.add(course_47)
 db.session.add(course_48)
 
 db.session.commit()
+
+
+# -- General Ed courses: 
+
+course_49 = Course(id=49, serial='ENGL 11000', name='Freshman Composition', dept='ENGL', description='Fundamental English reading, writing, comprehention', designation="Core Requirement", credits=3)
+course_50 = Course(id=50, serial='SPEECH 11100', name='Foundations of Speech Communication', dept='THEATRE/SPEECH', description='Apply public speaking skills', designation="Core Requirement", credits=3)
+course_51 = Course(id=51, serial='ENGL 21007', name='Writing for Engineering', dept='ENGL', description='Learn to write Scientific and scholarly articles on engineering', designation="Core Requirement", credits=3)
+
+db.session.add(course_49)
+db.session.add(course_50)
+db.session.add(course_51)
+
+db.session.commit()
+
+# -- Liberal Art courses: (Note: This does not include EVERY possible option in CCNY)
+"""
+course_52 = Course(id=52, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="Liberal Art", credits=3)
+course_53 = Course(id=53, serial='ART 10100', name='Intro to Sketching', dept='ART', description='Learn the Fundamentals of Drawing Figures', designation="Liberal Art", credits=3)
+course_54 = Course(id=54, serial='ANTH 10100', name='Intro to Anthropology', dept='ANTH', description='Learn the Fundamentals of the field of Anthropology', designation="Liberal Art", credits=3)
+course_55 = Course(id=55, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
+course_56 = Course(id=56, serial='CSC 31800', name='', dept='CSC', description='', designation="", credits=3)
+course_57 = Course(id=57, serial='CSC 41200', name='', dept='CSC', description='', designation="", credits=3)
+course_58 = Course(id=58, serial='CSC 42000', name='', dept='CSC', description='', designation="", credits=3)
+course_59 = Course(id=59, serial='CSC 43000', name='', dept='CSC', description='', designation="", credits=3)
+course_60 = Course(id=60, serial='CSC 43500', name='', dept='CSC', description='', designation="", credits=3)
+course_61 = Course(id=61, serial='CSC 43800', name='', dept='CSC', description='', designation="", credits=3)
+course_62 = Course(id=62, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
+course_63 = Course(id=63, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
+"""
+
+
+
 
 
 # -- Grade Options:
