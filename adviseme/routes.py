@@ -409,11 +409,14 @@ def courseinfo_edit(course_id):
 
     if form.validate_on_submit():
         grades=(course_id,form.grade.data)
+        for id, grade in all_grade:
+            if course_id == id :
+                all_grade.remove((id,grade))
         stored_grade(grades)
         
         return redirect(url_for('courseinfo_fill'))
 
-    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
+    return render_template('course_info_edit.html', title='Course Information', student=student,course=course, form=form)
 
 
 # Faculty fill out the basic info on the first time once they signed in
@@ -546,7 +549,7 @@ def checklist():
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores,cscourses=cscourses)
+    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores,cscourses=cscourses, mathcourses = mathcourses)
 
 @app.route('/faculty/')
 @login_required

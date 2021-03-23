@@ -8,193 +8,91 @@
     <div class="row">
         <div class="column">
                                     
-                                      <!--Computer Science Checklist -->
-                                      <section class="checklist">
-                                        <button type="button" class="collapsible subtitle">Computer Science
-                                            <div class="progress">
-                                                <div class="progress-inner4"><p id="progress_count4"></p></div>
-                                            </div>
-                                        </button>
-                                        {% for cscourse in cscourses %}
-                                            <div class="content">
-                                                <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()" />
-                                                <label class="checkbox" for="course_serial">{{cscourse.serial}}</label>
-                                                <p style="display: inline; float: right;">
-                                                    <a class="btn plus-sign" data-toggle="collapse" href="#collapseCS1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                        +
-                                                    </a>
-                                                </p>
-                                                  <div class="collapse" id="collapseCS1">
-                                                    <div class="card card-body">
-                                                        <ul>
-                                                            <li>{{cscourse.name}}</li>
-                                                            <li>Course Description:{{cscourse.description}} </li> 
-                                                            <li>Course Credit: {{cscourse.credits}} </li>
-                                                            {% for score in scores %}
-                                                                {% if score.grade and cscourse.id == score.course_id %}
-                                                                    <li>Grade:{{score.grade}} </li>
-                                                                {% endif %}
-                                                            {% endfor %}
-                                                        </ul>
-                                                    
-                                                    </div>
-                                                  </div>
-
-                                            </div>
-                                        {% endfor %}
-                                    </section>
-                                    <br>
+          <!--Computer Science Checklist -->
+          <section class="checklist">
+            <button type="button" class="collapsible subtitle">Computer Science
+                <div class="progress">
+                    <div class="progress-inner4"><p id="progress_count4"></p></div>
+                </div>
+            </button>
+                <div class="content">
+                    {% for cscourse in cscourses %}
+                            <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
+                            <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
+                            <div class="content2">
+                                <ul>
+                                    <li>Course Name: {{cscourse.name}}</li>
+                                    <li>Course Description: {{cscourse.description}} </li> 
+                                    <li>Course Credit: {{cscourse.credits}} </li>
+                                    {% for score in scores %}
+                                        {% if score.grade and cscourse.id == score.course_id %}
+                                            <li>Grade: {{score.grade}} </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        <hr>
+            {% endfor %}  
+            </div>
+            </section>
+        <br>
+      
 <!--CS Electives Checklist -->
 <section class="checklist">
     <button type="button" class="collapsible subtitle">CSc Electives
-        <div class="progress">
+        <div class="progress"> <!--Progress Bar-->
             <div class="progress-inner5"><p id="progress_count5"></p></div>
         </div>
     </button>
-    <div class="content">
-        <input class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()" />
-        <label class="checkbox" for="course_serial">Group A</label>
-        <p style="display: inline; float: right;">
-            <a class="btn plus-sign" data-toggle="collapse" href="#collapseCSE1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                +
-            </a>
-        </p>
-          <div class="collapse" id="collapseCSE1">
-            <div class="card card-body">
-                <ul>
-                    <li>Course Name:</li>
-                    <li>Course Description: </li> 
-                    <li>Course Credit:  </li>
-                    <li>Grade: </li>
-                </ul>
-            </div>
-          </div>
-          <hr>
-          <input class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()" />
-        <label for="course_serial">Group B</label>
-        <p style="display: inline; float: right;">
-            <a class="btn plus-sign" data-toggle="collapse" href="#collapseCSE2" role="button" aria-expanded="false" aria-controls="collapseExample">
-                +
-            </a>
-        </p>
-          <div class="collapse" id="collapseCSE2">
-            <div class="card card-body">
-                <ul>
-                    <li>Course Name:</li>
-                    <li>Course Description: </li> 
-                    <li>Course Credit:  </li>
-                    <li>Grade: </li>
-                </ul>
-            </div>
-          </div>
-          <hr>
-          <input class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()" />
-          <label for="course_serial">Group C</label>
-          <p style="display: inline; float: right;">
-              <a class="btn plus-sign" data-toggle="collapse" href="#collapseCSE" role="button" aria-expanded="false" aria-controls="collapseExample">
-                  +
-              </a>
-          </p>
-            <div class="collapse" id="collapseCSE3">
-              <div class="card card-body">
-                  <ul>
-                    <li>Course Name:</li>
-                    <li>Course Description: </li> 
-                    <li>Course Credit:  </li>
-                    <li>Grade: </li>
-                  </ul>
-              </div>
-            </div>
-            <hr>
-            <input class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()" />
-            <label for="course_serial">Group A/B/C</label>
-            <p style="display: inline; float: right;">
-                <a class="btn plus-sign" data-toggle="collapse" href="#collapseCSE4" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    +
-                </a>
-            </p>
-              <div class="collapse" id="collapseCSE4">
-                <div class="card card-body">
-                    <ul>
-                        <li>Course Name:</li>
-                        <li>Course Description: </li> 
-                        <li>Course Credit:  </li>
-                        <li>Grade: </li>
-                    </ul>
-                </div>
-              </div>
-              <hr>
-              <p>Note: Last Technical Elective Course can be any class from either Group A, B or C.</p>
-    </div>
-</section>
+        <div class="content">
+        {% for cscourse in cscourses %}
+                <input class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()"  />
+                <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
+                        <div class="content2">
+                            <ul>
+                                <li>Course Name: {{cscourse.name}}</li>
+                                <li>Course Description: {{cscourse.description}} </li> 
+                                <li>Course Credit: {{cscourse.credits}} </li>
+                                {% for score in scores %}
+                                    {% if score.grade and cscourse.id == score.course_id %}
+                                        <li>Grade: {{score.grade}} </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    <hr>
+        {% endfor %}  
+        </div>
+        </section>
 <br>
 
                   <!--Technical Electives Checklist -->
                   <section class="checklist">
                     <button type="button" class="collapsible subtitle">Technical Electives
-                        <div class="progress">
+                        <div class="progress"> <!--Progress Bar-->
                             <div class="progress-inner6"><p id="progress_count6"></p></div>
                         </div>
                     </button>
-                    <div class="content">
-                        <input class="TECheckBox" type="checkbox" onclick="checkMe_TE()" />
-                        <label class="checkbox" for="course_serial">{Insert Course Name}</label>
-                        <p style="display: inline; float: right;">
-                            <a class="btn plus-sign" data-toggle="collapse" href="#collapseTE5" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                +
-                            </a>
-                        </p>
-                          <div class="collapse" id="collapseTE5">
-                            <div class="card card-body">
-                                <ul>
-                                    <li>Course Name:</li>
-                                    <li>Course Description: </li> 
-                                    <li>Course Credit:  </li>
-                                    <li>Grade: </li>
-                                </ul>
-                            </div>
-                          </div>
-                          <hr>
-
-                          <input class="TECheckBox" type="checkbox" onclick="checkMe_TE()" />
-                          <label class="checkbox" for="course_serial">{Insert Course Name}</label>
-                          <p style="display: inline; float: right;">
-                              <a class="btn plus-sign" data-toggle="collapse" href="#collapseTE6" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                  +
-                              </a>
-                          </p>
-                            <div class="collapse" id="collapseTE6">
-                              <div class="card card-body">
-                                  <ul>
-                                    <li>Course Name:</li>
-                                    <li>Course Description: </li> 
-                                    <li>Course Credit:  </li>
-                                    <li>Grade: </li>
-                                  </ul>
-                              </div>
-                            </div>
-                            <hr>
-
-                            <input class="TECheckBox" type="checkbox" onclick="checkMe_TE()" />
-                            <label class="checkbox" for="course_serial">{Insert Course Name}</label>
-                            <p style="display: inline; float: right;">
-                                <a class="btn plus-sign" data-toggle="collapse" href="#collapseTE7" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    +
-                                </a>
-                            </p>
-                              <div class="collapse" id="collapseTE7">
-                                <div class="card card-body">
-                                    <ul>
-                                        <li>Course Name:</li>
-                                        <li>Course Description: </li> 
-                                        <li>Course Credit:  </li>
-                                        <li>Grade: </li>
-                                    </ul>
-                                </div>
-                              </div>
-                              <hr>
-                    </div>
-                </section>
+                        <div class="content">
+                        {% for cscourse in cscourses %}
+                                <input class="TECheckBox" type="checkbox" onclick="checkMe_TE()"  />
+                                <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
+                                        <div class="content2">
+                                            <ul>
+                                                <li>Course Name: {{cscourse.name}}</li>
+                                                <li>Course Description: {{cscourse.description}} </li> 
+                                                <li>Course Credit: {{cscourse.credits}} </li>
+                                                {% for score in scores %}
+                                                    {% if score.grade and cscourse.id == score.course_id %}
+                                                        <li>Grade: {{score.grade}} </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    <hr>
+                        {% endfor %}  
+                        </div>
+                        </section>
                 <br>
 
         </div>
@@ -207,81 +105,26 @@
             </div>
         </button>
         <div class="content">
-            <input class="MathCheckBox" type="checkbox" onclick="checkMe_Math()" />
-            <label class="checkbox" for="course_serial">Math 20100</label>
-            <p style="display: inline; float: right;">
-                <a class="btn plus-sign" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    +
-                </a>
-            </p>
-              <div class="collapse" id="collapse1">
-                <div class="card card-body">
-                    <ul>
-                        <li>Course Name: Calculus I</li>
-                        <li>Course Description: </li> 
-                        <li>Course Credit:  </li>
-                        <li>Grade: </li>
-                    </ul>
-                </div>
-              </div>
-              <hr>
-            <input class="MathCheckBox" type="checkbox" onclick="checkMe_Math()" />
-            <label for="course_serial">Math 20200</label>
-            <p style="display: inline; float: right;">
-                <a class="btn plus-sign" data-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    +
-                </a>
-            </p>
-              <div class="collapse" id="collapse2">
-                <div class="card card-body">
-                    <ul>
-                        <li>Course Name: Calculus II</li>
-                        <li>Course Description: </li> 
-                        <li>Course Credit:  </li>
-                        <li>Grade: </li>
-                    </ul>
-                </div>
-              </div>
-              <hr>
-              <input class="MathCheckBox" type="checkbox" onclick="checkMe_Math()" />
-              <label for="course_serial">Math 20300</label>
-              <p style="display: inline; float: right;">
-                  <a class="btn plus-sign" data-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapseExample">
-                      +
-                  </a>
-              </p>
-                <div class="collapse" id="collapse3">
-                  <div class="card card-body">
-                      <ul>
-                        <li>Course Name: Calculus III</li>
-                        <li>Course Description: </li> 
-                        <li>Course Credit:  </li>
-                        <li>Grade: </li>
-                      </ul>
-                  </div>
-                </div>
-                <hr>
-                <input class="MathCheckBox" type="checkbox" onclick="checkMe_Math()" />
-                <label for="course_serial">Math 20200</label>
-                <p style="display: inline; float: right;">
-                    <a class="btn plus-sign" data-toggle="collapse" href="#collapse4" role="button" aria-expanded="false" aria-controls="collapseExample">
-                        +
-                    </a>
-                </p>
-                  <div class="collapse" id="collapse4">
-                    <div class="card card-body">
-                        <ul>
-                            <li>Course Name: Linear Algebra</li>
-                            <li>Course Description: </li> 
-                            <li>Course Credit:  </li>
-                            <li>Grade: </li>
-                        </ul>
-                    </div>
-                  </div>
-                  <hr>
+        {% for math in mathcourses %}
+                <input class="MathCheckBox" type="checkbox" onclick="checkMe_Math()"  />
+                <label class="checkbox collapsible2" for="course_serial">{{math.serial}}</label>
+                        <div class="content2">
+                            <ul>
+                                <li>Course Name: {{math.name}}</li>
+                                <li>Course Description: {{math.description}} </li> 
+                                <li>Course Credit: {{math.credits}} </li>
+                                {% for score in scores %}
+                                    {% if score.grade and math.id == score.course_id %}
+                                        <li>Grade: {{score.grade}} </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    <hr>
+        {% endfor %}  
         </div>
-    </section>
-<br>
+        </section>
+        <br>
     
                       <!--Liberal Art Checklist -->
                       <section class="checklist">
@@ -291,166 +134,26 @@
                             </div>
                         </button>
                         <div class="content">
-                            <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                            <label class="checkbox" for="course_serial">Spch 11100</label>
-                            <p style="display: inline; float: right;">
-                                <a class="btn plus-sign" data-toggle="collapse" href="#collapselib1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    +
-                                </a>
-                            </p>
-                              <div class="collapse" id="collapselib1">
-                                <div class="card card-body">
-                                    <ul>
-                                        <li>Course Name: Foundations of Speech Comm.</li>
-                                        <li>Course Description: </li> 
-                                        <li>Course Credit:  </li>
-                                        <li>Grade: </li>
-                                    </ul>
-                                </div>
-                              </div>
-                              <hr>
-    
-                              <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                              <label class="checkbox" for="course_serial">Engl 11000</label>
-                              <p style="display: inline; float: right;">
-                                  <a class="btn plus-sign" data-toggle="collapse" href="#collapselib2" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                      +
-                                  </a>
-                              </p>
-                                <div class="collapse" id="collapselib2">
-                                  <div class="card card-body">
-                                      <ul>
-                                        <li>Course Name: Freshmen Comp</li>
-                                        <li>Course Description: </li> 
-                                        <li>Course Credit:  </li>
-                                        <li>Grade: </li>
-                                      </ul>
-                                  </div>
-                                </div>
-                                <hr>
-                                
-
-                                <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                                <label class="checkbox" for="course_serial">Engl 21007</label>
-                                <p style="display: inline; float: right;">
-                                    <a class="btn plus-sign" data-toggle="collapse" href="#collapselib3" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                        +
-                                    </a>
-                                </p>
-                                  <div class="collapse" id="collapselib3">
-                                    <div class="card card-body">
-                                        <ul>
-                                            <li>Course Name: Writing for Engineering</li>
-                                            <li>Course Description: </li> 
-                                            <li>Course Credit:  </li>
-                                            <li>Grade: </li>
-                                        </ul>
-                                    </div>
-                                  </div>
-                                  <hr>
-
-                                  <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                                  <label class="checkbox" for="course_serial">Eco 10400</label>
-                                  <p style="display: inline; float: right;">
-                                      <a class="btn plus-sign" data-toggle="collapse" href="#collapselib4" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                          +
-                                      </a>
-                                  </p>
-                                    <div class="collapse" id="collapselib4">
-                                      <div class="card card-body">
-                                          <ul>
-                                                <li>Course Name: Economics</li>
-                                                <li>Course Description: </li> 
-                                                <li>Course Credit:  </li>
-                                                <li>Grade: </li>
-                                          </ul>
-                                      </div>
-                                    </div>
+                        {% for cscourse in cscourses %}
+                                <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()"  />
+                                <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
+                                        <div class="content2">
+                                            <ul>
+                                                <li>Course Name: {{cscourse.name}}</li>
+                                                <li>Course Description: {{cscourse.description}} </li> 
+                                                <li>Course Credit: {{cscourse.credits}} </li>
+                                                {% for score in scores %}
+                                                    {% if score.grade and cscourse.id == score.course_id %}
+                                                        <li>Grade: {{score.grade}} </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     <hr>
-
-                                     <!--Liberal Art 1000 Level -->
-
-                                     <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                                     <label class="checkbox" for="course_serial">Level 1000</label>
-                                     <p style="display: inline; float: right;">
-                                         <a class="btn plus-sign" data-toggle="collapse" href="#collapselib5" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                             +
-                                         </a>
-                                     </p>
-                                       <div class="collapse" id="collapselib5">
-                                         <div class="card card-body">
-                                             <ul>
-                                                   <li>Course Name: </li>
-                                                   <li>Course Credit: </li>
-                                                   <li>Grade: </li>
-                                                   <li>Semester Completed: </li>
-                                             </ul>
-                                         </div>
-                                       </div>
-                                       <hr>
-
-                                       <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                                       <label class="checkbox" for="course_serial">Level 2000</label>
-                                       <p style="display: inline; float: right;">
-                                           <a class="btn plus-sign" data-toggle="collapse" href="#collapselib6" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                               +
-                                           </a>
-                                       </p>
-                                         <div class="collapse" id="collapselib6">
-                                           <div class="card card-body">
-                                               <ul>
-                                                     <li>Course Name: </li>
-                                                     <li>Course Description: </li> 
-                                                     <li>Course Credit:  </li>
-                                                     <li>Grade: </li>
-                                               </ul>
-                                           </div>
-                                         </div>
-                                         <hr>
-
-                                         <!--Liberal Art 2000 Level -->
-
-                                     <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                                     <label class="checkbox" for="course_serial">Level 2000</label>
-                                     <p style="display: inline; float: right;">
-                                         <a class="btn plus-sign" data-toggle="collapse" href="#collapselib7" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                             +
-                                         </a>
-                                     </p>
-                                       <div class="collapse" id="collapselib7">
-                                         <div class="card card-body">
-                                             <ul>
-                                                   <li>Course Name: </li>
-                                                   <li>Course Description: </li> 
-                                                   <li>Course Credit:  </li>
-                                                   <li>Grade: </li>
-                                             </ul>
-                                         </div>
-                                       </div>
-                                       <hr>
-
-                                       <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()" />
-                                       <label class="checkbox" for="course_serial">Level 2000</label>
-                                       <p style="display: inline; float: right;">
-                                           <a class="btn plus-sign" data-toggle="collapse" href="#collapselib8" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                               +
-                                           </a>
-                                       </p>
-                                         <div class="collapse" id="collapselib8">
-                                           <div class="card card-body">
-                                               <ul>
-                                                     <li>Course Name: </li>
-                                                     <li>Course Description: </li> 
-                                                     <li>Course Credit:  </li>
-                                                     <li>Grade: </li>
-                                               </ul>
-                                           </div>
-                                         </div>
-                                         <hr>
-
+                        {% endfor %}  
                         </div>
-                    </section>
-                    <br>
+                        </section>
+                <br>
 
                   <!--Science Checklist -->
                   <section class="checklist">
@@ -460,124 +163,26 @@
                         </div>
                     </button>
                     <div class="content">
-                        <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()" />
-                        <label class="checkbox" for="course_serial">Bio 10100</label>
-                        <p style="display: inline; float: right;">
-                            <a class="btn plus-sign" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                +
-                            </a>
-                        </p>
-                          <div class="collapse" id="collapse1">
-                            <div class="card card-body">
-                                <ul>
-                                    <li>Course Name: Biological Foundations I</li>
-                                    <li>Course Description: </li> 
-                                    <li>Course Credit:  </li>
-                                    <li>Grade: </li>
-                                </ul>
-                            </div>
-                          </div>
-                          <hr>
-
-                          <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()" />
-                          <label class="checkbox" for="course_serial">Bio 10200</label>
-                          <p style="display: inline; float: right;">
-                              <a class="btn plus-sign" data-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                  +
-                              </a>
-                          </p>
-                            <div class="collapse" id="collapse2">
-                              <div class="card card-body">
-                                  <ul>
-                                    <li>Course Name: Biological Foundations II</li>
-                                    <li>Course Description: </li> 
-                                    <li>Course Credit:  </li>
-                                    <li>Grade: </li>
-                                  </ul>
-                              </div>
-                            </div>
-                            <hr>
-
-                            <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()" />
-                            <label class="checkbox" for="course_serial">Chem 10301</label>
-                            <p style="display: inline; float: right;">
-                                <a class="btn plus-sign" data-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    +
-                                </a>
-                            </p>
-                              <div class="collapse" id="collapse3">
-                                <div class="card card-body">
-                                    <ul>
-                                        <li>Course Name: General Chemistry I</li>
-                                        <li>Course Description: </li> 
-                                        <li>Course Credit:  </li>
-                                        <li>Grade: </li>
-                                    </ul>
-                                </div>
-                              </div>
-                              <hr>
-
-                              <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()" />
-                              <label class="checkbox" for="course_serial">Chem 10401</label>
-                              <p style="display: inline; float: right;">
-                                  <a class="btn plus-sign" data-toggle="collapse" href="#collapse4" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                      +
-                                  </a>
-                              </p>
-                                <div class="collapse" id="collapse4">
-                                  <div class="card card-body">
-                                      <ul>
-                                          <li>Course Name: General Chemistry II</li>
-                                          <li>Course Description: </li> 
-                                          <li>Course Credit:  </li>
-                                          <li>Grade: </li>
-                                      </ul>
-                                  </div>
-                                </div>
-                                <hr>
-
-
-                              <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()" />
-                              <label class="checkbox" for="course_serial">Phys 20700</label>
-                              <p style="display: inline; float: right;">
-                                  <a class="btn plus-sign" data-toggle="collapse" href="#collapse5" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                      +
-                                  </a>
-                              </p>
-                                <div class="collapse" id="collapse5">
-                                  <div class="card card-body">
-                                      <ul>
-                                        <li>Course Name: General Physics I</li>
-                                        <li>Course Description: </li> 
-                                        <li>Course Credit:  </li>
-                                        <li>Grade: </li>
-                                      </ul>
-                                  </div>
-                                </div>
-                                <hr>
-
-                                <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()" />
-                                <label class="checkbox" for="course_serial">Phys 20800</label>
-                                <p style="display: inline; float: right;">
-                                    <a class="btn plus-sign" data-toggle="collapse" href="#collapse6" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                        +
-                                    </a>
-                                </p>
-                                  <div class="collapse" id="collapse6">
-                                    <div class="card card-body">
+                    {% for cscourse in cscourses %}
+                            <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()"  />
+                            <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
+                                    <div class="content2">
                                         <ul>
-                                          <li>Course Name: General Physics II</li>
-                                          <li>Course Description: </li> 
-                                          <li>Course Credit:  </li>
-                                          <li>Grade: </li>
+                                            <li>Course Name: {{cscourse.name}}</li>
+                                            <li>Course Description: {{cscourse.description}} </li> 
+                                            <li>Course Credit: {{cscourse.credits}} </li>
+                                            {% for score in scores %}
+                                                {% if score.grade and cscourse.id == score.course_id %}
+                                                    <li>Grade: {{score.grade}} </li>
+                                                {% endif %}
+                                            {% endfor %}
                                         </ul>
                                     </div>
-                                  </div>
-                                  <hr>
-                                  <p>Note: Required to only take 1 sequence and 1 other science course</p>
+                                <hr>
+                    {% endfor %}  
                     </div>
-                </section>
-<br>
+                    </section>
+            <br>
 
         </div>
     </div>
@@ -616,10 +221,11 @@
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .collapsible:hover {
+.collapsible:hover, .active {
     background-color: #233B7E;
     color: white;
 }
+
 
 /* Style the collapsible content. Note: hidden by default */
 .content {
@@ -627,6 +233,32 @@
   display: none;
   overflow: hidden;
   background-color: #ececec;
+}
+
+.collapsible2{
+  color: #233B7E;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  background-color: transparent;
+}
+
+.collapsible2:hover {
+    color:#3772D7;
+    background-color: transparent;
+}
+
+.content2 {
+    display: none;
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-right: 2%;
+    padding-bottom: 1px;
+    background-color: #fafafa;
+    color: #233B7E;
+    font:  14px Open Sans Condensed, sans-serif;
 }
 
 .title{
@@ -805,6 +437,22 @@ for (i = 0; i < coll.length; i++) {
       content.style.display = "none";
     } else {
       content.style.display = "block";
+    }
+  });
+}
+
+/*Makes the course serial toggle*/
+var collapseible = document.getElementsByClassName("collapsible2");
+var j;
+
+for (j = 0; i < collapseible.length; j++) {
+    collapseible[j].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content2 = this.nextElementSibling;
+    if (content2.style.display === "block") {
+      content2.style.display = "none";
+    } else {
+      content2.style.display = "block";
     }
   });
 }

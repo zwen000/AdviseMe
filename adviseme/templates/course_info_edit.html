@@ -20,12 +20,14 @@
                                     <th>serial:</th>
                                     <th>credit:</th>
                                     <th>Grade:</th>
-                                    <th>Submit:</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <form method="POST" action="" enctype="multipart/form-data">
                                     <tr>
+                                    <td>{{course.serial}}</td>
+                                    <td>{{course.credits}}</td>
+                                    
                                         {{ form.csrf_token }}
                                         <td>{{ form.grade(class="form-control form-control-lg") }}</td>
                                         <ul>
