@@ -16,8 +16,8 @@
             </div>
           </button>
           <div class="content">
-            {% for cs_course in cs_courses %}
-              {% if cs_course.id <= 18 %}
+            {% for cs_course in courses_array %}
+              {% if cs_course.dept == "CSC" and cs_course.id <=18 %}  <!-- Core Requirement CS courses -->
                   <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
                   <label class="checkbox collapsible2" for="course_serial">{{cs_course.serial}}</label>
                   <div class="content2">
@@ -105,34 +105,37 @@
         <div class="column">
             <!--Math Checklist -->
     <section class="checklist">
-        <button type="button" class="collapsible subtitle">Math
-            <div class="progress">
-                <div class="progress-inner"><p id="progress_count"></p></div>
-            </div>
-        </button>
-        <div class="content">
-        {% for math in math_courses %}
-                <input class="MathCheckBox" type="checkbox" onclick="checkMe_Math()"  />
-                <label class="checkbox collapsible2" for="course_serial">{{math.serial}}</label>
-                        <div class="content2">
-                            <ul>
-                                <li>Course Name: {{math.name}}</li>
-                                <li>Course Description: {{math.description}} </li> 
-                                <li>Course Description: {{math.designation}} </li> 
-                                <li>Course Credit: {{math.credits}} </li>
-                                {% for score in scores %}
-                                    {% if score.grade and math.id == score.course_id %}
-                                        <li>Grade: {{score.grade}} </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    <hr>
-        {% endfor %}  
+      <button type="button" class="collapsible subtitle">Math
+        <div class="progress">
+          <div class="progress-inner"><p id="progress_count"></p></div>
         </div>
-        </section>
-        <br>
-    
+      </button>
+        
+      <div class="content">
+        {% for math_course in courses_array %}
+          {% if math_course.dept == "MATH" %}  
+            <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
+            <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
+            <div class="content2">
+              <ul>
+                <li>Course Name: {{math_course.name}}</li>
+                <li>Course Description: {{math_course.description}} </li>
+                <li>Course Designation: {{math_course.designation}}</li> 
+                <li>Course Credit: {{math_course.credits}} </li>
+                {% for score in scores %}
+                  {% if score.grade and math_course.id == score.course_id %}
+                    <li>Grade: {{score.grade}} </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          <hr>
+          {% endif %}
+        {% endfor %}  
+      </div>
+    </section>
+    <br>
+        
                       <!--Liberal Art Checklist -->
                       <section class="checklist">
                         <button type="button" class="collapsible subtitle">Liberal Arts

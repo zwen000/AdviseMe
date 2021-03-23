@@ -504,11 +504,20 @@ def checklist():
     cs_courses = Course.query.filter_by(dept='CSC').all()
     math_courses = Course.query.filter_by(dept='MATH').all()
 
-    science_courses = Course.query.filter_by(designation="Science Elective").all()      # Science Electives
-    group_a = Course.query.filter_by(designation="Group A Technical Elective").all()    # Group A Technical Electives
-    group_b = Course.query.filter_by(designation="Group B Technical Elective").all()    # Group B Technical Electives 
-    group_c = Course.query.filter_by(designation="Group C Technical Elective").all()    # Group C Technical Electives
-    liberal_art = Course.query.filter_by(designation="Liberal Art").all()               # Liberal Art 
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
+    
+    courses_array = []
+    for courseObj in student_info:
+        # print(courseObj)
+        courses_array += Course.query.filter_by(id=courseObj.course_id)
+    
+    """
+    for i in courses_array:
+        print(i)
+    """
+
+
+    idea = Enrollement.query
 
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
@@ -553,11 +562,7 @@ def checklist():
                             student=student, 
                             scores=scores, 
                             cs_courses=cs_courses, 
-                            group_a=group_a, 
-                            group_b=group_b, 
-                            group_c=group_c, 
-                            liberal_art=liberal_art, 
-                            science_courses=science_courses, 
+                            courses_array=courses_array, 
                             math_courses=math_courses)
 
 @app.route('/faculty/')
