@@ -41,11 +41,9 @@
                         <div class="rounded mx-auto d-block">
                             <img class="rounded-circle account-img" src="{{ profile_image }}">
                         </div>
-                        <div class="col-12">
-                            <h5 class="info text-center mb-3">EMPLID:   {{ student.EMPLID }}</h5>
+                        <div>
                             <h5 class="info text-center mb-3">Name: {{ student.firstname }} {{ student.lastname }}</h5>
-                            <h5 class="info text-center mb-3">Credits Earned: {{ student.credit_earned }}</h5>
-                            <h5 class="info text-center">Currently Taking: {{ student.credit_taken }}</h5>
+                            <h5 class="info text-center mb-3">EMPLID:   {{ student.EMPLID }}</h5>
                         </div>
                     </div>
                     <br>
@@ -60,7 +58,6 @@
                             </thead>
                             <tbody>
                                 <form method="POST" action="" enctype="multipart/form-data">
-
                                     <tr class="thead-dark">
                                         <th>Math:</th>
                                         <th> </th>
@@ -82,7 +79,6 @@
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
-
                                     <tr class="thead-dark">
                                         <th>Science:</th>
                                         <th> </th>
@@ -104,7 +100,6 @@
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
-
                                     <tr class="thead-dark">
                                         <th>Computer Science:</th>
                                         <th> </th>
@@ -127,7 +122,7 @@
                                         {% endif %}
                                     {% endfor %}
                                     
-                                    <tr class="thead-light">
+                                    <tr class="thead-dark">
                                         <th>CSc Electives</th>
                                         <th>  </th>
                                         <th>  </th>
@@ -135,8 +130,8 @@
                                         <th>  </th>
                                     </tr>
 
-                                    <tr class="thead-dark">
-                                        <th>Group A: Theory and Application</th>
+                                    <tr class="table-secondary">
+                                        <th class="sub_category">Group A: Theory and Application</th>
                                         <th> </th>
                                         <th> </th>
                                         <th> </th>
@@ -158,8 +153,8 @@
                                     {% endfor %}
 
                                     
-                                    <tr class="thead-dark">
-                                        <th>Group B: Computational Techniques For Sci & Engr.</th>
+                                    <tr class="table-secondary">
+                                        <th class="sub_category">Group B: Computational Techniques For Sci & Engr.</th>
                                         <th>  </th>
                                         <th>  </th>
                                         <th>  </th>
@@ -181,8 +176,8 @@
                                     {% endfor %}
 
 
-                                    <tr class="thead-dark">
-                                        <th>Group C: Computer Systems Elective</th>
+                                    <tr class="table-secondary">
+                                        <th class="sub_category">Group C: Computer Systems Elective</th>
                                         <th> </th>
                                         <th> </th>
                                         <th> </th>
@@ -211,17 +206,6 @@
                 </div>
             </div>
         </div>
-        <form method="POST" action="" enctype="multipart/form-data">
-        <div class="form-group">
-            {{ form.csrf_token }}
-            {{ form.submit(class="btn custom-button-profile-update") }}
-            <ul>
-            {% for error in form.submit.errors %}
-                <li style="color:red;">{{ error }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-    </form>
     </section>
     <!-- End of Table -->
     <form method="POST" action="" enctype="multipart/form-data">
@@ -300,8 +284,9 @@ font-family: Poppins;
 font-style: normal;
 font-weight: bold;
 }
-.custom-button-submit :hover{
-    background-color: #233B7E;
+.custom-button-submit:hover{
+    transition: ease-in;
+    background: #233B7E;
     color: white;
 }
 
@@ -310,13 +295,24 @@ font-weight: bold;
     }
     .card {
         border-radius: 15px;
-        width: 30%;
+        width: 28%;
         margin: 0 auto; /* Added */
         float: none; /* Added */
         margin-bottom: 5%; /* Added */
 }
 .info{
     font-size: medium;
+    font-family:Georgia, 'Times New Roman', Times, serif
+}
+.info:hover{
+    color: #233B7E;
+}
+tr{
+font-family:Georgia, 'Times New Roman', Times, serif;
+}
+.sub_category{
+    font-size: medium;
+    color:#233B7E;
 }
 </style>
 {% endblock content %} 
