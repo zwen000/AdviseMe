@@ -18,7 +18,7 @@
           <div class="content">
             {% for cs_course in courses_array %}
               {% if cs_course.dept == "CSC" and cs_course.id <=18 %}  <!-- Core Requirement CS courses -->
-                  <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
+                  <input checked class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
                   <label class="checkbox collapsible2" for="course_serial">{{cs_course.serial}}</label>
                   <div class="content2">
                     <ul>
@@ -42,15 +42,15 @@
       
 <!--CS Electives Checklist -->
       <section class="checklist">
-        <button type="button" class="collapsible subtitle">CSc Electives
+        <button type="button" class="collapsible subtitle">Technical Electives
           <div class="progress"> <!--Progress Bar-->
               <div class="progress-inner5"><p id="progress_count5"></p></div>
           </div>
         </button>
         <div class="content">
-        {% for cs_elective in cs_courses %}
-          {% if cs_elective.id > 18 %}
-              <input class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()"  />
+        {% for cs_elective in courses_array %}
+          {% if cs_elective.dept == "CSC" and cs_elective.id > 18 %}
+              <input checked class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()"  />
               <label class="checkbox collapsible2" for="course_serial">{{cs_elective.serial}}</label>
               <div class="content2">
                 <ul>
@@ -74,7 +74,7 @@
 
                   <!--Technical Electives Checklist -->
                   <section class="checklist">
-                    <button type="button" class="collapsible subtitle">Technical Electives
+                    <button type="button" class="collapsible subtitle">CSc Electives
                         <div class="progress"> <!--Progress Bar-->
                             <div class="progress-inner6"><p id="progress_count6"></p></div>
                         </div>
@@ -114,7 +114,7 @@
       <div class="content">
         {% for math_course in courses_array %}
           {% if math_course.dept == "MATH" %}  
-            <input class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
+            <input checked class="MathCheckBox" type="checkbox" onclick="checkMe_Math()"/>
             <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
             <div class="content2">
               <ul>
@@ -524,11 +524,13 @@ function checkMe_Lib() {
 
     document.getElementById("progress_count3").innerHTML = Math.round(whole_number_L) + "/" + Lib_cb.length;
 }
+const body = document.body;
+body.onload = checkMe_CS;
 /*Progress Counter for Computer Science*/
 function checkMe_CS() {
   const CS_cb = document.querySelectorAll(".CSCheckBox");
   const progress_CS = document.querySelector(".progress-inner4");
-  const checklistProgressInterval_CS = 100 / CS_cb.length;
+  const checklistProgressInterval_CS = 100 / 18;
   let width_CS = 0;
   
   for(let i = 0; i < CS_cb.length; i++){
@@ -537,9 +539,9 @@ function checkMe_CS() {
     }
   }
     progress_CS.style.width = `${width_CS}%`;
-    whole_number_CS = (width_CS/100) * CS_cb.length
+    whole_number_CS = (width_CS/100) * 18
 
-    document.getElementById("progress_count4").innerHTML = Math.round(whole_number_CS) + "/" + CS_cb.length;
+    document.getElementById("progress_count4").innerHTML = Math.round(whole_number_CS) + "/" + 18;
 }
 
 /*Progress Counter for CS Electives */
@@ -575,7 +577,7 @@ function checkMe_TE() {
     progress_TE.style.width = `${width_TE}%`;
     whole_number_TE = (width_TE/100) * TE_cb.length;
 
-    document.getElementById("progress_count6").innerHTML = Math.round(whole_number_TE) + "/" + TE_cb.length;
+    document.getElementById("progress_count6").innerHTML = Math.round(whole_number_TE) + "/" + 4;
 }
 
 
