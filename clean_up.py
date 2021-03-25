@@ -102,32 +102,36 @@ db.session.add(course_48)
 db.session.commit()
 
 
-# -- General Ed courses: 
+# -- Liberal Art Courses: 
 
 course_49 = Course(id=49, serial='ENGL 11000', name='Freshman Composition', dept='ENGL', description='Fundamental English reading, writing, comprehention', designation="Liberal Art", credits=3)
 course_50 = Course(id=50, serial='SPEECH 11100', name='Foundations of Speech Communication', dept='THEATRE/SPEECH', description='Apply public speaking skills', designation="Liberal Art", credits=3)
 course_51 = Course(id=51, serial='ENGL 21007', name='Writing for Engineering', dept='ENGL', description='Learn to write Scientific and scholarly articles on engineering', designation="Liberal Art", credits=3)
+course_52 = Course(id=52, serial='ECO 10400', name='Intro to Quantitative Economics', dept='ECO', description='Learning market fundamentals of supply and demand.', designation="Liberal Art", credits=3)
+course_53 = Course(id=53, serial='ENGR 27600', name='Engineering Economics', dept='ENGR', description='Learning fundamentals engineering economics', designation="Liberal Art", credits=3)
 
 db.session.add(course_49)
 db.session.add(course_50)
 db.session.add(course_51)
+db.session.add(course_52)
+db.session.add(course_53)
 
 db.session.commit()
 
-# -- Liberal Art courses: (Note: This does not include EVERY possible option in CCNY)
+# -- Other Liberal Art courses: (Note: This does not include EVERY possible option in CCNY)
 """
-course_52 = Course(id=52, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="Liberal Art", credits=3)
-course_53 = Course(id=53, serial='ART 10100', name='Intro to Sketching', dept='ART', description='Learn the Fundamentals of Drawing Figures', designation="Liberal Art", credits=3)
-course_54 = Course(id=54, serial='ANTH 10100', name='Intro to Anthropology', dept='ANTH', description='Learn the Fundamentals of the field of Anthropology', designation="Liberal Art", credits=3)
-course_55 = Course(id=55, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
-course_56 = Course(id=56, serial='CSC 31800', name='', dept='CSC', description='', designation="", credits=3)
-course_57 = Course(id=57, serial='CSC 41200', name='', dept='CSC', description='', designation="", credits=3)
-course_58 = Course(id=58, serial='CSC 42000', name='', dept='CSC', description='', designation="", credits=3)
-course_59 = Course(id=59, serial='CSC 43000', name='', dept='CSC', description='', designation="", credits=3)
-course_60 = Course(id=60, serial='CSC 43500', name='', dept='CSC', description='', designation="", credits=3)
-course_61 = Course(id=61, serial='CSC 43800', name='', dept='CSC', description='', designation="", credits=3)
-course_62 = Course(id=62, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
-course_63 = Course(id=63, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
+course_54 = Course(id=54, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="Liberal Art", credits=3)
+course_55 = Course(id=55, serial='ART 10100', name='Intro to Sketching', dept='ART', description='Learn the Fundamentals of Drawing Figures', designation="Liberal Art", credits=3)
+course_56 = Course(id=56, serial='ANTH 10100', name='Intro to Anthropology', dept='ANTH', description='Learn the Fundamentals of the field of Anthropology', designation="Liberal Art", credits=3)
+course_57 = Course(id=57, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
+course_58 = Course(id=58, serial='CSC 31800', name='', dept='CSC', description='', designation="", credits=3)
+course_59 = Course(id=59, serial='CSC 41200', name='', dept='CSC', description='', designation="", credits=3)
+course_60 = Course(id=60, serial='CSC 42000', name='', dept='CSC', description='', designation="", credits=3)
+course_61 = Course(id=61, serial='CSC 43000', name='', dept='CSC', description='', designation="", credits=3)
+course_62 = Course(id=62, serial='CSC 43500', name='', dept='CSC', description='', designation="", credits=3)
+course_63 = Course(id=63, serial='CSC 43800', name='', dept='CSC', description='', designation="", credits=3)
+course_64 = Course(id=64, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
+course_65 = Course(id=65, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
 """
 
 

@@ -156,7 +156,6 @@
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
-
                                     
                                     <tr class="thead-dark">
                                         <th>Group B: Computational Techniques For Sci & Engr.</th>
@@ -180,7 +179,6 @@
                                         {% endif %}
                                     {% endfor %}
 
-
                                     <tr class="thead-dark">
                                         <th>Group C: Computer Systems Elective</th>
                                         <th> </th>
@@ -203,8 +201,50 @@
                                         {% endif %}
                                     {% endfor %}
 
-                                </form>
+                                    <tr class="thead-dark">
+                                        <th>Liberal Arts:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Liberal Art" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
 
+                                <!--
+                                <tr>
+                                    {{ form.csrf_token }}
+                                    <td>{{ course_form.elective(class="form-control form-control-lg") }}</td>
+                                    <ul>
+                                    {% for error in course_form.elective.errors %}
+                                        <li style="color:red;">{{ error }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                    {% for course in course_form %}
+                                        <tr>
+                                            <td>{{ course.serial }}</td>
+                                            <td>{{ course.credits }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tr>
+                                <div class="form-group">
+                                    {{ course_form.submit(class="btn custom-button-profile-update") }}
+                                </div>
+                                -->
+
+                                </form>
                             </tbody>
                         </table>
                     </div>

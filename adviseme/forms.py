@@ -68,6 +68,13 @@ class CourseCreationForm(FlaskForm):
         if course:
             raise ValidationError('That Course ID is already in use!')
 
+
+class ElectiveForm(FlaskForm):
+    elective = SelectField('Elective: ', choices=[])
+    submit = SubmitField('Submit')
+
+
+
 class FacultyInfoForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
     firstname = StringField('First Name', validators=[DataRequired()])

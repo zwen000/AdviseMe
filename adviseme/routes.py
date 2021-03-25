@@ -170,8 +170,11 @@ def stored_grade(alist):
 @login_required
 def courseinfo_fill():
     form = SubmitForm()
+    course_form = ElectiveForm()
     courses = Course.query.all()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+
+    # course_form.elective.choices = [(option.serial) for option in Course.query.filter_by(designation="Liberal Art")]
 
     if form.validate_on_submit():
         for course_id,grade in all_grade:
@@ -242,9 +245,16 @@ def courseinfo_fill():
     elif request.method == 'GET':
         scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
-        
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student, scores= scores, all_grade=all_grade, form=form)
+    return render_template('course_info_fill.html', title='Course Information', 
+                            profile_image=profile_image, 
+                            courses=courses, 
+                            student=student, 
+                            scores= scores, 
+                            all_grade=all_grade,
+                            course_form=course_form, 
+                            form=form)
+
 
 #@app.route('/course/info', methods=['GET', 'POST'])
 #@login_required
