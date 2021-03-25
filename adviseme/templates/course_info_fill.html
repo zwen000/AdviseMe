@@ -52,28 +52,157 @@
                         <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
-                                    <th>    </th>
                                     <th>Course Code:</th>
-                                    <th>Course Name:</th>
                                     <th>Credits awarded:</th>
+                                    <th>Course Name:</th>
                                     <th>Grade:</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <form method="POST" action="" enctype="multipart/form-data">
+
+                                    <tr class="thead-dark">
+                                        <th>Math:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
                                     {% for course in courses %}
-                                        <tr>
-                                            <th>   </th> <!-- Must be left blank for formatting purposes! -->
-                                            <td>{{ course.serial }}</td>
-                                            <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
-                                            <td>{{ course.credits }}</td>
-                                            {% for id, grade in all_grade %}
-                                                {% if course.id == id %}
-                                                    <td>{{ grade }}</td>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </tr>
+                                        {% if course.dept == "MATH" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
                                     {% endfor %}
+
+                                    <tr class="thead-dark">
+                                        <th>Science:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Science Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <tr class="thead-dark">
+                                        <th>Computer Science:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.id <= 18 %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    <tr class="thead-light">
+                                        <th>CSc Electives</th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                    </tr>
+
+                                    <tr class="thead-dark">
+                                        <th>Group A: Theory and Application</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Group A Technical Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    
+                                    <tr class="thead-dark">
+                                        <th>Group B: Computational Techniques For Sci & Engr.</th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Group B Technical Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
+
+                                    <tr class="thead-dark">
+                                        <th>Group C: Computer Systems Elective</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Group C Technical Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
                                 </form>
 
                             </tbody>
@@ -95,6 +224,17 @@
     </form>
     </section>
     <!-- End of Table -->
+    <form method="POST" action="" enctype="multipart/form-data">
+    <div class="form-group">
+        {{ form.csrf_token }}
+        {{ form.submit(class="btn custom-button-submit") }}
+        <ul>
+        {% for error in form.submit.errors %}
+            <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</form>
 </div>
 </div>
 </center>
@@ -128,6 +268,24 @@ background: #FFFFFF;
 box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
 border-radius: 15px;
 }
+
+.custom-button-submit {
+background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+border-radius: 50px;
+color: hsl(0, 0%, 100%);
+padding: 10px;
+border: none;
+width: 40%;
+cursor: pointer;
+font-style: normal;
+font-weight: bold;
+font:  18px Open Sans lighter, sans-serif;
+}
+.custom-button-login:hover{
+  background:#233B7E;
+}
+
 
 .custom-button-submit {
 background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);

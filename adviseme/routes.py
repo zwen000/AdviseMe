@@ -130,10 +130,20 @@ def studentinfo_fill():
     return render_template('studentinfo_fill.html', title='Student Form', profile_image=profile_image, form=form)
 
 
-@app.route('/course/creation/form', methods=['GET', 'POST'])
-def test():
+@app.route('/student/course/info', methods=['GET', 'POST'])
+def student_course_info():
     form = CourseCreationForm()
-    courses = Course.query.all()
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
+    
+    courses = []
+    for courseObj in student_info:
+        # print(courseObj)
+        courses += Course.query.filter_by(id=courseObj.course_id)
+    
+    """
+    for i in courses:
+        print(i)
+    """
 
     if form.validate_on_submit():
         course = Course(    serial=form.serial.data, 
@@ -145,19 +155,9 @@ def test():
         db.session.add(course)
         flash('Your course has been created!', 'success')
         db.session.commit()
-        return redirect(url_for('test'))
-    """
-    elif request.method == 'GET':
-        form.id.data = course.id
-        form.serial.data = course.serial
-        form.name.data = course.name
-        form.dept.data = course.dept
-        form.description.data = course.description
-        form.designation.data = course.designation
-        form.credits.data = course.credits
-    """
+        return redirect(url_for('student_course_info'))
 
-    return render_template('course_creation_form.html', courses=courses, form=form)
+    return render_template('student_course_info.html', courses=courses, student_info=student_info, form=form)
 
 
 all_grade=[]
@@ -241,6 +241,7 @@ def courseinfo_fill():
         return redirect(url_for('checklist'))
     elif request.method == 'GET':
         scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
+
         
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('course_info_fill.html', title='Course Information', profile_image=profile_image, courses=courses, student=student, scores= scores, all_grade=all_grade, form=form)
@@ -407,11 +408,14 @@ def courseinfo_edit(course_id):
 
     if form.validate_on_submit():
         grades=(course_id,form.grade.data)
+        for id, grade in all_grade:
+            if course_id == id :
+                all_grade.remove((id,grade))
         stored_grade(grades)
         
         return redirect(url_for('courseinfo_fill'))
 
-    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
+    return render_template('course_info_edit.html', title='Course Information', student=student,course=course, form=form)
 
 
 # Faculty fill out the basic info on the first time once they signed in
@@ -497,8 +501,24 @@ def student_profile():
 @login_required
 def checklist():
     courses = Course.query.all()
-    cscourses = Course.query.filter_by(dept='CSC').all()
-    mathcourses = Course.query.filter_by(dept='MATH').all()
+    cs_courses = Course.query.filter_by(dept='CSC').all()
+    math_courses = Course.query.filter_by(dept='MATH').all()
+
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
+    
+    courses_array = []
+    for courseObj in student_info:
+        # print(courseObj)
+        courses_array += Course.query.filter_by(id=courseObj.course_id)
+    
+    """
+    for i in courses_array:
+        print(i)
+    """
+
+
+    idea = Enrollement.query
+
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
@@ -521,8 +541,8 @@ def checklist():
     for value in scores:
         if value.QPA_point:
             if value.course_id >= 1:
-                student.QPA += int(value.QPA_point)         # course_id (1-18) in the database are all CS courses! 
-            elif value.course_id >= 19:
+                student.QPA += int(value.QPA_point)         # course_id (1-38) in the database are all CS courses!  
+            elif value.course_id >= 38:
                 student.QPA += 0
                 print("id 19 and above are not CS courses!")
             else:
@@ -532,12 +552,18 @@ def checklist():
     print("The QPA should be: ", student.QPA)    
     db.session.commit()
 
-    # CS_courses = Course.query.filter_by(dept="CSC").count()
+    # CS_courses = Course.query.filter_by(dept="CSC").count() # There are 38 CS_courses in the database!
     # print(CS_courses)
 
-
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
-    return render_template('checklist.html', title='Checklist', profile_image=profile_image, courses=courses, student=student, scores=scores,cscourses=cscourses, mathcourses = mathcourses)
+    return render_template('checklist.html', title='Checklist', 
+                            profile_image=profile_image, 
+                            courses=courses, 
+                            student=student, 
+                            scores=scores, 
+                            cs_courses=cs_courses, 
+                            courses_array=courses_array, 
+                            math_courses=math_courses)
 
 @app.route('/faculty/')
 @login_required
