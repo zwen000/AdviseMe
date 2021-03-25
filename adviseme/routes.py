@@ -238,7 +238,7 @@ def courseinfo_fill():
                         enrollement.QPA_point = 0
                 db.session.commit()
         all_grade.clear()                                         # Clear the list when all data store into db
-        return redirect(url_for('checklist'))
+        return redirect(url_for('student_profile'))
     elif request.method == 'GET':
         scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
@@ -672,3 +672,8 @@ def noteReview(note_id):
 @login_required
 def workflow():
     return render_template('workflow.html', title="workflow")
+
+@app.route('/Advisement')
+@login_required
+def Advisement():
+    return render_template('AdvisementForm.html', title="Live Advisement Form")
