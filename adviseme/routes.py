@@ -432,8 +432,14 @@ def courseinfo_edit(course_id):
 @app.route('/facultyinfo_fill/', methods=['GET', 'POST'])
 def facultyinfo_fill():
     form = FacultyInfoForm()
+    profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
 
     if form.validate_on_submit():
+        if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
+            picture_file = save_picture(form.picture.data)      # Save the image!
+            current_user.profile_image = picture_file           # Update the current user profile photo in the database!
+            print("Execution Complete!")
+
         faculty = Faculty(EMPLID=form.EMPLID.data,
                           firstname=form.firstname.data,
                           lastname=form.lastname.data,
@@ -443,7 +449,8 @@ def facultyinfo_fill():
         db.session.commit()
         flash('Info Updated', 'success')
         return redirect(url_for('faculty'))
-    return render_template('facultyinfo_fill.html', title='Faculty Form', form=form)
+
+    return render_template('facultyinfo_fill.html', title='Faculty Form', profile_image=profile_image, form=form)
 
 
 # function for logout
