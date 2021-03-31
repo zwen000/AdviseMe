@@ -38,21 +38,7 @@ In the event of any error upon the launching the application, try deleting your 
 
 To create a new database that adheres to all modifications made in "models.py" type:
         
-        $ python
-
-Import the database from the adviseme module:
-        
-        >> from adviseme import db
-
-Build the most uptodate version of the database: 
-        
-        >> db.create_all()
-
-To exit python iterpreter:
-        
-        >> exit()
-
-After creating the new compliant database you can begin populating it again. 
+        $ python clean_up.py
 
 ## To run the application:
 

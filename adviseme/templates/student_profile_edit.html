@@ -26,47 +26,30 @@
                   {{ form.firstname.label(class="form-control-label") }}
     
                   {% if form.firstname.errors %}
-                  {{ form.firstname(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                      {% for error in form.firstname.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
-                  </div>
-                  {% else %}
-                      {{ form.firstname(class="form-control form-control-lg") }}
-                  {% endif %}
-              </div>
-
-              <div class='form-group'>
-                {{ form.credit_earned.label(class="form-control-label") }}
-  
-                {% if form.credit_earned.errors %}
-                    {{ form.credit_earned(class="form-control form-control-lg is-invalid") }}
+                    {{ form.firstname(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
-                        {% for error in form.credit_earned.errors %}
+                        {% for error in form.firstname.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
-                {% else %}
-                    {{ form.credit_earned(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-
-            <div class='form-group'>
-              {{ form.EMPLID.label(class="form-control-label") }}
-              <!-- Standard Exception Handling: -->
-              {% if form.EMPLID.errors %}
-                {{ form.EMPLID(class="form-control form-control-lg is-invalid") }}
-                  <div class="invalid-feedback">
-                    {% for error in form.EMPLID.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                  </div>
-                {% else %}
-                  {{ form.EMPLID(class="form-control form-control-lg") }}
-              {% endif %}
-            </div>
-
+                  {% else %}
+                      {{ form.firstname(class="form-control form-control-lg") }}
+                  {% endif %}
+                </div>
+                <div class='form-group'>
+                  {{ form.EMPLID.label(class="form-control-label") }}
+                  <!-- Standard Exception Handling: -->
+                  {% if form.EMPLID.errors %}
+                    {{ form.EMPLID(class="form-control form-control-lg is-invalid") }}
+                      <div class="invalid-feedback">
+                        {% for error in form.EMPLID.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    {% else %}
+                      {{ form.EMPLID(class="form-control form-control-lg") }}
+                  {% endif %}
+                </div>
               </div>
               <div class="column">
                 <div class='form-group'>
@@ -84,21 +67,6 @@
                   {% endif %}
               </div>
 
-              <div class='form-group'>
-                {{ form.credit_taken.label(class="form-control-label") }}
-  
-                {% if form.credit_taken.errors %}
-                    {{ form.credit_taken(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.credit_taken.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.credit_taken(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-
             <div class='form-group'>
               {{ form.email.label(class="form-control-label") }}
               <!-- Standard Exception Handling: -->
@@ -113,8 +81,8 @@
                   {{ form.email(class="form-control form-control-lg") }}
               {% endif %}
             </div>
-              </div>
-            </div>
+          </div>
+        </div>
 
           <div class='form-group'>
             {{ form.bio.label(class="form-control-label") }}
@@ -136,8 +104,8 @@
           </div>
         </form>
     </div>
-
 </center>
+
 <style>
   body{
     padding-top: 3%;

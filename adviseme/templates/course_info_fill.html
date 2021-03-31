@@ -1,6 +1,30 @@
-{% extends "layout.html"%}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/main.css') }}">
+
+    {% if title %}
+        <title>AdviseMe - {{ title }}</title>
+    {% else %}
+        <title>AdviseMe</title>
+    {% endif %}
+
+</head>
+
+<body>
+{% block content %}
+<center>
+    <img class="logo-size" src="../static/Images/AdviseMe.svg">
+    <div class="content-section">
 <div>
     <!-- start of Table -->
     <section>
@@ -9,125 +33,212 @@
                 <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
                     <div class="row">       <!-- Inner Grid -->
                         <div class="col-12 mb-4">
-                            <h3 class="text-dark text-center mb-3">CCNY Student Advisement Form</h3>
+                            <legend class="border-bottom mb-2">Student Info Form</legend>
                         </div>
+                        <div class="card shadow p-3">
+                        <div class="rounded mx-auto d-block">
+                            <img class="rounded-circle account-img" src="{{ profile_image }}">
+                        </div>
+                        <div>
+                            <h5 class="info text-center mb-3">Name: {{ student.firstname }} {{ student.lastname }}</h5>
+                            <h5 class="info text-center mb-3">EMPLID:   {{ student.EMPLID }}</h5>
+                        </div>
+                    </div>
+                    <br>
                         <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
-                                    <th>    </th>
-                                    <th>{{ form.serial.label(class="form-control-label") }}</th>
-                                    <th>{{ form.name.label(class="form-control-label") }}</th>
-                                    <th>{{ form.instructor.label(class="form-control-label") }}</th>
-                                    <th>{{ form.credits.label(class="form-control-label") }}</th>
-                                    <th>{{ form.grade.label(class="form-control-label") }}</th>
-                                    <th>{{ form.currently_enrolled.label(class="form-control-label") }}</th>
-                                    <th>{{ form.intend_to_take.label(class="form-control-label") }}</th>
+                                    <th>Course Code:</th>
+                                    <th>Credits awarded:</th>
+                                    <th>Course Name:</th>
+                                    <th>Grade:</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th>Math</th>
-                                    <td>   
-                                        {% if form.serial.errors %}
-                                            {{ form.serial(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                            {% for error in form.serial.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.serial(class="form-control form-control-lg") }}
-                                        {% endif %} 
-                                    </td>
-                                    <td> 
-                                        {% if form.name.errors %}
-                                            {{ form.name(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.name.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.name(class="form-control form-control-lg") }}
-                                        {% endif %} 
-                                    </td>
-                                    <td>
-                                        {% if form.instructor.errors %}
-                                            {{ form.instructor(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.instructor.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.instructor(class="form-control form-control-lg") }}
-                                        {% endif %} 
-                                    </td>
-                                    <td>
-                                        {% if form.credits.errors %}
-                                            {{ form.credits(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.credits.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.credits(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        {% if form.grade.errors %}
-                                            {{ form.grade(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.grade.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.grade(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        {% if form.currently_enrolled.errors %}
-                                            {{ form.currently_enrolled(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.currently_enrolled.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.currently_enrolled(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        {% if form.intend_to_take.errors %}
-                                            {{ form.intend_to_take(class="form-control form-control-lg is-invalid") }}
-                                            <div class="invalid-feedback">
-                                                {% for error in form.intend_to_take.errors %}
-                                                    <span>{{ error }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            {{ form.intend_to_take(class="form-control form-control-lg") }}
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        <div class="form-group">
-                                            {{ form.submit(class="btn btn-outline-info") }}
-                                        </div>
-                                    </td>
-                                </tr>
-                                
-                                {% for course in courses %}
-                                    <tr>
-                                        <th>   </th> <!-- Must be left blank for formatting purposes! -->
-                                        <td>{{ course.serial }}</td>
-                                        <td>{{ course.name }}</td>
-                                        <td>{{ course.instructor }}</td>
-                                        <td>{{ course.credits }}</td>
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                    <tr class="thead-dark">
+                                        <th>Math:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
                                     </tr>
-                                {% endfor %}
+                                    {% for course in courses %}
+                                        {% if course.dept == "MATH" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <tr class="thead-dark">
+                                        <th>Science:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Science Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <tr class="thead-dark">
+                                        <th>Computer Science:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.id <= 18 %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    <tr class="thead-dark">
+                                        <th>Technical Electives</th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                    </tr>
 
+                                    <tr class="table-secondary">
+                                        <th class="sub_category">Group A: Theory and Application</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Group A Technical Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    <tr class="table-secondary">
+                                        <th class="sub_category">Group B: Computational Techniques For Sci & Engr.</th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                        <th>  </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Group B Technical Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <tr class="table-secondary">
+                                        <th class="sub_category">Group C: Computer Systems Elective</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+
+                                    {% for course in courses %}
+                                        {% if course.designation == "Group C Technical Elective" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <tr class="thead-dark">
+                                        <th>Liberal Arts:</th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                    {% for course in courses %}
+                                        {% if course.designation == "Liberal Art" %}
+                                            <tr>
+                                                <td>{{ course.serial }}</td>
+                                                <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
+                                                <td>{{ course.credits }}</td>
+                                                {% for id, grade in all_grade %}
+                                                    {% if course.id == id %}
+                                                        <td>{{ grade }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                <!--
+                                <tr>
+                                    {{ form.csrf_token }}
+                                    <td>{{ course_form.elective(class="form-control form-control-lg") }}</td>
+                                    <ul>
+                                    {% for error in course_form.elective.errors %}
+                                        <li style="color:red;">{{ error }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                    {% for course in course_form %}
+                                        <tr>
+                                            <td>{{ course.serial }}</td>
+                                            <td>{{ course.credits }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tr>
+                                <div class="form-group">
+                                    {{ course_form.submit(class="btn custom-button-profile-update") }}
+                                </div>
+                                -->
+
+                                </form>
                             </tbody>
                         </table>
                     </div>
@@ -136,6 +247,111 @@
         </div>
     </section>
     <!-- End of Table -->
+    <form method="POST" action="" enctype="multipart/form-data">
+    <div class="form-group">
+        {{ form.csrf_token }}
+        {{ form.submit(class="btn custom-button-submit") }}
+        <ul>
+        {% for error in form.submit.errors %}
+            <li style="color:red;">{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</form>
 </div>
+</div>
+</center>
+    <!-- Content Block End -->
+    <div class="push"></div>
 
+</body>
+</html>
+<style>
+    body{
+    background-color: #3772D7;
+    margin: auto;
+    }
+
+    .logo-size{
+    width: 15%;
+}
+legend{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 32px;
+
+color: #233B7E;
+}
+
+.content-section{
+width: 65%;
+padding: 2%;
+background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+border-radius: 15px;
+}
+
+.custom-button-submit {
+background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+border-radius: 50px;
+color: hsl(0, 0%, 100%);
+padding: 10px;
+border: none;
+width: 40%;
+cursor: pointer;
+font-style: normal;
+font-weight: bold;
+font:  18px Open Sans lighter, sans-serif;
+}
+.custom-button-login:hover{
+  background:#233B7E;
+}
+
+
+.custom-button-submit {
+background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+border-radius: 50px;
+color: hsl(0, 0%, 100%);
+padding: 10px;
+border: none;
+width: 30%;
+cursor: pointer;
+font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+}
+.custom-button-submit:hover{
+    transition: ease-in;
+    background: #233B7E;
+    color: white;
+}
+
+    a:hover {
+        color: blue;
+    }
+    .card {
+        border-radius: 15px;
+        width: 28%;
+        margin: 0 auto; /* Added */
+        float: none; /* Added */
+        margin-bottom: 5%; /* Added */
+}
+.info{
+    font-size: medium;
+    font-family:Georgia, 'Times New Roman', Times, serif
+}
+.info:hover{
+    color: #233B7E;
+}
+tr{
+font-family:Georgia, 'Times New Roman', Times, serif;
+}
+.sub_category{
+    font-size: medium;
+    color:#233B7E;
+}
+</style>
 {% endblock content %} 

@@ -1,0 +1,85 @@
+{% extends "layout.html"%}
+{% block content %}
+
+<div>
+    <!-- start of Table -->
+    <section>
+        <div class="container-fluid">       <!-- Container Grid -->
+            <div class="row mb-5">          <!-- Row -->
+                <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
+                    <div class="row">       <!-- Inner Grid -->
+                        <div class="col-12 mb-4">
+                            <h3 class="text-dark text-center mb-3">Course Information Form (CCNY)</h3>
+                        </div>
+                        <div class="rounded mx-auto d-block">
+                            <img class="rounded-circle account-img" src="{{ profile_image }}">
+                        </div>
+                        <div class="col-12 mb-4">
+                            <h5 class="text-dark text-center mb-3">EMPLID:   {{ student.EMPLID }}</h5>
+                            <h5 class="text-dark text-center mb-3">Name: {{ student.firstname, student.lastname }}</h5>
+                            <h5 class="text-dark text-center mb-3">Credits Earned: {{ student.credit_earned }}</h5>
+                            <h5 class="text-dark text-center mb-3">Currently Taking: {{ student.credit_taken }}</h5>
+                        </div>
+                        <table class="table table-striped bg-light text-center">
+                            <thead>
+                                <tr class="text-muted">
+                                    <th>    </th>
+                                    <th>Course Code:</th>
+                                    <th>Course Name:</th>
+                                    <th>Credits awarded:</th>
+                                    <th>Grade:</th>
+                                    <th>GPA_point: (for testing purposes ONLY)</th>
+                                    <th>QPA_point: (for testing purposes ONLY)</th>
+                                    <th>Currently Enrolled:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form method="POST" action="" enctype="multipart/form-data">
+                                    {% for course in courses %}
+                                        <tr>
+                                            <th>   </th> <!-- Must be left blank for formatting purposes! -->
+                                            <td>{{ course.serial }}</td>
+                                            <td>{{ course.name }}</td>
+                                            <td>{{ course.credits }}</td>
+                                            {% for score in scores %}
+                                                {% if course.id == score.course_id %}
+                                                    <td>{{ score.grade }}</td>
+                                                    
+                                                    <td>{{ score.GPA_point }}</td>
+                                                    <td>{{ score.QPA_point }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </form>
+                                <tr>
+                                    <td>Commulative GPA:</td>
+                                    {% if student.GPA == 0 %}
+                                        <td>   </td>
+                                    {% else %}
+                                        <td>{{ student.GPA }}</td>
+                                    {% endif %}
+                                    <td>QPA: (Janky AF)</td>
+                                    {% if student.QPA == 0 %}
+                                        <td>   </td>
+                                    {% else %}
+                                        <td>{{ student.QPA }}</td>
+                                    {% endif %}
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of Table -->
+</div>
+
+<style>
+    a:hover {
+        color: blue;
+    }
+</style>
+{% endblock content %} 
