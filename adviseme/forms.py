@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField, FieldList, FormField
+from wtforms import *
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from wtforms_sqlalchemy.fields import QuerySelectField 
+from wtforms_sqlalchemy.fields import *
 from adviseme.models import *
 from datetime import date
 
@@ -123,6 +123,11 @@ class AdvisementForm(FlaskForm):
     # transcript = FileField("Upload Transcript", validators=[ FileAllowed(['pdf'])])
     # intend_courses = FieldList(FormField(OptionForm), min_entries=53)
     # test = StringField('test_label', validators=[DataRequired()])
-
+    course = QuerySelectMultipleField(
+        'Course',
+        query_factory=lambda: Course.query.all(),
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
+    )
     intended = BooleanField("Intend to take?")
     submit = SubmitField('Submit')

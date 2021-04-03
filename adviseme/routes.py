@@ -695,8 +695,17 @@ def workflow():
 def Advisement():
     form = AdvisementForm()
     courses = Course.query.all()
-    enrolled = {i.course_id:i.grade for i in current_user.studentOwner.courses }
+    if form.validate_on_submit():
 
+            return "{}".format(form.course.data)
+            #enrollement = Enrollement(student_id=current_user.EMPLID,
+            #                        course_id = course.id,
+            #                        attempt = True)
+            #db.session.add(enrollement)
+            #db.session.commit()                                   
 
-    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, courses=courses, enrolled=enrolled)
+#    elif request.method == 'GET':
+#        enrolled = {i.course_id:i.grade for i in current_user.studentOwner.courses }
+
+    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, courses=courses)
 

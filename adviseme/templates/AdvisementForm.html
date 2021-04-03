@@ -14,36 +14,9 @@
             <th>intend to take</th>
         </tr>
     </thead>
-    <tbody>
-        {% for course in courses  %}
-            <tr>
-                <td>{{ course.serial }}</td>
-                <td>{{ course.credits }}</td>
-                <td>{{ course.name }}</td>
-                {% if course.id in enrolled %}
-                    <td>{{ enrolled[course.id] }}</td>
-                {% else %}
-                <td></td>
-                <td>
-                <div class="form-check">
-                    {{ form.intended(class="form-check-input") }}
-			    </div>
-                    </td>
-                {% endif%}
-
-            </tr>
-
-        {% endfor %}
-
-
-
-
-
-
-
-    </tbody>
-
-</table>
+    
+    {{ form.csrf_token }}
+    {{ form.course }}
     {{ form.submit }}
 </form>
 {% endblock content %}
