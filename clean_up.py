@@ -118,20 +118,30 @@ db.session.add(course_53)
 
 db.session.commit()
 
-# -- Other Liberal Art courses: (Note: This does not include EVERY possible option in CCNY)
+# -- Flexible Core (Pathways) Liberal Art courses: [CE = Creative Expression] (Note: This does not include EVERY possible option in CCNY)
+
+course_54 = Course(id=54, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="Flexible Core - [CE](1000)", credits=3)
+course_55 = Course(id=55, serial='MUS 10100', name='Introduction to Music', dept='MUS', description='Fundamentals of Music Theory', designation="Flexible Core - [CE](1000)", credits=3)
+course_56 = Course(id=56, serial='MUS 10200', name='Introduction to World Music', dept='MUS', description='Learn the history of music', designation="Flexible Core - [CE](1000)", credits=3)
+course_57 = Course(id=57, serial='THTR 13100', name='Introduction to Theatre', dept='THEATRE/SPEECH', description='Learn the basics of theatrical productions', designation="Flexible Core - [CE](1000)", credits=3)
+
+db.session.add(course_54)
+db.session.add(course_55)
+db.session.add(course_56)
+db.session.add(course_57)
+
+db.session.commit()
+
+
+# -- Flexible Core (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues] (Note: This does not include EVERY possible option in CCNY)
 """
-course_54 = Course(id=54, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="Liberal Art", credits=3)
-course_55 = Course(id=55, serial='ART 10100', name='Intro to Sketching', dept='ART', description='Learn the Fundamentals of Drawing Figures', designation="Liberal Art", credits=3)
-course_56 = Course(id=56, serial='ANTH 10100', name='Intro to Anthropology', dept='ANTH', description='Learn the Fundamentals of the field of Anthropology', designation="Liberal Art", credits=3)
-course_57 = Course(id=57, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
-course_58 = Course(id=58, serial='CSC 31800', name='', dept='CSC', description='', designation="", credits=3)
-course_59 = Course(id=59, serial='CSC 41200', name='', dept='CSC', description='', designation="", credits=3)
-course_60 = Course(id=60, serial='CSC 42000', name='', dept='CSC', description='', designation="", credits=3)
-course_61 = Course(id=61, serial='CSC 43000', name='', dept='CSC', description='', designation="", credits=3)
-course_62 = Course(id=62, serial='CSC 43500', name='', dept='CSC', description='', designation="", credits=3)
-course_63 = Course(id=63, serial='CSC 43800', name='', dept='CSC', description='', designation="", credits=3)
-course_64 = Course(id=64, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
-course_65 = Course(id=65, serial='CSc 47300', name='', dept='CSC', description='', designation="", credits=3)
+course_59 = Course(id=59, serial='JWST 11700', name='The Bible as Literature', dept='JWST', description='Learn the history of bible literature', designation="Flexible Core - [WCGI](1000)", credits=3)
+course_60 = Course(id=60, serial='WHUM 10100', name='World Humanities I', dept='ART', description='The foundation of world humanities', designation="Flexible Core - [WCGI](1000)", credits=3)
+course_61 = Course(id=61, serial='WHUM'10200, name='World Humanities II', dept='ART', description='Intermediate world humanities principles', designation="Flexible Core - [WCGI](1000)", credits=3)
+course_62 = Course(id=62, serial='ANTH 10100', name='General Anthropology', dept='ANTH', description='Introduction to the field of anthropology', designation="Flexible Core - [WCGI](1000)", credits=3)
+course_63 = Course(id=63, serial='CSC 43800', name='', dept='CSC', description='', designation="Flexible Core - [WCGI](1000)", credits=3)
+course_64 = Course(id=64, serial='CSc 47300', name='', dept='CSC', description='', designation="Flexible Core - [WCGI](1000)", credits=3)
+course_65 = Course(id=65, serial='CSc 47300', name='', dept='CSC', description='', designation="Flexible Core - [WCGI](1000)", credits=3)
 """
 
 

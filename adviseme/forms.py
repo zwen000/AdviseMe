@@ -71,6 +71,7 @@ class CourseCreationForm(FlaskForm):
 
 class ElectiveForm(FlaskForm):
     elective = SelectField('Elective: ', choices=[])
+    grade = SelectField('grade: ', choices=[])
     submit = SubmitField('Submit')
 
 
