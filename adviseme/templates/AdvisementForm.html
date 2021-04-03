@@ -2,5 +2,48 @@
 {% block content %}
 
 <h1>Live Advisement Page!</h1>
+<form method="POST" action="" enctype="multipart/form-data" role="form">
+    {{ form.hidden_tag() }}
+<table class="table table-striped bg-light text-center">
+    <thead>
+        <tr class="text-muted">
+            <th>Course Code:</th>
+            <th>Credits awarded:</th>
+            <th>Course Name:</th>
+            <th>Grade:</th>
+            <th>intend to take</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses  %}
+            <tr>
+                <td>{{ course.serial }}</td>
+                <td>{{ course.credits }}</td>
+                <td>{{ course.name }}</td>
+                {% if course.id in enrolled %}
+                    <td>{{ enrolled[course.id] }}</td>
+                {% else %}
+                <td></td>
+                <td>
+                <div class="form-check">
+                    {{ form.intended(class="form-check-input") }}
+			    </div>
+                    </td>
+                {% endif%}
 
+            </tr>
+
+        {% endfor %}
+
+
+
+
+
+
+
+    </tbody>
+
+</table>
+    {{ form.submit }}
+</form>
 {% endblock content %}

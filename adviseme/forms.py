@@ -1,10 +1,11 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField, FieldList, FormField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms_sqlalchemy.fields import QuerySelectField 
 from adviseme.models import *
+from datetime import date
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -111,4 +112,17 @@ class UpdateStudentAccountForm(FlaskForm):
             user = User.query.filter_by(email = email.data).first()
             if user:
                 raise ValidationError('The email is already in use!')
-        
+
+# class OptionForm(FlaskForm):
+#     course = StringField('course_number', validators=[DataRequired()])
+#     intended = BooleanField("Intend to take?")
+
+class AdvisementForm(FlaskForm):
+    # semester = SelectField("semester", choices=[("fall", "Fall"), ("spring", "Spring")])
+    # year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year-1, date.today().year+2)])
+    # transcript = FileField("Upload Transcript", validators=[ FileAllowed(['pdf'])])
+    # intend_courses = FieldList(FormField(OptionForm), min_entries=53)
+    # test = StringField('test_label', validators=[DataRequired()])
+
+    intended = BooleanField("Intend to take?")
+    submit = SubmitField('Submit')

@@ -690,7 +690,13 @@ def noteReview(note_id):
 def workflow():
     return render_template('workflow.html', title="workflow")
 
-@app.route('/Advisement')
+@app.route('/Advisement', methods=['GET', 'POST'])
 @login_required
 def Advisement():
-    return render_template('AdvisementForm.html', title="Live Advisement Form")
+    form = AdvisementForm()
+    courses = Course.query.all()
+    enrolled = {i.course_id:i.grade for i in current_user.studentOwner.courses }
+
+
+    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, courses=courses, enrolled=enrolled)
+

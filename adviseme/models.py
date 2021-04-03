@@ -72,6 +72,9 @@ class Enrollement(db.Model):
     student = db.relationship('Student', back_populates='courses', lazy=True)
     course = db.relationship('Course', back_populates='students', lazy=True)
 
+    def __repr__(self):
+        return f"Enrollment('{self.student_id}, {self.course_id}, {self.grade}')"
+
 class Student(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
