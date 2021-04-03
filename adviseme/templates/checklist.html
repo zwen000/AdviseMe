@@ -147,66 +147,65 @@
     </section>
     <br>
         
-                      <!--Liberal Art Checklist -->
-                      <section class="checklist">
-                        <button type="button" class="collapsible subtitle">Liberal Arts
-                            <div class="progress">
-                                <div class="progress-inner3"><p id="progress_count3"></p></div>
-                            </div>
-                        </button>
-                        <div class="content">
-                        {% for liberal_art_course in courses_array %}
-                          {% if liberal_art_course.designation == "Liberal Art" %}
-                            <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()"  />
-                            <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+    <!--Liberal Art Checklist -->
+    <section class="checklist">
+      <button type="button" class="collapsible subtitle">Liberal Arts
+          <div class="progress">
+              <div class="progress-inner3"><p id="progress_count3"></p></div>
+          </div>
+      </button>
+      <div class="content">
+      {% for liberal_art_course in courses_array %}
+        {% if liberal_art_course.designation == "Liberal Art" %}
+          <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()"  />
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% endif %}
+      {% endfor %}  
+      </div>
+      </section>
+      <br>
+          <!--Science Checklist -->
+          <section class="checklist">
+            <button type="button" class="collapsible subtitle">Science
+                <div class="progress">
+                    <div class="progress-inner2"><p id="progress_count2"></p></div>
+                </div>
+            </button>
+            <div class="content">
+            {% for science_elective in science_courses %}
+                    <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()"  />
+                    <label class="checkbox collapsible2" for="course_serial">{{science_elective.serial}}</label>
                             <div class="content2">
-                              <ul>
-                                <li>Course Name: {{liberal_art_course.name}}</li>
-                                <li>Course Description: {{liberal_art_course.description}} </li>
-                                <li>Course Description: {{liberal_art_course.designation}} </li> 
-                                <li>Course Credit: {{liberal_art_course.credits}} </li>
-                                {% for score in scores %}
-                                  {% if score.grade and liberal_art_course.id == score.course_id %}
-                                    <li>Grade: {{score.grade}} </li>
-                                  {% endif %}
-                                {% endfor %}
-                              </ul>
+                                <ul>
+                                    <li>Course Name: {{science_elective.name}}</li>
+                                    <li>Course Description: {{science_elective.description}} </li>
+                                    <li>Course Description: {{science_elective.designation}} </li> 
+                                    <li>Course Credit: {{science_elective.credits}} </li>
+                                    {% for score in scores %}
+                                        {% if score.grade and science_elective.id == score.course_id %}
+                                            <li>Grade: {{score.grade}} </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
                             </div>
-                            <hr>
-                          {% endif %}
-                        {% endfor %}  
-                        </div>
-                        </section>
-                <br>
-
-                  <!--Science Checklist -->
-                  <section class="checklist">
-                    <button type="button" class="collapsible subtitle">Science
-                        <div class="progress">
-                            <div class="progress-inner2"><p id="progress_count2"></p></div>
-                        </div>
-                    </button>
-                    <div class="content">
-                    {% for science_elective in science_courses %}
-                            <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()"  />
-                            <label class="checkbox collapsible2" for="course_serial">{{science_elective.serial}}</label>
-                                    <div class="content2">
-                                        <ul>
-                                            <li>Course Name: {{science_elective.name}}</li>
-                                            <li>Course Description: {{science_elective.description}} </li>
-                                            <li>Course Description: {{science_elective.designation}} </li> 
-                                            <li>Course Credit: {{science_elective.credits}} </li>
-                                            {% for score in scores %}
-                                                {% if score.grade and science_elective.id == score.course_id %}
-                                                    <li>Grade: {{score.grade}} </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                <hr>
-                    {% endfor %}  
-                    </div>
-                    </section>
+                        <hr>
+            {% endfor %}  
+            </div>
+            </section>
             <br>
 
         </div>
@@ -327,7 +326,7 @@
   height: 100%;
   text-align: center;
   padding-top: 2%;
-  }
+}
 
 #progress_count{
     font-size: 10px;
