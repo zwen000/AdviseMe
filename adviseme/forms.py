@@ -127,8 +127,7 @@ class AdvisementForm(FlaskForm):
         'Course',
         query_factory=lambda: Course.query,
         widget=widgets.ListWidget(prefix_label=False),
-        option_widget=widgets.CheckboxInput(),
-
+        option_widget=widgets.CheckboxInput()
     )
 
     submit = SubmitField('Submit')

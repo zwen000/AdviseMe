@@ -5,6 +5,8 @@
 <form method="POST" action="" enctype="multipart/form-data" role="form">
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
+
+
 <table class="table table-striped bg-light text-center">
     <thead>
         <tr class="text-muted">
@@ -18,8 +20,11 @@
         <tbody>
         {% for i in form.course %}
             <tr>
-                <th>{{ i.label }}</th>
-                <th>{{ i }}</th>
+                <td>{{ course_obj[i.data].serial }}</td>
+                <td>{{ course_obj[i.data].credits }}</td>
+                <td>{{ course_obj[i.data].name }}</td>
+                <td>{{ enrolled[i.data] }}</td>
+                <td>{{ i }}</td>
             </tr>
         {% endfor %}
         </tbody>
