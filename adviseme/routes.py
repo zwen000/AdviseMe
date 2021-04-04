@@ -547,6 +547,10 @@ def student_profile():
 def checklist():
     courses = Course.query.all()
     cs_courses = Course.query.filter_by(dept='CSC').all()
+    science_courses = []
+    for sciences in courses:
+        if sciences.id >= 43 and sciences.id <= 48:
+            science_courses +=  Course.query.filter_by(id=sciences.id)
 
     math_courses = Course.query.filter_by(dept='MATH').all()
     student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
@@ -586,9 +590,20 @@ def checklist():
     checklistProgressInterval_Math = 100 / 4
     Math_width = 0
     for math_course in courses_array:
-          if math_course.dept == "MATH": 
-                Math_width += checklistProgressInterval_Math
+        for score in scores:
+            if score.grade and math_course.id == score.course_id:
+                if math_course.dept == "MATH": 
+                    Math_width += checklistProgressInterval_Math
     Math_width_num = Math_width/100 * 4
+
+    #progress bar for Science
+    checklistProgressInterval_Science = 100 / 3
+    Science_width = 0
+    for science_elective in science_courses:
+        for score in scores:
+            if score.grade and science_elective.id == score.course_id:
+                Science_width += checklistProgressInterval_Science
+    Science_width_num = Science_width/100 * 3
 
 
     student.GPA = 0     # This is the default initial value in the DB anyway 
@@ -631,14 +646,17 @@ def checklist():
                             student=student, 
                             scores=scores, 
                             cs_courses=cs_courses, 
+                            science_courses = science_courses,
                             courses_array=courses_array, 
                             math_courses=math_courses,
                             CS_width_num =  int(CS_width_num),
                             CSE_width_num =  int(CSE_width_num),
                             Math_width_num =  int(Math_width_num),
+                            Science_width_num = int(Science_width_num),
                             CS_width = CS_width,
                             CSE_width = CSE_width,
-                            Math_width = Math_width)
+                            Math_width = Math_width,
+                            Science_width = Science_width)
 
 @app.route('/faculty/')
 @login_required
