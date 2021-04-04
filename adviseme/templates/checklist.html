@@ -163,8 +163,9 @@
         </div>
       </button>
       <div class="content">
-        {% for math_course in courses_array %}
-          {% if math_course.dept == "MATH" %}  
+        {% for math_course in courses %}
+          {% if math_course.dept == "MATH" %}
+          {%if math_course is in courses_array%}  
             <input checked class="MathCheckBox" type="checkbox" disabled/>
             <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
             <div class="content2">
@@ -185,6 +186,21 @@
               </ul>
             </div>
           <hr>
+          {%else%}
+          <input class="MathCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{math_course.name}}</li>
+              <hr>
+              <li>Course Description: {{math_course.description}} </li>
+              <hr>
+              <li>Course Designation: {{math_course.designation}}</li> 
+              <hr>
+              <li>Course Credit: {{math_course.credits}} </li>
+          </div>
+        <hr>
+          {% endif %}
           {% endif %}
         {% endfor %}
         <p style="font-size: smaller;">Note: Minimum grade of "C" required.</p>  
