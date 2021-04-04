@@ -163,6 +163,11 @@ def stored_grade(alist):
     all_grade.append(alist)
     return all_grade
 
+def remove_list():
+    for tup in list(all_grade):
+        if tup[2] == current_user.EMPLID:
+            all_grade.remove(tup)                                        # Clear the list when all data store into db
+
 @app.route('/course/info', methods=['GET', 'POST'])
 @login_required
 def courseinfo_fill():
@@ -240,11 +245,8 @@ def courseinfo_fill():
                         else:
                             enrollement.QPA_point = 0
                     db.session.commit()
+        remove_list()
 
-        for tup in list(all_grade):
-            if tup[2] == current_user.EMPLID:
-                all_grade.remove(tup)                                        # Clear the list when all data store into db
-     
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('course_info_fill.html', title='Course Information', 
@@ -456,7 +458,7 @@ def facultyinfo_fill():
 # function for logout
 @app.route('/logout')
 def logout():
-
+    remove_list()
     logout_user()
     return redirect(url_for('home'))
 
@@ -496,6 +498,7 @@ def student_profile_edit():
 @login_required
 def student_profile():
     form = UpdateStudentAccountForm()
+    remove_list()
 
     if form.validate_on_submit():
         if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
