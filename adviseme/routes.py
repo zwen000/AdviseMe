@@ -568,7 +568,7 @@ def checklist():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
     #progress bar for Computer Science
-    checklistProgressInterval_CS = 100 / 18
+    checklistProgressInterval_CS = 100 / 18   # <--- (Instead of 18 you set a variable like CS_count then query and count them)
     CS_width = 0
     for cs_course in cs_courses:
         for score in scores:
