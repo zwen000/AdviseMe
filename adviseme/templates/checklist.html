@@ -79,29 +79,79 @@
       </section>
       <br>
 
-                  <!--Technical Electives Checklist -->
-                  <section class="checklist">
-                    <button type="button" class="collapsible subtitle">Technical Electives
-                        <div class="progress"> <!--Progress Bar-->
-                            <div class="progress-inner6"><p id="progress_count6"></p></div>
-                        </div>
-                    </button>
-                        <div class="content">
-                        {% for cscourse in cs_courses %}
-                                <input class="TECheckBox" type="checkbox"/>
-                                <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
-                                        <div class="content2">
-                                            <ul>
-                                                <li>Course Name: {{cscourse.name}}</li>
-                                                <li>Course Description: {{cscourse.description}} </li> 
-                                                <li>Course Credit: {{cscourse.credits}} </li>
-                                            </ul>
-                                        </div>
-                                    <hr>
-                        {% endfor %}  
-                        </div>
-                        </section>
-                <br>
+      <!--Technical Electives Checklist -->
+      <section class="checklist">
+        <button type="button" class="collapsible subtitle">Technical Electives
+            <div class="progress"> <!--Progress Bar-->
+                <div class="progress-inner6"><p id="progress_count6"></p></div>
+            </div>
+        </button>
+        <div class="content">
+          {% for A_tech_elective in courses_array %}          <!-- GROUP A TECHNICAL ELECTIVES -->
+            {% if A_tech_elective.designation == "Group A Technical Elective" %}   
+              <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()"  />
+              <label class="checkbox collapsible2" for="course_serial">{{A_tech_elective.serial}}</label>
+              <div class="content2">
+                <ul>
+                  <li>Course Name: {{A_tech_elective.name}}</li>
+                  <li>Course Description: {{A_tech_elective.description}} </li>
+                  <li>Course Description: {{A_tech_elective.designation}} </li> 
+                  <li>Course Credit: {{A_tech_elective.credits}} </li>
+                  {% for score in scores %}
+                    {% if score.grade and A_tech_elective.id == score.course_id %}
+                      <li>Grade: {{score.grade}} </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <hr>
+            {% endif %}
+          {% endfor %}
+
+          {% for B_tech_elective in courses_array %}              <!-- GROUP B TECHNICAL ELECTIVES -->
+            {% if B_tech_elective.designation == "Group B Technical Elective" %}    
+              <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()"  />
+              <label class="checkbox collapsible2" for="course_serial">{{B_tech_elective.serial}}</label>
+              <div class="content2">
+                <ul>
+                  <li>Course Name: {{B_tech_elective.name}}</li>
+                  <li>Course Description: {{B_tech_elective.description}} </li>
+                  <li>Course Description: {{B_tech_elective.designation}} </li> 
+                  <li>Course Credit: {{B_tech_elective.credits}} </li>
+                  {% for score in scores %}
+                    {% if score.grade and B_tech_elective.id == score.course_id %}
+                      <li>Grade: {{score.grade}} </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <hr>
+            {% endif %}
+          {% endfor %}
+
+          {% for C_tech_elective in courses_array %}                  <!-- GROUP C TECHNICAL ELECTIVES -->
+            {% if C_tech_elective.designation == "Group C Technical Elective" %}    
+              <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()"  />
+              <label class="checkbox collapsible2" for="course_serial">{{C_tech_elective.serial}}</label>
+              <div class="content2">
+                <ul>
+                  <li>Course Name: {{C_tech_elective.name}}</li>
+                  <li>Course Description: {{C_tech_elective.description}} </li>
+                  <li>Course Description: {{C_tech_elective.designation}} </li> 
+                  <li>Course Credit: {{C_tech_elective.credits}} </li>
+                  {% for score in scores %}
+                    {% if score.grade and C_tech_elective.id == score.course_id %}
+                      <li>Grade: {{score.grade}} </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <hr>
+            {% endif %}
+          {% endfor %}
+        </div>
+        </section>
+        <br>
 
         </div>
         <div class="column">
