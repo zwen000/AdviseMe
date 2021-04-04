@@ -37,7 +37,7 @@
                                         <td>{{ course.credits }}</td>
                                         {% for student in student_info %}
                                             {% if course.id == student.course_id %}
-                                            <td>{{ student.grade }}</td>
+                                                <td>{{ student.grade }}</td>
                                             {% endif %}
                                         {% endfor %}
                                     </tr>

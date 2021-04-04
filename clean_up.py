@@ -63,8 +63,6 @@ course_38 = Course(id=38, serial='CSC 47300', name='Website and Web Applications
 CS_courses = [course_1, course_2, course_3, course_4, course_5, course_6, course_7, course_8, course_9, course_10, course_11, course_12, course_13, course_14, course_15, course_16, course_17, course_18, course_19, course_20, course_21, course_22, course_23, course_24, course_25, course_26, course_27, course_28, course_29, course_30, course_31, course_32, course_33, course_34, course_35, course_36, course_37, course_38]
 db.session.add_all(CS_courses)
 
-db.session.commit()
-
 
 # -- Mathematics:
 
@@ -78,8 +76,6 @@ db.session.add(course_39)
 db.session.add(course_40)
 db.session.add(course_41)
 db.session.add(course_42)
-
-db.session.commit()
 
 
 # -- Science Electives:
@@ -99,16 +95,14 @@ db.session.add(course_46)
 db.session.add(course_47)
 db.session.add(course_48)
 
-db.session.commit()
 
+# -- Required Liberal Art Courses: 
 
-# -- Liberal Art Courses: 
-
-course_49 = Course(id=49, serial='ENGL 11000', name='Freshman Composition', dept='ENGL', description='Fundamental English reading, writing, comprehention', designation="Liberal Art", credits=3)
-course_50 = Course(id=50, serial='SPEECH 11100', name='Foundations of Speech Communication', dept='THEATRE/SPEECH', description='Apply public speaking skills', designation="Liberal Art", credits=3)
-course_51 = Course(id=51, serial='ENGL 21007', name='Writing for Engineering', dept='ENGL', description='Learn to write Scientific and scholarly articles on engineering', designation="Liberal Art", credits=3)
-course_52 = Course(id=52, serial='ECO 10400', name='Intro to Quantitative Economics', dept='ECO', description='Learning market fundamentals of supply and demand.', designation="Liberal Art", credits=3)
-course_53 = Course(id=53, serial='ENGR 27600', name='Engineering Economics', dept='ENGR', description='Learning fundamentals engineering economics', designation="Liberal Art", credits=3)
+course_49 = Course(id=49, serial='ENGL 11000', name='Freshman Composition', dept='ENGL', description='Fundamental English reading, writing, comprehention', designation="Required Liberal Art", credits=3)
+course_50 = Course(id=50, serial='SPEECH 11100', name='Foundations of Speech Communication', dept='THEATRE/SPEECH', description='Apply public speaking skills', designation="Required Liberal Art", credits=3)
+course_51 = Course(id=51, serial='ENGL 21007', name='Writing for Engineering', dept='ENGL', description='Learn to write Scientific and scholarly articles on engineering', designation="Required Liberal Art", credits=3)
+course_52 = Course(id=52, serial='ECO 10400', name='Intro to Quantitative Economics', dept='ECO', description='Learning market fundamentals of supply and demand.', designation="Required Liberal Art", credits=3)
+course_53 = Course(id=53, serial='ENGR 27600', name='Engineering Economics', dept='ENGR', description='Learning fundamentals engineering economics', designation="Required Liberal Art", credits=3)
 
 db.session.add(course_49)
 db.session.add(course_50)
@@ -116,37 +110,120 @@ db.session.add(course_51)
 db.session.add(course_52)
 db.session.add(course_53)
 
-db.session.commit()
 
-# -- Flexible Core (Pathways) Liberal Art courses: [CE = Creative Expression] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [CE = Creative Expression (1000 level)] (Note: This does not include EVERY possible option in CCNY)
 
-course_54 = Course(id=54, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="Flexible Core - [CE](1000)", credits=3)
-course_55 = Course(id=55, serial='MUS 10100', name='Introduction to Music', dept='MUS', description='Fundamentals of Music Theory', designation="Flexible Core - [CE](1000)", credits=3)
-course_56 = Course(id=56, serial='MUS 10200', name='Introduction to World Music', dept='MUS', description='Learn the history of music', designation="Flexible Core - [CE](1000)", credits=3)
-course_57 = Course(id=57, serial='THTR 13100', name='Introduction to Theatre', dept='THEATRE/SPEECH', description='Learn the basics of theatrical productions', designation="Flexible Core - [CE](1000)", credits=3)
+course_54 = Course(id=54, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="[CE](1000)", credits=3)
+course_55 = Course(id=55, serial='MUS 10100', name='Introduction to Music', dept='MUS', description='Fundamentals of Music Theory', designation="[CE](1000)", credits=3)
+course_56 = Course(id=56, serial='MUS 10200', name='Introduction to World Music', dept='MUS', description='Learn the history of music', designation="[CE](1000)", credits=3)
+course_57 = Course(id=57, serial='THTR 13100', name='Introduction to Theatre', dept='THEATRE/SPEECH', description='Learn the basics of theatrical productions', designation="[CE](1000)", credits=3)
 
 db.session.add(course_54)
 db.session.add(course_55)
 db.session.add(course_56)
 db.session.add(course_57)
 
-db.session.commit()
+
+# --   (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues (1000 level)] (Note: This does not include EVERY possible option in CCNY)
+course_58 = Course(id=58, serial='JWST 11700', name='The Bible as Literature', dept='JWST', description='Learn the history of bible literature', designation="[WCGI](1000)", credits=3)
+course_59 = Course(id=59, serial='WHUM 10100', name='World Humanities I', dept='ART', description='The foundation of world humanities', designation="[WCGI](1000)", credits=3)
+course_60 = Course(id=60, serial='WHUM 10200', name='World Humanities II', dept='ART', description='Intermediate world humanities principles', designation="[WCGI](1000)", credits=3)
+course_61 = Course(id=61, serial='ANTH 10100', name='General Anthropology', dept='ANTH', description='Introduction to the field of anthropology', designation="[WCGI](1000)", credits=3)
+course_62 = Course(id=62, serial='ASIA 10100', name='Asia and it\'s people', dept='ASIA', description='Learn about the people from largest, most diverse continent on earth', designation="[WCGI](1000)", credits=3)
+course_63 = Course(id=63, serial='BLST 10200', name='African Heritage: Caribbean-Brazilian Experience', dept='BLST', description='Learn the history of black heritage in the Carribean/Brazil', designation="[WCGI](1000)", credits=3)
+course_64 = Course(id=64, serial='WCIV 10100', name='World Civilizations I: Prehistory to 1500 AD', dept='HIST', description='Patheolic Era, to the Roman Empire', designation="[WCGI](1000)", credits=3)
+course_65 = Course(id=65, serial='WCIV 10200', name='World Civilizations II: 1500 AD to present', dept='HIST', description='Early Roman Empire to modern age', designation="[WCGI](1000)", credits=3)
+
+db.session.add(course_58)
+db.session.add(course_59)
+db.session.add(course_60)
+db.session.add(course_61)
+db.session.add(course_62)
+db.session.add(course_63)
+db.session.add(course_64)
+db.session.add(course_65)
 
 
-# -- Flexible Core (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [IS = Individual and Society (1000 level)] (Note: This does not include EVERY possible option in CCNY)
+course_66 = Course(id=66, serial='ECO 10250', name='Principles of Microeconomics', dept='ECO', description='Learn economics on a Micro scale', designation="[IS](1000)", credits=3)
+course_67 = Course(id=67, serial='LIB 10000', name='Research in the Digital Age: Media & Information Literacy', dept='LIB', description='Learn about information on media techniques', designation="[IS](1000)", credits=3)
+course_68 = Course(id=68, serial='PSY 10200', name='Psychology in Modern World', dept='PSY', description='Understand the evolution of modern pschyology', designation="[IS](1000)", credits=3)
+course_69 = Course(id=69, serial='SOC 10500', name='Individual, Group and Society', dept='SOC', description='An Introduction to Sociology', designation="[IS](1000)", credits=3)
+course_70 = Course(id=70, serial='WS 10000', name='Women’s/Gender Roles in Contemporary Society', dept='WS', description='An evaluation of the society and gender roles', designation="[IS](1000)", credits=3)
+
+db.session.add(course_66)
+db.session.add(course_67)
+db.session.add(course_68)
+db.session.add(course_69)
+db.session.add(course_70)
+
+
+# --   (Pathways) Liberal Art courses: [US = US Experience in its Diversity (1000 level)] (Note: This does not include EVERY possible option in CCNY)
+course_71 = Course(id=71, serial='PSC 10100', name='American Government and Politics', dept='PSC', description='Our politics go back to our founding fathers', designation="[US](1000)", credits=3)
+course_72 = Course(id=72, serial='USSO 10100', name='US Society', dept='USSO', description='The history of the US', designation="[US](1000)", credits=3)
+course_73 = Course(id=73, serial='BLST 10100', name='African Heritage and the Afro-American Experience', dept='BLST', description='Afro-American Experience in America', designation="[US](1000)", credits=3)
+course_74 = Course(id=74, serial='PHIL 10200', name='Intro to Philosophy', dept='PHIL', description='Logical Reasoning, Descartes Enlightment Era', designation="[US](1000)", credits=3)
+
+db.session.add(course_71)
+db.session.add(course_72)
+db.session.add(course_73)
+db.session.add(course_74)
+
+
+# --   (Pathways) Liberal Art courses: [CE = Creative Expression (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+
+course_75 = Course(id=75, serial='AES 23202', name='Survey of World Architecture I', dept='AES', description='Arch. & Env. Studies', designation="[CE](2000)", credits=3)
+course_76 = Course(id=76, serial='AES 24202', name='Survey of World Architecture II', dept='AES', description='Arch. & Env. Studies', designation="[CE](2000)", credits=3)
+course_77 = Course(id=77, serial='URB 20010', name='Introduction to Urban Studies', dept='URB', description='Urban Studies', designation="[CE](2000)", credits=3)
+
+db.session.add(course_75)
+db.session.add(course_76)
+db.session.add(course_77)
+
+
+# --   (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+course_78 = Course(id=78, serial='ANTH 20000', name='Archaeology', dept='ANTH', description='Study of humans NOT Dinosaurs!', designation="[WCGI](2000)", credits=3)
+course_79 = Course(id=79, serial='ASIA 20200', name='Contemporary Asia', dept='ASIA', description='Learn about Asian Culture and history', designation="[WCGI](2000)", credits=3)
+course_80 = Course(id=80, serial='ASIA 20500', name='Contemporary China', dept='ASIA', description='History of Chinese Dynasties', designation="[WCGI](2000)", credits=3)
+course_81 = Course(id=81, serial='FREN 28300', name='The Literature of Contemporary France', dept='FREN', description='The evolution of french literature', designation="[WCGI](2000)", credits=3)
+course_82 = Course(id=82, serial='HIST 20400', name='Early Modern Europe', dept='HIST', description='Fall of Rome, Rennaisance', designation="[WCGI](2000)", credits=3)
+course_83 = Course(id=83, serial='HIST 20600', name='Modern Europe', dept='HIST', description='Barouqe era, WW2, present', designation="[WCGI](2000)", credits=3)
+course_84 = Course(id=84, serial='HIST 23700', name='Asia and the World', dept='HIST', description='Asian history and development', designation="[WCGI](2000)", credits=3)
+course_85 = Course(id=85, serial='HIST 23800', name='The Middle East in Global History', dept='HIST', description='History of ancient middle eastern societies', designation="[WCGI](2000)", credits=3)
+course_86 = Course(id=86, serial='HIST 27600', name='Africa and the Modern World', dept='HIST', description='African influence in the modern world', designation="[WCGI](2000)", credits=3)
+course_87 = Course(id=87, serial='INTL 20100', name='International Studies: A Global Perspective', dept='INTL', description='Global Geo political history', designation="[WCGI](2000)", credits=3)
+course_88 = Course(id=88, serial='SPAN 28100', name='Masterworks of Spanish Literature I', dept='SPAN', description='Spanish Literature I', designation="[WCGI](2000)", credits=3)
+course_89 = Course(id=89, serial='SPAN 28300', name='Masterworks of Latin American Literature', dept='SPAN', description='Spanish Literature from Latin America', designation="[WCGI](2000)", credits=3)
+course_90 = Course(id=90, serial='THTR 21100', name='Theatre History 1', dept='THEATRE/SPEECH', description='From ancient greece to William Shakespeare learn the history of theatre', designation="[WCGI](2000)", credits=3)
+course_91 = Course(id=91, serial='THTR 21200', name='Theatre History 2', dept='THEATRE/SPEECH', description='Middle Age Theatre', designation="[WCGI](2000)", credits=3)
+course_92 = Course(id=92, serial='THTR 21300', name='Theatre History 3', dept='THEATRE/SPEECH', description='Broadway and Modern Theatre', designation="[WCGI](2000)", credits=3)
+
+
+WCGI_2000 = [course_78, course_79, course_80, course_81, course_82, course_83, course_84, course_85, course_86, course_87, course_88, course_89, course_90, course_91, course_92]
+db.session.add_all(WCGI_2000)
+
+# --   (Pathways) Liberal Art courses: [IS = Individual and Society (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+course_93 = Course(id=93, serial='ANTH 20100', name='Cross Cultural Perspectives', dept='ANTH', description='Learn about different social norms and perspectives', designation="[IS](2000)", credits=3)
+course_94 = Course(id=94, serial='EDCE 25600', name='Language, Mind, and Society', dept='EDCE', description='Varies by instructor', designation="[IS](2000)", credits=3)
+course_95 = Course(id=95, serial='JWST 28100', name='The Holocaust', dept='JWST', description='Experience survivor stories of the past, and reflect on what you would do.', designation="[IS](2000)", credits=3)
+
+
+db.session.add(course_93)
+db.session.add(course_94)
+db.session.add(course_95)
+
+
+# --   (Pathways) Liberal Art courses: [US = U.S. Experince in its Diversity (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+course_96 = Course(id=96, serial='HIST 24000', name='The United States: From Its Origins to 1877', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
+course_97 = Course(id=97, serial='HIST 24100', name='The United States since 1865', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
+
+db.session.add(course_96)
+db.session.add(course_97)
+
 """
-course_59 = Course(id=59, serial='JWST 11700', name='The Bible as Literature', dept='JWST', description='Learn the history of bible literature', designation="Flexible Core - [WCGI](1000)", credits=3)
-course_60 = Course(id=60, serial='WHUM 10100', name='World Humanities I', dept='ART', description='The foundation of world humanities', designation="Flexible Core - [WCGI](1000)", credits=3)
-course_61 = Course(id=61, serial='WHUM'10200, name='World Humanities II', dept='ART', description='Intermediate world humanities principles', designation="Flexible Core - [WCGI](1000)", credits=3)
-course_62 = Course(id=62, serial='ANTH 10100', name='General Anthropology', dept='ANTH', description='Introduction to the field of anthropology', designation="Flexible Core - [WCGI](1000)", credits=3)
-course_63 = Course(id=63, serial='CSC 43800', name='', dept='CSC', description='', designation="Flexible Core - [WCGI](1000)", credits=3)
-course_64 = Course(id=64, serial='CSc 47300', name='', dept='CSC', description='', designation="Flexible Core - [WCGI](1000)", credits=3)
-course_65 = Course(id=65, serial='CSc 47300', name='', dept='CSC', description='', designation="Flexible Core - [WCGI](1000)", credits=3)
+# -- For anyone wondering this was the GSoE Flexible Core list I used: 
+# -- https://www.ccny.cuny.edu/engineering/flexible-core
 """
-
-
-
-
 
 # -- Grade Options:
 grade_1 = Grade(id=1, value='Not Taken')
@@ -181,7 +258,7 @@ db.session.add(grade_13)
 db.session.add(grade_14) 
 
 
-db.session.commit()
+db.session.commit()     # One single commit is much more efficient! 
 
 
 

@@ -203,7 +203,7 @@
                                         <th> </th>
                                     </tr>
                                     {% for course in courses %}
-                                        {% if course.designation == "Liberal Art" %}
+                                        {% if course.designation == "Required Liberal Art" %}
                                             <tr>
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
@@ -216,6 +216,7 @@
                                             </tr>
                                         {% endif %}
                                     {% endfor %}
+
                                     <tr class="thead-dark">
                                         <th>Flexible Core (Pathways):</th>
                                         <th> </th>
@@ -226,9 +227,39 @@
 
                                     <tr>
                                         <td> </td>
-                                        <td> <a href="{{ url_for('course_info_elective') }}"> 1000 Level Liberal Art Course</a> </td>
-                                        <td>3</td>
+                                        <td><button><a href="{{ url_for('Liberal_Art_1000') }}">Liberal Art Course (1000)</a></button></td>
+                                        <td> </td>
                                     </tr>
+
+                                    <tr>
+                                        <td> </td>
+                                        <td><button><a href="{{ url_for('Liberal_Art_2000') }}">Liberal Art Course (2000)</a></button></td>
+                                        <td> </td>
+                                    </tr>
+
+                                    <tr>
+                                        {% for course in courses %}
+                                            {% for id, grade in all_grade %}
+                                                {% if course.id == id %}
+                                                    {% if course.designation == "Core Requirement" %}
+                                                    {% elif course.designation == "Science Elective" %}
+                                                    {% elif course.designation == "Required Liberal Art" %}
+                                                    {% elif course.designation == "Group A Technical Elective" %}
+                                                    {% elif course.designation == "Group B Technical Elective" %}
+                                                    {% elif course.designation == "Group C Technical Elective" %}
+                                                    {% else %}
+                                                        <tr>
+                                                            <td>{{ course.serial }}</td>
+                                                            <td>{{ course.name }}</td>
+                                                            <td>{{ course.credits }}</td>
+                                                            <td>{{ grade }}</td>    
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}  
+                                        {% endfor %}
+                                    </tr>
+                                    
 
                                 </form>
                             </tbody>

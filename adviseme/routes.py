@@ -137,13 +137,14 @@ def student_course_info():
     
     courses = []
     for courseObj in student_info:
-        # print(courseObj)
+        # print(courseObj.grade)
         courses += Course.query.filter_by(id=courseObj.course_id)
+
     
-    """
+
     for i in courses:
         print(i)
-    """
+    
 
     if form.validate_on_submit():
         course = Course(    serial=form.serial.data, 
@@ -157,7 +158,7 @@ def student_course_info():
         db.session.commit()
         return redirect(url_for('student_course_info'))
 
-    return render_template('student_course_info.html', courses=courses, form=form)
+    return render_template('student_course_info.html', student_info=student_info, courses=courses, form=form)
 
 
 all_grade=[]
@@ -224,7 +225,7 @@ def courseinfo_fill():
                         if enrollement.passed == False and grade == "F":      # Failed the course the first time, retook it and failed again! (FF)
                             student.credit_earned += 0
                         elif enrollement.passed == True and grade == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
-                            student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
+                            student.credit_earned -= course.credits           # The first passing grade could have been added by user error!
                             enrollement.passed = False                                  
                         elif enrollement.passed == False and grade != "F":    # Failed the course the first time, retook it and passed!       (FP)
                             student.credit_earned += course.credits
@@ -245,27 +246,64 @@ def courseinfo_fill():
     elif request.method == 'GET':
         scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
+
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('course_info_fill.html', title='Course Information', 
                             profile_image=profile_image, 
                             courses=courses, 
-                            student=student, 
-                            scores= scores, 
-                            all_grade=all_grade,
-                            course_form=course_form, 
+                            student=student,
+                            all_grade=all_grade, 
                             form=form)
 
 
-@app.route('/course/info/elective', methods=['GET', 'POST'])
+@app.route('/course/info/elective/1000', methods=['GET', 'POST'])
 @login_required
-def course_info_elective():
+def Liberal_Art_1000():
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     courses = Course.query.all()
 
-    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="Flexible Core - [CE](1000)")]
+    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="[CE](1000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](1000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[IS](1000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[US](1000)")]
+
     form.grade.choices = [(grade_option.value) for grade_option in Grade.query.all()]
     
+    if form.validate_on_submit():
+
+        for course in courses:
+            # print(course.serial)
+            if course.serial == form.elective.data:
+                id = course.id
+                print(course.id)
+
+        grades=(id,form.grade.data)
+
+        for id, grade in all_grade:
+            if course.id == id:
+                all_grade.remove((id,grade))
+        stored_grade(grades)
+
+        return redirect(url_for('courseinfo_fill'))
+    
+    return render_template('Elective_Grade_Form.html', title='Course Information', student=student, form=form)
+
+
+
+@app.route('/course/info/elective/2000', methods=['GET', 'POST'])
+@login_required
+def Liberal_Art_2000():
+    form = ElectiveForm()
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    courses = Course.query.all()
+
+    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="[CE](2000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](2000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[IS](2000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[US](2000)")]
+
+    form.grade.choices = [(grade_option.value) for grade_option in Grade.query.all()]
     
     if form.validate_on_submit():
 
@@ -275,16 +313,17 @@ def course_info_elective():
                 id = course.id
                 print(course.id)
 
-
         grades=(id,form.grade.data)
+
         for id, grade in all_grade:
-            if course_id == id :
+            if course.id == id:
                 all_grade.remove((id,grade))
         stored_grade(grades)
         
         return redirect(url_for('courseinfo_fill'))
     
     return render_template('Elective_Grade_Form.html', title='Course Information', student=student, form=form)
+
 
 
 
@@ -719,12 +758,8 @@ def Advisement():
 
     courses = []
     for courseObj in student_info:
-        # print(courseObj)
+        # print(courseObj.grade)
         courses += Course.query.filter_by(id=courseObj.course_id)
-    
-    """
-    for i in courses:
-        print(i)
-    """
 
-    return render_template('AdvisementForm.html', title="Live Advisement Form", student=student, courses=courses , form=form)
+
+    return render_template('AdvisementForm.html', title="Live Advisement Form", student=student, courses=courses, student_info=student_info, form=form)
