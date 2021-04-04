@@ -63,7 +63,7 @@ class Notes(db.Model):
 class Enrollement(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
-    grade = db.Column(db.String(15))
+    grade = db.Column(db.String(15), default='')
     GPA_point = db.Column(db.Integer)
     QPA_point = db.Column(db.Integer)
     attempt = db.Column(db.Boolean, unique=False, nullable=False, default=False)
