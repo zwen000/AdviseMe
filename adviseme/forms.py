@@ -125,9 +125,10 @@ class AdvisementForm(FlaskForm):
     # test = StringField('test_label', validators=[DataRequired()])
     course = QuerySelectMultipleField(
         'Course',
-        query_factory=lambda: Course.query.all(),
+        query_factory=lambda: Course.query,
         widget=widgets.ListWidget(prefix_label=False),
-        option_widget=widgets.CheckboxInput()
+        option_widget=widgets.CheckboxInput(),
+
     )
-    intended = BooleanField("Intend to take?")
+
     submit = SubmitField('Submit')

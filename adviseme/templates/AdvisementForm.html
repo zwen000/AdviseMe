@@ -4,6 +4,7 @@
 <h1>Live Advisement Page!</h1>
 <form method="POST" action="" enctype="multipart/form-data" role="form">
     {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
 <table class="table table-striped bg-light text-center">
     <thead>
         <tr class="text-muted">
@@ -14,9 +15,34 @@
             <th>intend to take</th>
         </tr>
     </thead>
-    
-    {{ form.csrf_token }}
-    {{ form.course }}
-    {{ form.submit }}
+        <tbody>
+        {% for i in form.course %}
+            <tr>
+                <th>{{ i.label }}</th>
+                <th>{{ i }}</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+<!--          form.iter_choices() -->
+
+
+
+
+
+
+
+
+{{ form.submit }}
+    <ul>
+        {% for error in form.course.errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+
 </form>
+
+
+
 {% endblock content %}

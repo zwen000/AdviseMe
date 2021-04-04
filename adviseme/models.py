@@ -106,7 +106,7 @@ class Course(db.Model):
     students = db.relationship('Enrollement', back_populates='course', lazy=True)
 
     def __repr__(self):
-        return f"Notes('{self.id}','{self.serial}','{self.name}','{self.dept}','{self.description}','{self.credits}')"
+        return f"Course('{self.id}','{self.serial}','{self.name}','{self.dept}','{self.description}','{self.credits}')"
 
 
 class Grade(db.Model):
