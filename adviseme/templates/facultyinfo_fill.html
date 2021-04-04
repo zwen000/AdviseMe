@@ -1,9 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="POST" action="">
+        <form method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
+                <img class="rounded-circle account-img" src="{{ profile_image }}">
+
+                <div class="form-group" style="padding-right: 15%; text-align: left;">
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                    <!-- Standard Exception Handling: -->
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                        <span class="text-danger">{{ error }}</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
                 <legend class="border-bottom mb-4">Join Today</legend>
                 <div class='form-group'>
                     {{ form.EMPLID.label(class="form-control-label") }}
@@ -45,20 +58,6 @@
                     </div>
                     {% else %}
                         {{ form.lastname(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class='form-group'>
-                    {{ form.middlename.label(class="form-control-label") }}
-                    
-                    {% if form.middlename.errors %}
-                    {{ form.middlename(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.middlename.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                        {{ form.middlename(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
 

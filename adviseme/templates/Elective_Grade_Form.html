@@ -38,42 +38,40 @@
                 <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
                     <div class="row">       <!-- Inner Grid -->
                         <div class="col-12 mb-4">
-                            <legend class="border-bottom mb-2">Grade Submission</legend>
+                            <legend class="border-bottom mb-2">Liberal Art (1000 Level):</legend>
                         </div>
 
                         <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
-                                    <th>Course Name:</th>
-                                    <th>Course serial:</th>
-                                    <th>Credit:</th>
+                                    <th>Liberal Art (1000 Level):</th>
                                     <th>Grade:</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <form method="POST" action="" enctype="multipart/form-data">
                                     <tr>
-                                    <th>{{course.name}}</th>
-                                    <td>{{course.serial}}</td>
-                                    <td>{{course.credits}}</td>
-                                    
                                         {{ form.csrf_token }}
-                                        <td>{{ form.grade(class="form-control form-control-sm") }}</td>
+                                        <td>{{ form.elective(class="form-control form-control-lg") }}</td>
                                         <ul>
-                                        {% for error in form.grade.errors %}
+                                        {% for error in form.elective.errors %}
                                             <li style="color:red;">{{ error }}</li>
                                         {% endfor %}
                                         </ul>
-                                    </tr>
 
+                                        <td>{{ form.grade(class="form-control form-control-sm") }}</td>
+                                        <ul>
+                                            {% for error in form.grade.errors %}
+                                                <li style="color:red;">{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </tr>
                                     <tr>
                                         <td>
                                             <div class="nav justify-center">
                                                 {{ form.submit(class="btn custom-button-submit") }}
                                             </div>
                                         </td>
-                                        <td></td>
-                                        <td></td>
                                         <td>
                                             <div class="form-group">
                                                 <a href="{{ url_for('courseinfo_fill') }}" class="nav justify-content-end"> <i class="fas fa-arrow-left fa-2x"></i></a>

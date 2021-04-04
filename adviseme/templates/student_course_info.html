@@ -21,7 +21,8 @@
                                     <th>Course Department:</th>
                                     <th>Course Description:</th>
                                     <th>Designation:</th>
-                                    <th>Credits Offered:</th>
+                                    <th>Credits Earned: </th>
+                                    <th>Grade: </th>
                                 </tr>
                             </thead>
 
@@ -82,9 +83,14 @@
                                         <td>{{ course.description }}</td>
                                         <td>{{ course.designation}}</td>
                                         <td>{{ course.credits }}</td>
+                                        {% for student in student_info %}
+                                            {% if course.id == student.course_id %}
+                                            <td>{{ student.grade }}</td>
+                                            {% endif %}
+                                        {% endfor %}
                                     </tr>
                                 {% endfor %}
-                            </tbody>
+                            </tbody>   
                         </table>
                     </div>
                 </div>

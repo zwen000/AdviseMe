@@ -1,0 +1,56 @@
+{% extends "layout.html"%}
+{% block content %}
+
+<div>
+    <!-- start of Table -->
+    <section>
+        <div class="container-fluid">       <!-- Container Grid -->
+            <div class="row mb-5">          <!-- Row -->
+                <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
+                    <div class="row">       <!-- Inner Grid -->
+                        <div class="col-12 mb-4">
+                            <h3 class="text-dark text-center mb-3">Live Advisement Form</h3>
+                        </div>
+
+                        <table class="table table-striped bg-light text-center">
+                            <thead>
+                                <tr class="text-muted">
+                                    <th>Course ID:</th>
+                                    <th>Course Serial:</th>
+                                    <th>Course Name:</th>
+                                    <th>Course Department:</th>
+                                    <th>Course Description:</th>
+                                    <th>Designation:</th>
+                                    <th>Credits Earned: </th>
+                                    <th>Grade: </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for course in courses %}
+                                    <tr>
+                                        <td>{{ course.id }}</td>
+                                        <td>{{ course.serial }}</td>
+                                        <td>{{ course.name }}</td>
+                                        <td>{{ course.dept }}</td>
+                                        <td>{{ course.description }}</td>
+                                        <td>{{ course.designation}}</td>
+                                        <td>{{ course.credits }}</td>
+                                        {% for student in student_info %}
+                                            {% if course.id == student.course_id %}
+                                            <td>{{ student.grade }}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>   
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End of Table -->
+</div>
+
+{% endblock content %} 
