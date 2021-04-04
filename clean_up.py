@@ -221,6 +221,16 @@ db.session.add(course_96)
 db.session.add(course_97)
 
 """
+course_98 = Course(id=98, serial=' ', name='', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
+course_99 = Course(id=99, serial=' ', name='', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
+course_100 = Course(id=100, serial=' ', name='', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
+course_101 = Course(id=101, serial=' ', name='', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
+course_102 = Course(id=102, serial=' ', name='', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
+course_103 = Course(id=103, serial=' ', name='', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
+"""
+
+
+"""
 # -- For anyone wondering this was the GSoE Flexible Core list I used: 
 # -- https://www.ccny.cuny.edu/engineering/flexible-core
 """
