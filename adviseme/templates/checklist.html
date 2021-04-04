@@ -2,7 +2,6 @@
 {% block content %}
 
 <hr><center><h1 class="title">Computer Science Course Checklist</h1></center>
-<legend> </legend>
 <hr>
    <div class="container">
     <div class="row">
@@ -24,22 +23,14 @@
                     <div class="content2">
                       <ul>
                         <li>Course Name: {{cs_course.name}}</li>
+                        <hr>
                         <li>Course Description: {{cs_course.description}} </li>
+                        <hr>
                         <li>Course Designation: {{cs_course.designation}}</li> 
+                        <hr>
                         <li>Course Credit: {{cs_course.credits}} </li>
+                        <hr>
                         <li>Grade: {{score.grade}} </li>
-                      </ul>
-                    </div>
-                <hr>
-                {% else %}
-                <input class="CSCheckBox" type="checkbox" disabled/>
-                    <label class="checkbox collapsible2" for="course_serial">{{cs_course.serial}}</label>
-                    <div class="content2">
-                      <ul>
-                        <li>Course Name: {{cs_course.name}}</li>
-                        <li>Course Description: {{cs_course.description}} </li>
-                        <li>Course Designation: {{cs_course.designation}}</li> 
-                        <li>Course Credit: {{cs_course.credits}} </li>
                       </ul>
                     </div>
                 <hr>
@@ -66,9 +57,13 @@
               <div class="content2">
                 <ul>
                   <li>Course Name: {{cs_elective.name}}</li>
+                  <hr>
                   <li>Course Description: {{cs_elective.description}} </li> 
+                  <hr>
                   <li>Course Designation: {{cs_elective.designation}}</li>
+                  <hr>
                   <li>Course Credit: {{cs_elective.credits}} </li>
+                  <hr>
                   {% for score in scores %}
                     {% if score.grade and cs_elective.id == score.course_id %}
                       <li>Grade: {{score.grade}} </li>
@@ -79,7 +74,7 @@
             <hr>
           {% endif %}
         {% endfor %}  
-        <p>Note: You are required to take one course in each of three elective groups and then one additional course in one of the three groups.</p>
+        <p style="font-size: smaller;">Note: You are required to take one course in each of three elective groups and then one additional course in one of the three groups.</p>
         </div>
       </section>
       <br>
@@ -93,18 +88,13 @@
                     </button>
                         <div class="content">
                         {% for cscourse in cs_courses %}
-                                <input class="TECheckBox" type="checkbox" onclick="checkMe_TE()"  />
+                                <input class="TECheckBox" type="checkbox"/>
                                 <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
                                         <div class="content2">
                                             <ul>
                                                 <li>Course Name: {{cscourse.name}}</li>
                                                 <li>Course Description: {{cscourse.description}} </li> 
                                                 <li>Course Credit: {{cscourse.credits}} </li>
-                                                {% for score in scores %}
-                                                    {% if score.grade and cscourse.id == score.course_id %}
-                                                        <li>Grade: {{score.grade}} </li>
-                                                    {% endif %}
-                                                {% endfor %}
                                             </ul>
                                         </div>
                                     <hr>
@@ -130,19 +120,24 @@
             <div class="content2">
               <ul>
                 <li>Course Name: {{math_course.name}}</li>
+                <hr>
                 <li>Course Description: {{math_course.description}} </li>
+                <hr>
                 <li>Course Designation: {{math_course.designation}}</li> 
+                <hr>
                 <li>Course Credit: {{math_course.credits}} </li>
                 {% for score in scores %}
                   {% if score.grade and math_course.id == score.course_id %}
                     <li>Grade: {{score.grade}} </li>
+                    <hr>
                   {% endif %}
                 {% endfor %}
               </ul>
             </div>
           <hr>
           {% endif %}
-        {% endfor %}  
+        {% endfor %}
+        <p style="font-size: smaller;">Note: Minimum grade of "C" required.</p>  
       </div>
     </section>
     <br>
@@ -178,34 +173,40 @@
       </div>
       </section>
       <br>
-          <!--Science Checklist -->
-          <section class="checklist">
-            <button type="button" class="collapsible subtitle">Science
-                <div class="progress">
-                    <div class="progress-inner2"><p id="progress_count2"></p></div>
-                </div>
-            </button>
-            <div class="content">
-            {% for science_elective in science_courses %}
-                    <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()"  />
-                    <label class="checkbox collapsible2" for="course_serial">{{science_elective.serial}}</label>
-                            <div class="content2">
-                                <ul>
-                                    <li>Course Name: {{science_elective.name}}</li>
-                                    <li>Course Description: {{science_elective.description}} </li>
-                                    <li>Course Description: {{science_elective.designation}} </li> 
-                                    <li>Course Credit: {{science_elective.credits}} </li>
-                                    {% for score in scores %}
-                                        {% if score.grade and science_elective.id == score.course_id %}
+                <!--Science Checklist -->
+                  <section class="checklist">
+                    <button type="button" class="collapsible subtitle">Science
+                        <div class="progress">
+                            <div class="progress-inner2"><p id="progress_count2">{{ Science_width_num }}/3</p></div>
+                        </div>
+                    </button>
+                    <div class="content">
+                    {% for science_elective in science_courses %}
+                    {% for score in scores %}
+                    {% if score.grade and science_elective.id == score.course_id %} <!-- Core Requirement CS courses -->
+                          <input checked class="ScienceCheckBox" type="checkbox" disabled/>
+                          <label class="checkbox collapsible2" for="course_serial">{{science_elective.serial}}</label>
+                                    <div class="content2">
+                                        <ul>
+                                            <li>Course Name: {{science_elective.name}}</li>
+                                            <hr>
+                                            <li>Course Description: {{science_elective.description}} </li>
+                                            <hr>
+                                            <li>Course Description: {{science_elective.designation}} </li> 
+                                            <hr>
+                                            <li>Course Credit: {{science_elective.credits}} </li>
+                                            <hr>
                                             <li>Grade: {{score.grade}} </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        <hr>
-            {% endfor %}  
-            </div>
-            </section>
+                                            <hr>
+                                        </ul>
+                                    </div>
+                                <hr>
+                        {% endif %}
+                      {% endfor %}          
+                    {% endfor %} 
+                    <p style="font-size: smaller;">Note: You are required to take one science sequence and one additional science course.</p>
+                    </div>
+                    </section>
             <br>
 
         </div>
@@ -244,6 +245,17 @@
   font-size: 15px;
 }
 
+.collapsible3 {
+  background-color: #d4e2ee;
+  color: #233B7E;
+  cursor: pointer;
+  padding: 2%;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: #233B7E;
+}
+
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .collapsible:hover, .active {
     background-color: #233B7E;
@@ -253,6 +265,13 @@
 
 /* Style the collapsible content. Note: hidden by default */
 .content {
+  padding: 4%;
+  display: none;
+  overflow: hidden;
+  background-color: #ececec;
+}
+
+.content2 {
   padding: 4%;
   display: none;
   overflow: hidden;
@@ -285,6 +304,17 @@
     font:  14px Open Sans Condensed, sans-serif;
 }
 
+.content4 {
+    display: none;
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-right: 2%;
+    padding-bottom: 1px;
+    background-color: #fafafa;
+    color: #233B7E;
+    font:  14px Open Sans Condensed, sans-serif;
+}
+
 .title{
    color: #233B7E;
    font-size: 43px;
@@ -299,6 +329,11 @@
     text-align: center;
 }
 
+.subtitle2 {
+    font-size: 15px;
+    text-align: center;
+}
+
 .progress{
   width: 100%;
   height: 20px;
@@ -308,7 +343,7 @@
 
 .progress-inner{
   background-color: #3772D7;
-  width: 0%;
+  width: {{Math_width}}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
@@ -322,7 +357,7 @@
 
 .progress-inner2{
   background-color: #3772D7;
-  width: {{ Math_width }}%;
+  width: {{ Science_width }}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
@@ -404,26 +439,22 @@ label:hover{
 
 
 input[type=checkbox]:checked + label {
-opacity: 0.5;
+color: #233B7E;
+opacity: 0.8;
 }
 
-.plus-sign{
-    font-size: 20px;
-    padding: 0%;
-
-}
 .btn{
 padding: 0%;
 }
 .card-body{
     padding-bottom: 0px;
-    font-size: small;
+    font-size: x-small;
     color: #233B7E;
 }
 
 ul {
   list-style: none;
-  padding: 0%;
+  padding: 2%;
 }
 li:hover{
     color: #3772D7;
@@ -480,6 +511,37 @@ for (j = 0; i < collapseible.length; j++) {
     }
   });
 }
+
+var collapseible3 = document.getElementsByClassName("collapsible3");
+var c;
+
+for (c = 0; i < collapseible3.length; c++) {
+    collapseible3[c].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content3 = this.nextElementSibling;
+    if (content3.style.display === "block") {
+      content3.style.display = "none";
+    } else {
+      content3.style.display = "block";
+    }
+  });
+}
+
+var collapseible4 = document.getElementsByClassName("collapsible4");
+var k;
+
+for (k = 0; i < collapseible4.length; k++) {
+    collapseible4[k].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content4 = this.nextElementSibling;
+    if (content4.style.display === "block") {
+      content4.style.display = "none";
+    } else {
+      content4.style.display = "block";
+    }
+  });
+}
+
 </script>
 
 
