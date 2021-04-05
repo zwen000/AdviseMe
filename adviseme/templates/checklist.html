@@ -2,62 +2,87 @@
 {% block content %}
 
 <hr><center><h1 class="title">Computer Science Course Checklist</h1></center>
-<legend> </legend>
 <hr>
    <div class="container">
     <div class="row">
       <div class="column">
-                                  
           <!--Computer Science Checklist -->
-        <section class="checklist">
-          <button type="button" class="collapsible subtitle">Computer Science
-            <div class="progress">
-              <div class="progress-inner4"><p id="progress_count4"></p></div>
-            </div>
-          </button>
-          <div class="content">
-            {% for cs_course in courses_array %}
-              {% if cs_course.dept == "CSC" and cs_course.id <=18 %}  <!-- Core Requirement CS courses -->
-                  <input checked class="CSCheckBox" type="checkbox" onclick="checkMe_CS()"  />
-                  <label class="checkbox collapsible2" for="course_serial">{{cs_course.serial}}</label>
-                  <div class="content2">
-                    <ul>
-                      <li>Course Name: {{cs_course.name}}</li>
-                      <li>Course Description: {{cs_course.description}} </li>
-                      <li>Course Designation: {{cs_course.designation}}</li> 
-                      <li>Course Credit: {{cs_course.credits}} </li>
-                      {% for score in scores %}
+          <section class="checklist">
+            <button type="button" class="collapsible subtitle">Computer Science
+              <div class="progress">
+                <div class="progress-inner4"><p id="progress_count4">{{ CS_width_num }}/18</p></div>
+              </div>
+            </button>
+            <div class="content">
+              {% for cs_course in courses %}
+              {% if cs_course.dept == "CSC" and cs_course.id <= 18 %}
+              {% if cs_course is in courses_array%} <!-- Core Requirement CS courses -->
+                    <input checked class="CSCheckBox" type="checkbox" disabled/>
+                    <label class="checkbox collapsible2" for="course_serial">{{cs_course.serial}}</label>
+                    <div class="content2">
+                      <ul>
+                        <li>Course Name: {{cs_course.name}}</li>
+                        <hr>
+                        <li>Course Description: {{cs_course.description}} </li>
+                        <hr>
+                        <li>Course Designation: {{cs_course.designation}}</li> 
+                        <hr>
+                        <li>Course Credit: {{cs_course.credits}} </li>
+                        <hr>
+                        {% for score in scores %}
                         {% if score.grade and cs_course.id == score.course_id %}
                           <li>Grade: {{score.grade}} </li>
                         {% endif %}
                       {% endfor %}
-                    </ul>
-                  </div>
-              <hr>
-              {% endif %}
-            {% endfor %}  
-          </div>
-        </section>
-      <br>
+                      </ul>
+                    </div>
+                <hr>
+                {%else%}
+                <input class="CSCheckBox" type="checkbox" disabled/>
+                <label class="checkbox collapsible2" for="course_serial">{{cs_course.serial}}</label>
+                <div class="content2">
+                  <ul>
+                    <li>Course Name: {{cs_course.name}}</li>
+                    <hr>
+                    <li>Course Description: {{cs_course.description}} </li>
+                    <hr>
+                    <li>Course Designation: {{cs_course.designation}}</li> 
+                    <hr>
+                    <li>Course Credit: {{cs_course.credits}} </li>
+                    <hr>
+                  </ul>
+                </div>
+                <hr>
+                {% endif %}
+                {% endif %}
+              {% endfor %}
+             
+            </div>
+          </section>
+        <br>
       
 <!--CS Electives Checklist -->
       <section class="checklist">
-        <button type="button" class="collapsible subtitle">Technical Electives
+        <button type="button" class="collapsible subtitle">CSc Electives
           <div class="progress"> <!--Progress Bar-->
-              <div class="progress-inner5"><p id="progress_count5"></p></div>
+              <div class="progress-inner5"><p id="progress_count5">{{ CSE_width_num }}/4</p></div>
           </div>
         </button>
         <div class="content">
         {% for cs_elective in courses_array %}
           {% if cs_elective.dept == "CSC" and cs_elective.id > 18 %}
-              <input checked class="CSECheckBox" type="checkbox" onclick="checkMe_CSE()"  />
-              <label class="checkbox collapsible2" for="course_serial">{{cs_elective.serial}}</label>
+              <input checked class="CSECheckBox" type="checkbox" disabled/>
+              <label class="checkbox collapsible2" for="course_serial">{{cs_elective.designation}}: {{cs_elective.serial}}</label>
               <div class="content2">
                 <ul>
                   <li>Course Name: {{cs_elective.name}}</li>
+                  <hr>
                   <li>Course Description: {{cs_elective.description}} </li> 
+                  <hr>
                   <li>Course Designation: {{cs_elective.designation}}</li>
+                  <hr>
                   <li>Course Credit: {{cs_elective.credits}} </li>
+                  <hr>
                   {% for score in scores %}
                     {% if score.grade and cs_elective.id == score.course_id %}
                       <li>Grade: {{score.grade}} </li>
@@ -68,135 +93,427 @@
             <hr>
           {% endif %}
         {% endfor %}  
+        <p style="font-size: smaller;">Note: You are required to take one course in each of three elective groups and then one additional course in one of the three groups.</p>
+        <p style="font-size: smaller;"> A. Theory and Applications <br> B. Computational Techniques for Science and Engineering <br> C. Computer Systems </p>
         </div>
       </section>
       <br>
 
-                  <!--Technical Electives Checklist -->
-                  <section class="checklist">
-                    <button type="button" class="collapsible subtitle">CSc Electives
-                        <div class="progress"> <!--Progress Bar-->
-                            <div class="progress-inner6"><p id="progress_count6"></p></div>
-                        </div>
-                    </button>
-                        <div class="content">
-                        {% for cscourse in cs_courses %}
-                                <input class="TECheckBox" type="checkbox" onclick="checkMe_TE()"  />
-                                <label class="checkbox collapsible2" for="course_serial">{{cscourse.serial}}</label>
-                                        <div class="content2">
-                                            <ul>
-                                                <li>Course Name: {{cscourse.name}}</li>
-                                                <li>Course Description: {{cscourse.description}} </li> 
-                                                <li>Course Credit: {{cscourse.credits}} </li>
-                                                {% for score in scores %}
-                                                    {% if score.grade and cscourse.id == score.course_id %}
-                                                        <li>Grade: {{score.grade}} </li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    <hr>
-                        {% endfor %}  
-                        </div>
-                        </section>
-                <br>
-
+      <!--Technical Electives Checklist (NEEDS TO BE FIXED) & PROGRESS TRACKER Already implemented just need to access technical electives-->
+      <section class="checklist">
+        <button type="button" class="collapsible subtitle">Technical Electives
+            <div class="progress"> <!--Progress Bar-->
+                <div class="progress-inner6"><p id="progress_count6">{{ Tech_width_num }}/2</p></div>
+            </div>
+        </button>
+        <div class="content">
+          {% for A_tech_elective in courses_array %}
+            {% if A_tech_elective.designation == "Group A Technical Elective" %}  <!--Need to print technical electives not CSC Electives--> 
+              <input checked class="LibCheckBox" type="checkbox" disabled/>
+              <label class="checkbox collapsible2" for="course_serial">{{A_tech_elective.serial}}</label>
+              <div class="content2">
+                <ul>
+                  <li>Course Name: {{A_tech_elective.name}}</li>
+                  <li>Course Description: {{A_tech_elective.description}} </li>
+                  <li>Course Description: {{A_tech_elective.designation}} </li> 
+                  <li>Course Credit: {{A_tech_elective.credits}} </li>
+                  {% for score in scores %}
+                    {% if score.grade and A_tech_elective.id == score.course_id %}
+                      <li>Grade: {{score.grade}} </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <hr>
+            {% endif %}
+          {% endfor %}
+          <p style="font-size: smaller;">Note: Technical electives for Computer Science majors may be either Computer Science electives (except CSC 10000 and CSC 31700) or <i>advanced</i> courses in the following areas: Biology, Chemistry, Earth and Atmospheric Sciences (EAS), Mathematics, Physics, and Chemical, Civil, Electrical, and Mechanical Engineering.</p>
         </div>
-        <div class="column">
-            <!--Math Checklist -->
+        </section>
+        <br>
+                    <!--Free Electives Checklist -->
     <section class="checklist">
-      <button type="button" class="collapsible subtitle">Math
+      <button type="button" class="collapsible subtitle">Free Electives
         <div class="progress">
-          <div class="progress-inner"><p id="progress_count"></p></div>
+          <div class="progress-inner8"><p id="progress_count8">{{ FE_width_num }}/2</p></div>
         </div>
       </button>
-        
       <div class="content">
-        {% for math_course in courses_array %}
-          {% if math_course.dept == "MATH" %}  
-            <input checked class="MathCheckBox" type="checkbox" onclick="checkMe_Math()"/>
+        {% for math_course in courses %} <!--Need to fix so that free electives are displayed instead when completed -->
+          {% if math_course.dept == "MATH" %}
+          {%if math_course is in courses_array%}  
+            <input checked class="MathCheckBox" type="checkbox" disabled/>
             <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
             <div class="content2">
               <ul>
                 <li>Course Name: {{math_course.name}}</li>
+                <hr>
                 <li>Course Description: {{math_course.description}} </li>
+                <hr>
                 <li>Course Designation: {{math_course.designation}}</li> 
+                <hr>
                 <li>Course Credit: {{math_course.credits}} </li>
                 {% for score in scores %}
                   {% if score.grade and math_course.id == score.course_id %}
                     <li>Grade: {{score.grade}} </li>
+                    <hr>
                   {% endif %}
                 {% endfor %}
               </ul>
             </div>
           <hr>
           {% endif %}
-        {% endfor %}  
+          {% endif %}
+        {% endfor %}
+        <p style="font-size: smaller;">Note: Acceptable free electives are any courses offered by the College except the following:
+          <br> Remedial courses, including pre-calculus math.
+          <br> Courses at a lower level than required courses.
+          <br> Courses that substantially duplicate material covered in other courses for which credit has been granted.
+          <br> Worker education and independent study courses.</p>  
       </div>
     </section>
     <br>
-        
-                      <!--Liberal Art Checklist -->
-                      <section class="checklist">
-                        <button type="button" class="collapsible subtitle">Liberal Arts
-                            <div class="progress">
-                                <div class="progress-inner3"><p id="progress_count3"></p></div>
-                            </div>
-                        </button>
-                        <div class="content">
-                        {% for liberal_art_course in courses_array %}
-                          {% if liberal_art_course.designation == "Liberal Art" %}
-                            <input class="LibCheckBox" type="checkbox" onclick="checkMe_Lib()"  />
-                            <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-                            <div class="content2">
-                              <ul>
-                                <li>Course Name: {{liberal_art_course.name}}</li>
-                                <li>Course Description: {{liberal_art_course.description}} </li>
-                                <li>Course Description: {{liberal_art_course.designation}} </li> 
-                                <li>Course Credit: {{liberal_art_course.credits}} </li>
-                                {% for score in scores %}
-                                  {% if score.grade and liberal_art_course.id == score.course_id %}
-                                    <li>Grade: {{score.grade}} </li>
-                                  {% endif %}
-                                {% endfor %}
-                              </ul>
-                            </div>
-                            <hr>
-                          {% endif %}
-                        {% endfor %}  
-                        </div>
-                        </section>
-                <br>
+    <br>
 
-                  <!--Science Checklist -->
-                  <section class="checklist">
-                    <button type="button" class="collapsible subtitle">Science
-                        <div class="progress">
-                            <div class="progress-inner2"><p id="progress_count2"></p></div>
-                        </div>
-                    </button>
-                    <div class="content">
-                    {% for science_elective in science_courses %}
-                            <input class="ScienceCheckBox" type="checkbox" onclick="checkMe_Science()"  />
-                            <label class="checkbox collapsible2" for="course_serial">{{science_elective.serial}}</label>
-                                    <div class="content2">
-                                        <ul>
-                                            <li>Course Name: {{science_elective.name}}</li>
-                                            <li>Course Description: {{science_elective.description}} </li>
-                                            <li>Course Description: {{science_elective.designation}} </li> 
-                                            <li>Course Credit: {{science_elective.credits}} </li>
-                                            {% for score in scores %}
-                                                {% if score.grade and science_elective.id == score.course_id %}
-                                                    <li>Grade: {{score.grade}} </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
+        </div>
+
+        <div class="column">
+            <!--Math Checklist -->
+    <section class="checklist">
+      <button type="button" class="collapsible subtitle">Math
+        <div class="progress">
+          <div class="progress-inner"><p id="progress_count">{{ Math_width_num }}/4</p></div>
+        </div>
+      </button>
+      <div class="content">
+        {% for math_course in courses %}
+          {% if math_course.dept == "MATH" %}
+          {%if math_course is in courses_array%}  
+            <input checked class="MathCheckBox" type="checkbox" disabled/>
+            <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
+            <div class="content2">
+              <ul>
+                <li>Course Name: {{math_course.name}}</li>
+                <hr>
+                <li>Course Description: {{math_course.description}} </li>
+                <hr>
+                <li>Course Designation: {{math_course.designation}}</li> 
+                <hr>
+                <li>Course Credit: {{math_course.credits}} </li>
+                {% for score in scores %}
+                  {% if score.grade and math_course.id == score.course_id %}
+                    <li>Grade: {{score.grade}} </li>
+                    <hr>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          <hr>
+          {%else%}
+          <input class="MathCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{math_course.name}}</li>
+              <hr>
+              <li>Course Description: {{math_course.description}} </li>
+              <hr>
+              <li>Course Designation: {{math_course.designation}}</li> 
+              <hr>
+              <li>Course Credit: {{math_course.credits}} </li>
+          </div>
+        <hr>
+          {% endif %}
+          {% endif %}
+        {% endfor %}
+        <p style="font-size: smaller;">Note: Minimum grade of "C" required.</p>  
+      </div>
+    </section>
+    <br>
+    <!--Science Checklist -->
+      <section class="checklist">
+        <button type="button" class="collapsible subtitle">Science
+            <div class="progress">
+                <div class="progress-inner2"><p id="progress_count2">{{ Science_width_num }}/3</p></div>
+            </div>
+        </button>
+        <div class="content">
+        {% for science_elective in science_courses %}
+        {% for score in scores %}
+        {% if score.grade and science_elective.id == score.course_id %} <!-- Core Requirement CS courses -->
+              <input checked class="ScienceCheckBox" type="checkbox" disabled/>
+              <label class="checkbox collapsible2" for="course_serial">{{science_elective.serial}}</label>
+                        <div class="content2">
+                            <ul>
+                                <li>Course Name: {{science_elective.name}}</li>
                                 <hr>
-                    {% endfor %}  
+                                <li>Course Description: {{science_elective.description}} </li>
+                                <hr>
+                                <li>Course Description: {{science_elective.designation}} </li> 
+                                <hr>
+                                <li>Course Credit: {{science_elective.credits}} </li>
+                                <hr>
+                                <li>Grade: {{score.grade}} </li>
+                                <hr>
+                            </ul>
+                        </div>
+                    <hr>
+            {% endif %}
+          {% endfor %}          
+        {% endfor %} 
+        <p style="font-size: smaller;">Note: You are required to take one science sequence and one additional science course.</p>
+        </div>
+        </section>
+<br>
+
+                <!--Liberal Art Required Checklist -->
+                <section class="checklist">
+                  <button type="button" class="collapsible subtitle">Liberal Arts
+                    <div class="progress">
+                      <div class="progress-inner9"><p id="progress_count9">{{ Lib_Art_width_num }}/4</p></div>
                     </div>
-                    </section>
-            <br>
+                  </button>
+                  <div class="content">
+                    {% for liberal_art_course_req in lib_req_courses %}
+                    {% if liberal_art_course_req.designation == "Liberal Art" %} 
+                      {%if liberal_art_course_req is in courses_array%}  
+                        <input checked type="checkbox" disabled/>
+                        <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course_req.serial}}</label>
+                        <div class="content2">
+                          <ul>
+                            <li>Course Name: {{liberal_art_course_req.name}}</li>
+                            <hr>
+                            <li>Course Description: {{liberal_art_course_req.description}} </li>
+                            <hr>
+                            <li>Course Designation: {{liberal_art_course_req.designation}}</li> 
+                            <hr>
+                            <li>Course Credit: {{liberal_art_course_req.credits}} </li>
+                            {% for score in scores %}
+                              {% if score.grade and liberal_art_course_req.id == score.course_id %}
+                                <li>Grade: {{score.grade}} </li>
+                                <hr>
+                              {% endif %}
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      <hr>
+                      {%else%}
+                      <input type="checkbox" disabled/>
+                      <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course_req.serial}}</label>
+                      <div class="content2">
+                        <ul>
+                          <li>Course Name: {{liberal_art_course_req.name}}</li>
+                          <hr>
+                          <li>Course Description: {{liberal_art_course_req.description}} </li>
+                          <hr>
+                          <li>Course Designation: {{liberal_art_course_req.designation}}</li> 
+                          <hr>
+                          <li>Course Credit: {{liberal_art_course_req.credits}} </li>
+                      </div>
+                    <hr>
+                      {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                    <p style="font-size: smaller;">Note: Reqired two english courses, speech, and either ENGR 27600 <i>or</i> ECO 10400</p>  
+                  </div>
+                </section>
+                <br>
+        
+        
+    <!--Liberal Art Checklist -->
+    <section class="checklist">
+      <button type="button" class="collapsible subtitle">Flexible Pathways
+          <div class="progress">
+              <div class="progress-inner3"><p id="progress_count3">{{ Art_width_num }}/4</p></div>
+          </div>
+      </button>
+      <div class="content">
+      {% for liberal_art_course in courses_array %}
+        {% if liberal_art_course.designation == "[IS](1000)" %}     <!-- Individual & Society (1000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% elif liberal_art_course.designation == "[IS](2000)" %}     <!-- Individual & Society (2000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% elif liberal_art_course.designation == "[WCGI](1000)" %}   <!-- World Cultures & Global Issues (1000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% elif liberal_art_course.designation == "[WCGI](2000)" %}   <!-- World Cultures & Global Issues (2000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% elif liberal_art_course.designation == "[US](1000)" %}     <!-- US Experience in its Diversity (1000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% elif liberal_art_course.designation == "[US](2000)" %}     <!-- US Experience in its Diversity (2000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% elif liberal_art_course.designation == "[CE](1000)" %}     <!-- Creative Expression (1000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% elif liberal_art_course.designation == "[CE](2000)" %}     <!-- Creative Expression (2000 level) -->
+        <input checked class="LibCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{liberal_art_course.name}}</li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.description}} </li>
+              <hr>
+              <li>Course Description: {{liberal_art_course.designation}} </li> 
+              <hr>
+              <li>Course Credit: {{liberal_art_course.credits}} </li>
+              <hr>
+              {% for score in scores %}
+                {% if score.grade and liberal_art_course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+        {% else %}
+            <!-- In ANY other case do Nothing. Just relax and have some coffee! :) -->
+        {% endif %}
+      {% endfor %}  
+      <p style="font-size: smaller;">Four courses from a list of General Education courses, at least two of which must be at the 200 level or above.</p>
+      </div>
+      </section>
+      <br>
+      <br>
 
         </div>
     </div>
@@ -213,6 +530,11 @@
   float: left;
   width: 50%;
   padding: 3%;
+  padding-bottom: 0%;
+}
+
+.checklist2{
+  width: 45% ;
 }
 
 /* Clear floats after the columns */
@@ -234,6 +556,17 @@
   font-size: 15px;
 }
 
+.collapsible3 {
+  background-color: #d4e2ee;
+  color: #233B7E;
+  cursor: pointer;
+  padding: 2%;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: #233B7E;
+}
+
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .collapsible:hover, .active {
     background-color: #233B7E;
@@ -243,6 +576,13 @@
 
 /* Style the collapsible content. Note: hidden by default */
 .content {
+  padding: 4%;
+  display: none;
+  overflow: hidden;
+  background-color: #ececec;
+}
+
+.content2 {
   padding: 4%;
   display: none;
   overflow: hidden;
@@ -275,6 +615,17 @@
     font:  14px Open Sans Condensed, sans-serif;
 }
 
+.content4 {
+    display: none;
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-right: 2%;
+    padding-bottom: 1px;
+    background-color: #fafafa;
+    color: #233B7E;
+    font:  14px Open Sans Condensed, sans-serif;
+}
+
 .title{
    color: #233B7E;
    font-size: 43px;
@@ -289,6 +640,11 @@
     text-align: center;
 }
 
+.subtitle2 {
+    font-size: 15px;
+    text-align: center;
+}
+
 .progress{
   width: 100%;
   height: 20px;
@@ -298,7 +654,7 @@
 
 .progress-inner{
   background-color: #3772D7;
-  width: 0%;
+  width: {{Math_width}}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
@@ -312,11 +668,11 @@
 
 .progress-inner2{
   background-color: #3772D7;
-  width: 0%;
+  width: {{ Science_width }}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
-  }
+}
 
 #progress_count{
     font-size: 10px;
@@ -326,7 +682,7 @@
 
 .progress-inner3{
   background-color: #3772D7;
-  width: 0%;
+  width: {{ Art_width }}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
@@ -338,9 +694,37 @@
     color: white;
 }
 
+.progress-inner8{
+  background-color: #3772D7;
+  width: {{ FE_width }}%;
+  height: 100%;
+  text-align: center;
+  padding-top: 2%;
+  }
+
+#progress_count8{
+    font-size: 10px;
+    align-items: center;
+    color: white;
+}
+
+.progress-inner9{
+  background-color: #3772D7;
+  width: {{ Lib_Art_width }}%;
+  height: 100%;
+  text-align: center;
+  padding-top: 2%;
+  }
+
+#progress_count9{
+    font-size: 10px;
+    align-items: center;
+    color: white;
+}
+
 .progress-inner4{
   background-color: #3772D7;
-  width: 0%;
+  width: {{ CS_width }}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
@@ -354,7 +738,7 @@
 
 .progress-inner5{
   background-color: #3772D7;
-  width: 0%;
+  width: {{ CSE_width }}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
@@ -368,7 +752,7 @@
 
 .progress-inner6{
   background-color: #3772D7;
-  width: 0%;
+  width: {{ Tech_width }}%;
   height: 100%;
   text-align: center;
   padding-top: 2%;
@@ -394,26 +778,22 @@ label:hover{
 
 
 input[type=checkbox]:checked + label {
-opacity: 0.5;
+color: #233B7E;
+opacity: 0.6;
 }
 
-.plus-sign{
-    font-size: 20px;
-    padding: 0%;
-
-}
 .btn{
 padding: 0%;
 }
 .card-body{
     padding-bottom: 0px;
-    font-size: small;
+    font-size: x-small;
     color: #233B7E;
 }
 
 ul {
   list-style: none;
-  padding: 0%;
+  padding: 2%;
 }
 li:hover{
     color: #3772D7;
@@ -432,7 +812,10 @@ li:hover{
   float: left;
   width: 100%;
   padding: 0%;
-}    
+}  
+.progress{
+  padding: 0.75%;
+}  
 
 }
 </style>
@@ -471,115 +854,35 @@ for (j = 0; i < collapseible.length; j++) {
   });
 }
 
-/*Progress Counter for Math*/
-function checkMe_Math() {
-  const checkBoxes_M = document.querySelectorAll(".MathCheckBox");
-  const progress = document.querySelector(".progress-inner");
-  const checklistProgressInterval_M = 100 / checkBoxes_M.length;
-  let width_M = 0;
-  
-  for(let i = 0; i < checkBoxes_M.length; i++){
-    if(checkBoxes_M[i].checked){
-      width_M += checklistProgressInterval_M;
-    }
-  }
-    progress.style.width = `${width_M}%`;
-    whole_number_M = (width_M/100) * checkBoxes_M.length
+var collapseible3 = document.getElementsByClassName("collapsible3");
+var c;
 
-    document.getElementById("progress_count").innerHTML = Math.round(whole_number_M) + "/" + checkBoxes_M.length;
+for (c = 0; i < collapseible3.length; c++) {
+    collapseible3[c].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content3 = this.nextElementSibling;
+    if (content3.style.display === "block") {
+      content3.style.display = "none";
+    } else {
+      content3.style.display = "block";
+    }
+  });
 }
 
-/*Progress Counter for Science*/
-function checkMe_Science() {
-  const science_cb = document.querySelectorAll(".ScienceCheckBox");
-  const progress_S = document.querySelector(".progress-inner2");
-  const checklistProgressInterval_S = 100 / 3;
-  let width_S = 0;
-  
-  for(let i = 0; i < 4; i++){
-    if(science_cb[i].checked){
-      width_S += checklistProgressInterval_S;
+var collapseible4 = document.getElementsByClassName("collapsible4");
+var k;
+
+for (k = 0; i < collapseible4.length; k++) {
+    collapseible4[k].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content4 = this.nextElementSibling;
+    if (content4.style.display === "block") {
+      content4.style.display = "none";
+    } else {
+      content4.style.display = "block";
     }
-  }
-    progress_S.style.width = `${width_S}%`;
-    whole_number_S = (width_S/100) * 3
-
-    document.getElementById("progress_count2").innerHTML = Math.round(whole_number_S) + "/3";
+  });
 }
-
-/*Progress Counter for Liberal Arts*/
-function checkMe_Lib() {
-  const Lib_cb = document.querySelectorAll(".LibCheckBox");
-  const progress_L = document.querySelector(".progress-inner3");
-  const checklistProgressInterval_L = 100 / Lib_cb.length;
-  let width_Lib = 0;
-  
-  for(let i = 0; i < Lib_cb.length; i++){
-    if(Lib_cb[i].checked){
-      width_Lib += checklistProgressInterval_L;
-    }
-  }
-    progress_L.style.width = `${width_Lib}%`;
-    whole_number_L = (width_Lib/100) * Lib_cb.length
-
-    document.getElementById("progress_count3").innerHTML = Math.round(whole_number_L) + "/" + Lib_cb.length;
-}
-const body = document.body;
-body.onload = checkMe_CS;
-/*Progress Counter for Computer Science*/
-function checkMe_CS() {
-  const CS_cb = document.querySelectorAll(".CSCheckBox");
-  const progress_CS = document.querySelector(".progress-inner4");
-  const checklistProgressInterval_CS = 100 / 18;
-  let width_CS = 0;
-  
-  for(let i = 0; i < CS_cb.length; i++){
-    if(CS_cb[i].checked){
-      width_CS += checklistProgressInterval_CS;
-    }
-  }
-    progress_CS.style.width = `${width_CS}%`;
-    whole_number_CS = (width_CS/100) * 18
-
-    document.getElementById("progress_count4").innerHTML = Math.round(whole_number_CS) + "/" + 18;
-}
-
-/*Progress Counter for CS Electives */
-function checkMe_CSE() {
-  const CSE_cb = document.querySelectorAll(".CSECheckBox");
-  const progress_CSE = document.querySelector(".progress-inner5");
-  const checklistProgressInterval_CSE = 100 / CSE_cb.length;
-  let width_CSE = 0;
-  
-  for(let i = 0; i < CSE_cb.length; i++){
-    if(CSE_cb[i].checked){
-      width_CSE += checklistProgressInterval_CSE;
-    }
-  }
-    progress_CSE.style.width = `${width_CSE}%`;
-    whole_number_CSE = (width_CSE/100) * CSE_cb.length
-
-    document.getElementById("progress_count5").innerHTML = Math.round(whole_number_CSE) + "/" + CSE_cb.length;
-}
-
-/*Progress Counter for Technical Electives */
-function checkMe_TE() {
-  const TE_cb = document.querySelectorAll(".TECheckBox");
-  const progress_TE = document.querySelector(".progress-inner6");
-  const checklistProgressInterval_TE = 100 / TE_cb.length;
-  let width_TE = 0;
-  
-  for(let i = 0; i < TE_cb.length; i++){
-    if(TE_cb[i].checked){
-      width_TE += checklistProgressInterval_TE;
-    }
-  }
-    progress_TE.style.width = `${width_TE}%`;
-    whole_number_TE = (width_TE/100) * TE_cb.length;
-
-    document.getElementById("progress_count6").innerHTML = Math.round(whole_number_TE) + "/" + 4;
-}
-
 
 </script>
 
