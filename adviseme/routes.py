@@ -316,11 +316,11 @@ def Liberal_Art_1000():
             if course.serial == form.elective.data:
                 id = course.id
                 print(course.id)            
-                for courseid, grade in all_grade:
+                for courseid, grade,EMPLID in all_grade:
                     if courseid == id:
-                        all_grade.remove((id,grade))
+                        all_grade.remove((id,grade,EMPLID))
 
-        grades=(id,form.grade.data)
+        grades=(id,form.grade.data,current_user.EMPLID)
         stored_grade(grades)
 
         return redirect(url_for('courseinfo_fill'))
@@ -350,11 +350,11 @@ def Liberal_Art_2000():
             if course.serial == form.elective.data:
                 id = course.id
                 print(course.id)
-                for courseid, grade in all_grade:
+                for courseid, grade, EMPLID in all_grade:
                     if courseid == id:
-                        all_grade.remove((id,grade))
+                        all_grade.remove((id,grade,EMPLID))
         
-        grades=(id,form.grade.data)
+        grades=(id,form.grade.data,current_user.EMPLID)
         stored_grade(grades)
         
         return redirect(url_for('courseinfo_fill'))
@@ -833,11 +833,11 @@ def Advisement():
     course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
 
     if form.validate_on_submit():
-        enrollement = Enrollement.query.filter_by(
-                                    student_id=current_user.EMPLID,
-                                    course_id = course_id).first()
-        if not enrollement:                            
-            for course in form.course.data:  
+        for course in form.course.data:
+            enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course.id).first()
+            if not enrollement:                              
                 enrollement = Enrollement(student_id=current_user.EMPLID,
                                         course_id = course.id,
                                         attempt = True)

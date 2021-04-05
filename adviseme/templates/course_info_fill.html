@@ -241,8 +241,8 @@
 
                                     <tr>
                                         {% for course in courses %}
-                                            {% for id, grade in all_grade %}
-                                                {% if course.id == id %}
+                                            {% for id, grade,EMPLID in all_grade %}
+                                                {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                     {% if course.designation == "Core Requirement" %}
                                                     {% elif course.designation == "Science Elective" %}
                                                     {% elif course.designation == "Required Liberal Art" %}
