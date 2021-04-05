@@ -1,11 +1,13 @@
 {% extends "layout.html"%}
 {% block content %}
-<h1>Live Advisement Page!</h1>
 <form method="POST" action="" enctype="multipart/form-data" role="form">
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
-
-
+<div class="content-section">
+    <hr><center><h1 class="title">Live Advisement Form</h1></center><hr>
+    <p class="text" style="float: right; display: inline;">Date: {{ form.date }}</p>
+    <p class="text">Academic Advising Semester: {{ form.semester }}{{ form.year }}<p class="text" style="float: right; display: inline;">Empl ID: {{ current_user.studentOwner.EMPLID }}</p></p>
+    <p class="text">Student's Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.lastname }}</p>
 <table class="table table-striped bg-light text-center">
     <thead>
         <tr class="text-muted">
@@ -13,7 +15,7 @@
             <th>Credits awarded:</th>
             <th>Course Name:</th>
             <th>Grade:</th>
-            <th>intend to take</th>
+            <th>Intend to Take:</th>
         </tr>
     </thead>
         <tbody>
@@ -37,7 +39,8 @@
     </table>
 
 <!--          form.iter_choices() -->
-
+<!--          should make it a requirement to upload transcript or you can't submit --> 
+<p class="text">Upload your Transcript: {{ form.transcript }}</p>
 
 {{ form.submit }}
     <ul>
@@ -47,6 +50,25 @@
     </ul>
 
 </form>
+</div>
 
+<style>
+    .title{
+   color: #233B7E;
+   font-size: 43px;
+}
+
+.text{
+    color: #233B7E;
+   font-size: 16px;
+
+}
+.content-section{
+    padding-top: 2%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+</style>
 
 {% endblock content %} 

@@ -52,7 +52,7 @@
                                 <form method="POST" action="" enctype="multipart/form-data">
                                     <tr>
                                         {{ form.csrf_token }}
-                                        <td>{{ form.elective(class="form-control form-control-lg") }}</td>
+                                        <td>{{ form.elective(class="form-control form-control-sm") }}</td>
                                         <ul>
                                         {% for error in form.elective.errors %}
                                             <li style="color:red;">{{ error }}</li>
