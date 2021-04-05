@@ -246,6 +246,7 @@ def courseinfo_fill():
                             enrollement.QPA_point = 0
                     db.session.commit()
         remove_list()
+        return redirect(url_for('student_profile'))
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -697,10 +698,10 @@ def workflow():
 @login_required
 def Advisement():
     form = AdvisementForm()
-    courses = Course.query.all()
-    enrolled = {str(i.course_id): i.grade for i in current_user.studentOwner.courses}
-    course_obj = {str(i.id):i for i in courses}
-    boxes = {i.data:i for i in form.course}
+
+    enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
+    course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
+
     if form.validate_on_submit():
         enrollement = Enrollement.query.filter_by(
                                     student_id=current_user.EMPLID,
@@ -720,5 +721,5 @@ def Advisement():
         return redirect(url_for('student_profile'))                           
 
 
-    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, enrolled=enrolled, course_obj=course_obj, boxes=boxes)
+    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, enrolled=enrolled, course_obj=course_obj)
 

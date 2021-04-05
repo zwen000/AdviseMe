@@ -23,10 +23,10 @@
                 <td>{{ course_obj[i.data].serial }}</td>
                 <td>{{ course_obj[i.data].credits }}</td>
                 <td>{{ course_obj[i.data].name }}</td>
-                <td>{{ enrolled[i.data] }}</td>
-                {% if i.data not in enrolled %}
+                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                {% if course_obj[i.data].id not in enrolled %}
                     <td>{{ i }}</td>
-                {% elif enrolled[i.data] == "F"%}
+                {% elif enrolled[course_obj[i.data].id] == "F"%}
                     <td>{{ i }}</td>
                 {%  else %}
                     <td></td>

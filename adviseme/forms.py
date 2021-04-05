@@ -113,16 +113,12 @@ class UpdateStudentAccountForm(FlaskForm):
             if user:
                 raise ValidationError('The email is already in use!')
 
-# class OptionForm(FlaskForm):
-#     course = StringField('course_number', validators=[DataRequired()])
-#     intended = BooleanField("Intend to take?")
 
 class AdvisementForm(FlaskForm):
     # semester = SelectField("semester", choices=[("fall", "Fall"), ("spring", "Spring")])
     # year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year-1, date.today().year+2)])
     # transcript = FileField("Upload Transcript", validators=[ FileAllowed(['pdf'])])
-    # intend_courses = FieldList(FormField(OptionForm), min_entries=53)
-    # test = StringField('test_label', validators=[DataRequired()])
+
     course = QuerySelectMultipleField(
         'Course',
         query_factory=lambda: Course.query,
