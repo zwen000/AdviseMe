@@ -138,7 +138,7 @@
                                         <th> </th>
                                     </tr>
                                     {% for course in courses %}
-                                        {% if course.designation == "Group A Technical Elective" %}
+                                        {% if course.designation == "Group A Elective" %}
                                             <tr>
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
@@ -160,7 +160,7 @@
                                         <th>  </th>
                                     </tr>
                                     {% for course in courses %}
-                                        {% if course.designation == "Group B Technical Elective" %}
+                                        {% if course.designation == "Group B Elective" %}
                                             <tr>
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
@@ -183,7 +183,7 @@
                                     </tr>
 
                                     {% for course in courses %}
-                                        {% if course.designation == "Group C Technical Elective" %}
+                                        {% if course.designation == "Group C Elective" %}
                                             <tr>
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
@@ -205,7 +205,7 @@
                                         <th> </th>
                                     </tr>
                                     {% for course in courses %}
-                                        {% if course.designation == "Liberal Art" %}
+                                        {% if course.designation == "Required Liberal Art" %}
                                             <tr>
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>

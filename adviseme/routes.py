@@ -820,6 +820,8 @@ def workflow():
 @app.route('/Advisement')
 @login_required
 def Advisement():
+    courses = Course.query.all()
+    """
     GPA_QPA()
     form = CourseCreationForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
@@ -829,6 +831,6 @@ def Advisement():
     for courseObj in student_info:
         # print(courseObj.grade)
         courses += Course.query.filter_by(id=courseObj.course_id)
+    """
 
-
-    return render_template('AdvisementForm.html', title="Live Advisement Form", student=student, courses=courses, student_info=student_info, form=form)
+    return render_template('AdvisementForm.html', title="Live Advisement Form", courses=courses )
