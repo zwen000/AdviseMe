@@ -586,7 +586,7 @@ def student_profile():
 def checklist():
     courses = Course.query.all()
     cs_courses = Course.query.filter_by(dept='CSC').all()
-    lib_req_courses = Course.query.filter_by(designation ="Liberal Art").all()
+    lib_req_courses = Course.query.filter_by(designation ="Required Liberal Art").all()
     science_courses = []
     for sciences in courses:
         if sciences.id >= 43 and sciences.id <= 48:
