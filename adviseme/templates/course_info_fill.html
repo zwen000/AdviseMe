@@ -123,7 +123,7 @@
                                     {% endfor %}
                                     
                                     <tr class="thead-dark">
-                                        <th>Technical Electives</th>
+                                        <th>Computer Science Electives</th>
                                         <th>  </th>
                                         <th>  </th>
                                         <th>  </th>
@@ -205,7 +205,7 @@
                                         <th> </th>
                                     </tr>
                                     {% for course in courses %}
-                                        {% if course.designation == "Required Liberal Art" %}
+                                        {% if course.designation == "Liberal Art" %}
                                             <tr>
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
