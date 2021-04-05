@@ -739,7 +739,7 @@ def get_semester(date):
     else:
         raise IndexError("Invalid date")
 
-    return semester
+    return semester +" "+ year
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome/')
@@ -821,24 +821,7 @@ def noteReview(note_id):
 @app.route('/workflow/')
 @login_required
 def workflow():
-
-
     return render_template('workflow.html', title="workflow")
-
-@app.route('/workflow2/')
-@login_required
-def workflow2():
-    todaydate = date.today()
-    semester = get_semester(todaydate)
-    advisement = LiveAdvisementForm.query.filter_by(
-                                        student_id=current_user.EMPLID,
-                                        semester = semester,
-                                        year =todaydate.year ).first()
-
-    if advisement:
-        return redirect(url_for('workflow'))
-    return render_template('workflow2.html', title="workflow")
-
 
 @app.route('/Advisement', methods=['GET', 'POST'])
 @login_required

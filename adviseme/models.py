@@ -27,8 +27,6 @@ class Faculty(db.Model):
     staff_role =db.Column(db.String(30), nullable=False)
     User = db.relationship('User', backref='FacultyOwner', lazy=True)
     Notes = db.relationship('Notes', backref='Reviewer', lazy=True)
-    Advisement = db.relationship('LiveAdvisementForm', backref='Reviewer', lazy=True)
-
 
     def __repr__(self):
         return f"Faculty('{self.EMPLID}')"
@@ -86,7 +84,6 @@ class Student(db.Model):
     GPA = db.Column(db.Integer, unique=False, nullable=True)
     QPA = db.Column(db.Integer, unique=False, nullable=True)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
-    Advisement = db.relationship('LiveAdvisementForm', backref='Owner', lazy=True)
     user = db.relationship('User', backref='studentOwner', lazy=True)
 
     courses = db.relationship('Enrollement', back_populates='student', lazy=True)
@@ -114,16 +111,3 @@ class Course(db.Model):
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     value = db.Column(db.String(15))
-
-class LiveAdvisementForm(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    semester = db.Column(db.String(30), nullable=False)
-    year = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.Date, nullable=False, default=date.today())
-    transcript =  db.Column(db.String(20), nullable=False)
-
-    student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
-    facutly_id = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True) 
-
-    student = db.relationship('Student', backref='advisementform', lazy=True)
-
