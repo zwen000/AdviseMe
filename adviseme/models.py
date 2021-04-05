@@ -63,13 +63,16 @@ class Notes(db.Model):
 class Enrollement(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
-    grade = db.Column(db.String(15))
+    grade = db.Column(db.String(15), default='')
     GPA_point = db.Column(db.Integer)
     QPA_point = db.Column(db.Integer)
     attempt = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     passed = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     student = db.relationship('Student', back_populates='courses', lazy=True)
     course = db.relationship('Course', back_populates='students', lazy=True)
+
+    def __repr__(self):
+        return f"Enrollment('{self.student_id}, {self.course_id}, {self.grade}')"
 
 class Student(db.Model):
     EMPLID =db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
@@ -102,7 +105,7 @@ class Course(db.Model):
     students = db.relationship('Enrollement', back_populates='course', lazy=True)
 
     def __repr__(self):
-        return f"Notes('{self.id}','{self.serial}','{self.name}','{self.dept}','{self.description}','{self.credits}')"
+        return f"Course('{self.id}','{self.serial}','{self.name}','{self.dept}','{self.description}','{self.credits}')"
 
 
 class Grade(db.Model):

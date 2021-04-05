@@ -1,10 +1,11 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
+from wtforms import *
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from wtforms_sqlalchemy.fields import QuerySelectField 
+from wtforms_sqlalchemy.fields import *
 from adviseme.models import *
+from datetime import date
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -112,4 +113,18 @@ class UpdateStudentAccountForm(FlaskForm):
             user = User.query.filter_by(email = email.data).first()
             if user:
                 raise ValidationError('The email is already in use!')
-        
+
+
+class AdvisementForm(FlaskForm):
+    # semester = SelectField("semester", choices=[("fall", "Fall"), ("spring", "Spring")])
+    # year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year-1, date.today().year+2)])
+    # transcript = FileField("Upload Transcript", validators=[ FileAllowed(['pdf'])])
+
+    course = QuerySelectMultipleField(
+        'Course',
+        query_factory=lambda: Course.query,
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
+    )
+
+    submit = SubmitField('Submit')

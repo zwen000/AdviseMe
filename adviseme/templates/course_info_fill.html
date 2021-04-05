@@ -71,8 +71,8 @@
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
-                                                {% for id, grade in all_grade %}
-                                                    {% if course.id == id %}
+                                                {% for id, grade, EMPLID in all_grade %}
+                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}
@@ -92,8 +92,8 @@
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
-                                                {% for id, grade in all_grade %}
-                                                    {% if course.id == id %}
+                                                {% for id, grade, EMPLID in all_grade %}
+                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}
@@ -113,8 +113,8 @@
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
-                                                {% for id, grade in all_grade %}
-                                                    {% if course.id == id %}
+                                               {% for id, grade, EMPLID in all_grade %}
+                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}
@@ -143,8 +143,8 @@
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
-                                                {% for id, grade in all_grade %}
-                                                    {% if course.id == id %}
+                                               {% for id, grade, EMPLID in all_grade %}
+                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}
@@ -165,8 +165,8 @@
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
-                                                {% for id, grade in all_grade %}
-                                                    {% if course.id == id %}
+                                               {% for id, grade, EMPLID in all_grade %}
+                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}
@@ -188,8 +188,8 @@
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
-                                                {% for id, grade in all_grade %}
-                                                    {% if course.id == id %}
+                                               {% for id, grade, EMPLID in all_grade %}
+                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}
@@ -210,8 +210,8 @@
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
-                                                {% for id, grade in all_grade %}
-                                                    {% if course.id == id %}
+                                               {% for id, grade, EMPLID in all_grade %}
+                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}

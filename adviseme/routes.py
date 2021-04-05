@@ -118,11 +118,9 @@ def studentinfo_fill():
                           firstname=form.firstname.data,
                           lastname=form.lastname.data,
                           graduating=form.graduating.data)
-        note = Notes(EMPLID=form.EMPLID.data)
         current_user.EMPLID=form.EMPLID.data
         current_user.bio=form.bio.data
         db.session.add(student)
-        db.session.add(note)
         db.session.commit()
         flash('Info Updated', 'success')
         return redirect(url_for('courseinfo_fill'))
@@ -164,8 +162,13 @@ def student_course_info():
 all_grade=[]
 def stored_grade(alist):
     all_grade.append(alist)
-    print(all_grade)
     return all_grade
+
+
+def remove_list():
+    for tup in list(all_grade):
+        if tup[2] == current_user.EMPLID:
+            all_grade.remove(tup)                                        # Clear the list when all data store into db
 
 def GPA_QPA():
     num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count() 
@@ -200,6 +203,7 @@ def GPA_QPA():
     print("The QPA should be: ", student.QPA)    
     db.session.commit()
 
+
 @app.route('/course/info', methods=['GET', 'POST'])
 @login_required
 def courseinfo_fill():
@@ -211,73 +215,75 @@ def courseinfo_fill():
     # course_form.elective.choices = [(option.serial) for option in Course.query.filter_by(designation="Liberal Art")]
 
     if form.validate_on_submit():
-        for course_id,grade in all_grade:
-            course = Course.query.get_or_404(course_id)
-            print(course_id,grade)
-            enrollement = Enrollement.query.filter_by(
-                                    student_id=current_user.EMPLID,
-                                    course_id = course_id).first()
+        for course_id,grade,EMPLID in all_grade:
+            if EMPLID == current_user.EMPLID:
+                course = Course.query.get_or_404(course_id)
+                print(course_id,grade)
+                enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course_id).first()
         
-            if not enrollement:
-                enrollement = Enrollement(student_id=current_user.EMPLID,
-                                        course_id = course_id,
-                                        grade = grade)
-                if grade == 'Not Taken':
-                    pass
-                elif grade =='Currently_Enrolled':
-                    student.credit_taken += course.credits
-                    enrollement.attempt = True
-                else:
-                    enrollement.GPA_point = int(course.credits*evaluate_GPA(grade))
-                    if course_id < 19 :
-                        enrollement.QPA_point = evaluate_QPA(grade)
-                    else:
-                        enrollement.QPA_point = 0 
-                    
-                    if grade == "F":
-                        student.credit_earned += 0
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                            course_id = course_id,
+                                            grade = grade)
+                    if grade == '':
+                        pass
+                    elif grade =='IP':
+                        student.credit_taken += course.credits
                         enrollement.attempt = True
-                        enrollement.passed = False
                     else:
-                        student.credit_earned += course.credits
-                        enrollement.attempt = True
-                        enrollement.passed = True
+                        enrollement.GPA_point = int(course.credits*evaluate_GPA(grade))
+                        if course_id < 19 :
+                            enrollement.QPA_point = evaluate_QPA(grade)
+                        else:
+                            enrollement.QPA_point = 0 
 
-                db.session.add(enrollement)
-                db.session.commit()
-            elif enrollement.grade == grade:                              # Skip the case of course grade remains the same
-                continue               
-            else:
-                if grade == 'Not Taken':
-                    pass
-                elif grade =='Currently_Enrolled':
-                    student.credit_taken += course.credits
-                    enrollement.attempt = True
-                else:
-                    if enrollement.attempt == True:
-                        if enrollement.passed == False and grade == "F":      # Failed the course the first time, retook it and failed again! (FF)
+                        if grade == "F":
                             student.credit_earned += 0
-                        elif enrollement.passed == True and grade == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
-                            student.credit_earned -= course.credits           # The first passing grade could have been added by user error!
-                            enrollement.passed = False                                  
-                        elif enrollement.passed == False and grade != "F":    # Failed the course the first time, retook it and passed!       (FP)
+                            enrollement.attempt = True
+                            enrollement.passed = False
+                        else:
                             student.credit_earned += course.credits
+                            enrollement.attempt = True
                             enrollement.passed = True
-                        elif enrollement.passed == True and grade != "F":     # Passed the course the first time, retook it and passed again! (PP)
-                            student.credit_earned += 0
-                        else: 
-                            student.credit_earned += 0
-                    enrollement.grade = grade
-                    enrollement.GPA_point = evaluate_GPA(grade)
-                    if course_id < 19:
-                        enrollement.QPA_point = evaluate_QPA(grade)
+
+                    db.session.add(enrollement)
+                    db.session.commit()
+                elif enrollement.grade == grade:                              # Skip the case of course grade remains the same
+                    continue               
+                else:
+                    if grade == '':
+                        pass
+                    elif grade =='IP':
+                        student.credit_taken += course.credits
+                        enrollement.attempt = True
                     else:
-                        enrollement.QPA_point = 0
-                db.session.commit()
-        all_grade.clear()                                         # Clear the list when all data store into db
+                        if enrollement.attempt == True:
+                            if enrollement.passed == False and grade == "F":      # Failed the course the first time, retook it and failed again! (FF)
+                                student.credit_earned += 0
+                                enrollement.attempt = False
+                            elif enrollement.passed == True and grade == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
+                                student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
+                                enrollement.passed = False
+                                enrollement.attempt = False                                  
+                            elif enrollement.passed == False and grade != "F":    # Failed the course the first time, retook it and passed!       (FP)
+                                student.credit_earned += course.credits
+                                enrollement.passed = True
+                            elif enrollement.passed == True and grade != "F":     # Passed the course the first time, retook it and passed again! (PP)
+                                student.credit_earned += 0
+                            else: 
+                                student.credit_earned += 0
+                        enrollement.grade = grade
+                        enrollement.GPA_point = evaluate_GPA(grade)
+                        if course_id < 19:
+                            enrollement.QPA_point = evaluate_QPA(grade)
+                        else:
+                            enrollement.QPA_point = 0
+                    db.session.commit()
+        remove_list()
         return redirect(url_for('student_profile'))
-    elif request.method == 'GET':
-        scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
+
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -476,10 +482,10 @@ def courseinfo_edit(course_id):
     form.grade.choices = [(option.value) for option in Grade.query.all()]
 
     if form.validate_on_submit():
-        grades=(course_id,form.grade.data)
-        for id, grade in all_grade:
-            if course_id == id :
-                all_grade.remove((id,grade))
+        grades=(course_id,form.grade.data,current_user.EMPLID)
+        for id, grade,EMPLID in all_grade:
+            if course_id == id and EMPLID == current_user.EMPLID :
+                all_grade.remove((id,grade,EMPLID))
         stored_grade(grades)
         
         return redirect(url_for('courseinfo_fill'))
@@ -515,7 +521,7 @@ def facultyinfo_fill():
 # function for logout
 @app.route('/logout')
 def logout():
-    all_grade.clear()                                         # Clear the list before student log out
+    remove_list()
     logout_user()
     return redirect(url_for('home'))
 
@@ -556,6 +562,7 @@ def student_profile_edit():
 def student_profile():
     GPA_QPA()
     form = UpdateStudentAccountForm()
+    remove_list()
 
     if form.validate_on_submit():
         if form.picture.data:                                   # If there exists valid form picture data (i.e .png, .jpg file)
@@ -816,21 +823,32 @@ def noteReview(note_id):
 def workflow():
     return render_template('workflow.html', title="workflow")
 
-# Starting point for Live Advisement Form ... 
-@app.route('/Advisement')
+@app.route('/Advisement', methods=['GET', 'POST'])
 @login_required
 def Advisement():
-    courses = Course.query.all()
-    """
+    form = AdvisementForm()
     GPA_QPA()
-    form = CourseCreationForm()
-    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
-    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
 
-    courses = []
-    for courseObj in student_info:
-        # print(courseObj.grade)
-        courses += Course.query.filter_by(id=courseObj.course_id)
-    """
+    enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
+    course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
 
-    return render_template('AdvisementForm.html', title="Live Advisement Form", courses=courses )
+    if form.validate_on_submit():
+        enrollement = Enrollement.query.filter_by(
+                                    student_id=current_user.EMPLID,
+                                    course_id = course_id).first()
+        if not enrollement:                            
+            for course in form.course.data:  
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                        course_id = course.id,
+                                        attempt = True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+        note = Notes(EMPLID=current_user.EMPLID)   
+        db.session.add(note)
+        db.session.commit()        
+        return redirect(url_for('student_profile'))                           
+
+
+    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, enrolled=enrolled, course_obj=course_obj)

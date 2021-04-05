@@ -236,8 +236,8 @@ course_103 = Course(id=103, serial=' ', name='', dept='HIST', description='The a
 """
 
 # -- Grade Options:
-grade_1 = Grade(id=1, value='Not Taken')
-grade_2 = Grade(id=2, value='Currently_Enrolled')
+grade_1 = Grade(id=1, value='')
+grade_2 = Grade(id=2, value='IP')
 grade_3 = Grade(id=3, value='A+')
 grade_4 = Grade(id=4, value='A')
 grade_5 = Grade(id=5, value='A-')
