@@ -579,6 +579,7 @@ def student_profile():
 def checklist():
     courses = Course.query.all()
     cs_courses = Course.query.filter_by(dept='CSC').all()
+    lib_req_courses = Course.query.filter_by(designation ="Liberal Art").all()
     science_courses = []
     for sciences in courses:
         if sciences.id >= 43 and sciences.id <= 48:
@@ -637,12 +638,53 @@ def checklist():
                 Science_width += checklistProgressInterval_Science
     Science_width_num = Science_width/100 * 3
 
+    #progress bar for Technical Electives
+    checklistProgressInterval_TE = 100 / 2
+    Tech_width = 0
+    tech_courses = []
+    #Need to fix to cater to technical electives
+    for tech_elective in tech_courses:
+        for score in scores:
+            if score.grade and tech_elective.id == score.course_id:
+                Science_width += checklistProgressInterval_TE
+    Tech_width_num = Tech_width/100 * 2
+
+    #progress bar for Flexible Pathways
+    checklistProgressInterval_Art = 100 / 4
+    Art_width = 0
+    for liberal_art_course in courses_array:
+        if liberal_art_course.designation == "[IS](1000)" or liberal_art_course.designation == "[IS](2000)" or liberal_art_course.designation == "[WCGI](1000)" or liberal_art_course.designation == "[WCGI](2000)" or liberal_art_course.designation == "[US](1000)" or liberal_art_course.designation == "[US](2000)" or liberal_art_course.designation == "[CE](1000)" or liberal_art_course.designation == "[CE](2000)":
+            Art_width += checklistProgressInterval_Art
+    Art_width_num = Art_width/100 * 4
+
+    #progress bar for Liberal Arts
+    checklistProgressInterval_Lib_Art = 100 / 4
+    Lib_Art_width = 0
+    for liberal_art_course_req in lib_req_courses:
+        for score in scores:
+            if score.grade and liberal_art_course_req.id == score.course_id:
+                Lib_Art_width += checklistProgressInterval_Lib_Art
+    Lib_Art_width_num = Lib_Art_width/100 * 4
+
+
+    #progress bar for free electives
+    checklistProgressInterval_FE = 100 / 2
+    FE_width = 0
+    free_courses = []
+    #Need to fix to cater to free electives
+    for free_elective in free_courses:
+        for score in scores:
+            if score.grade and free_elective.id == score.course_id:
+                FE_width += checklistProgressInterval_FE
+    FE_width_num = FE_width/100 * 2
+
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('checklist.html', title='Checklist', 
                             profile_image=profile_image, 
                             courses=courses, 
+                            lib_req_courses = lib_req_courses,
                             student=student, 
                             scores=scores, 
                             cs_courses=cs_courses, 
@@ -653,10 +695,18 @@ def checklist():
                             CSE_width_num =  int(CSE_width_num),
                             Math_width_num =  int(Math_width_num),
                             Science_width_num = int(Science_width_num),
+                            Tech_width_num = int(Tech_width_num),
+                            Art_width_num = int(Art_width_num),
+                            FE_width_num = int(FE_width_num),
+                            Lib_Art_width_num = int(Lib_Art_width_num),
                             CS_width = CS_width,
                             CSE_width = CSE_width,
                             Math_width = Math_width,
-                            Science_width = Science_width)
+                            Science_width = Science_width,
+                            Tech_width = Tech_width,
+                            Art_width = Art_width,
+                            FE_width = FE_width,
+                            Lib_Art_width = Lib_Art_width)
 
 @app.route('/faculty/')
 @login_required
