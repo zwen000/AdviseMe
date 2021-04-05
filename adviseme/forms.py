@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from flask_login import current_user
 from wtforms import *
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, FileRequired
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms_sqlalchemy.fields import *
 from adviseme.models import *
 from datetime import date
