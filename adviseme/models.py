@@ -81,6 +81,7 @@ class Student(db.Model):
     credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
     credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
+    transcript = db.Column(db.String(55), nullable=False, default='Computer_Science.pdf')
     GPA = db.Column(db.Integer, unique=False, nullable=True)
     QPA = db.Column(db.Integer, unique=False, nullable=True)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
@@ -111,3 +112,15 @@ class Course(db.Model):
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     value = db.Column(db.String(15))
+
+class LiveAdvisementForm(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    semester = db.Column(db.String(30), nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date, nullable=False, default=date.today())
+    transcript =  db.Column(db.String(20), nullable=False, default='')
+
+    student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
+    facutly_id = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True) 
+
+    student = db.relationship('Student', backref='advisementform', lazy=True)

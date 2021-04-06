@@ -203,6 +203,7 @@
                 <li>Course Designation: {{math_course.designation}}</li> 
                 <hr>
                 <li>Course Credit: {{math_course.credits}} </li>
+                <hr>
                 {% for score in scores %}
                   {% if score.grade and math_course.id == score.course_id %}
                     <li>Grade: {{score.grade}} </li>
@@ -817,7 +818,7 @@ li:hover{
   padding: 0%;
 }  
 .progress{
-  padding: 0.75%;
+  padding: 0.80%;
 }  
 
 }
