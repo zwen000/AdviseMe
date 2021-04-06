@@ -1,9 +1,77 @@
 {% extends "layout.html"%}
 {% block content %}
-<!--<h1>Live Advisement Page!</h1>-->
 <form method="POST" action="" enctype="multipart/form-data" role="form">
-    {{ form.hidden_tag() }}
-    {{ form.csrf_token }}
+    <fieldset>
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <a class="text-left" href="{{ url_for('student_profile') }}">Back to profile?</a>
+                </div>
+                <div class="col">
+                    <a class="float: right; display: inline;" href="{{ url_for('View_Transcript') }}">View Previous Transcript/Cirriculum?</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <hr><center><h1 class="title">Live Advisement Form</h1></center><hr>
+            <p class="text" style="float: right; display: inline;">Date: {{ form.date }}</p>
+            <p class="text">Academic Advising Semester: {{ form.semester }}{{ form.year }}<p class="text" style="float: right; display: inline;">Empl ID: {{ current_user.studentOwner.EMPLID }}</p></p>
+            <p class="text">Student's Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.lastname }}</p>
+
+            <table class="table table-striped bg-light text-center">
+                <thead>
+                    <tr class="text-muted">
+                        <th>Course Code:</th>
+                        <th>Credits awarded:</th>
+                        <th>Course Name:</th>
+                        <th>Grade:</th>
+                        <th>Intend to Take:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in form.course %}
+                        <tr>
+                            <td>{{ course_obj[i.data].serial }}</td>
+                            <td>{{ course_obj[i.data].credits }}</td>
+                            <td>{{ course_obj[i.data].name }}</td>
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            {% if course_obj[i.data].id not in enrolled %}
+                                <td>{{ i }}</td>
+                            {% elif enrolled[course_obj[i.data].id] == "F"%}
+                                <td>{{ i }}</td>
+                            {%  else %}
+                                <td></td>
+                            {% endif%}
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!--          form.iter_choices() -->
+            <!--          should make it a requirement to upload transcript or you can't submit --> 
+
+            <p class="text">Upload your Transcript: </p>
+            {{ form.transcript(class="form-control-file") }}
+            <!-- Standard Exception Handling: -->
+            {% if form.transcript.errors %}
+                {% for error in form.transcript.errors %}
+                    <span class="text-danger">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <center>{{ form.submit(class="custom-button-submit") }}</center>
+            <ul>
+                {% for error in form.course.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </fieldset>
+
 
 
 <div class="c_viewport">
@@ -398,9 +466,58 @@
             {% endfor %}
         </ul>
 </div>
-{{ form.submit }}
+
 <!--  end of container  -->
+
 </form>
+</div>
+
+<br>
+<br>
+<br>
+<p><b>File Location:</b> {{ transcript }} </p>
+<br>
+<br>
+<br>
+
+
+<style>
+   
+.title{
+   color: #233B7E;
+   font-size: 43px;
+}
+
+.text{
+    color: #233B7E;
+   font-size: 16px;
+
+}
+.content-section{
+    padding-top: 2%;
+    padding-right: 5%;
+    padding-left: 5%;
+}
+
+.custom-button-submit {
+background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+border-radius: 50px;
+color: hsl(0, 0%, 100%);
+padding: 10px;
+border: none;
+width: 30%;
+cursor: pointer;
+font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+}
+.custom-button-submit:hover{
+    transition: ease-in;
+    background: #233B7E;
+    color: white;
+}
+
 
 <style>
 
@@ -431,6 +548,7 @@ table {
 thead>tr:nth-child(2) th {
     top: 35px;
 }
+
 </style>
 
 {% endblock content %}

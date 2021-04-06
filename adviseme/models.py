@@ -81,6 +81,8 @@ class Student(db.Model):
     credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
     credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
+    needs_advising = db.Column(db.Boolean, nullable=False, default=False)
+    transcript = db.Column(db.String(55), nullable=False, default='Computer_Science.pdf')
     GPA = db.Column(db.Integer, unique=False, nullable=True)
     QPA = db.Column(db.Integer, unique=False, nullable=True)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
@@ -99,7 +101,7 @@ class Course(db.Model):
     dept = db.Column(db.String(30), nullable=False)                         # Course type: MATH, CSC, HIST, JWST, etc 
     description = db.Column(db.String(255), nullable=False)                 # C++, Learn Discrete math, etc ... 
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    designation = db.Column(db.String(255), unique=False, nullable=False)    # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement"
+    designation = db.Column(db.String(255), unique=False, nullable=False)   # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement", etc
     credits = db.Column(db.Integer, nullable=False, default=0)
     
     students = db.relationship('Enrollement', back_populates='course', lazy=True)
@@ -111,3 +113,15 @@ class Course(db.Model):
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     value = db.Column(db.String(15))
+
+class LiveAdvisementForm(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    semester = db.Column(db.String(30), nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date, nullable=False, default=date.today())
+    transcript =  db.Column(db.String(20), nullable=False, default='')
+
+    student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
+    facutly_id = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True) 
+
+    student = db.relationship('Student', backref='advisementform', lazy=True)

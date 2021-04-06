@@ -116,8 +116,9 @@ class UpdateStudentAccountForm(FlaskForm):
 
 
 class AdvisementForm(FlaskForm):
-    semester = SelectField("semester", choices=[("fall", "FALL"), ("spring", "SPRING")])
-    year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year-1, date.today().year+2)])
+    semester = SelectField("semester", choices=[("spring", "Spring"), ("fall", "Fall")])
+    year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year, date.today().year+2)])
+    date = date.today()
     transcript = FileField("Upload Transcript", validators=[FileAllowed(['pdf']), FileRequired()])
 
     course = QuerySelectMultipleField(
@@ -127,4 +128,4 @@ class AdvisementForm(FlaskForm):
         option_widget=widgets.CheckboxInput()
     )
 
-    submit = SubmitField('Submit')
+    submit = SubmitField('Submit to Advisor')

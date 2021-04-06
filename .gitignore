@@ -1,7 +1,7 @@
 # Python Virtual Enviornment:
 /[Ee]nv/
 
-# SQL Database:
+# SQLite Database Instance:
 database.db
 
 # Any file that ends with the .db extension
@@ -9,6 +9,7 @@ database.db
 
 # This entire Directory! 
 /static/Profile_Pics/
+/static/Transcript/
 
 # VSCode:
 /.vscode/
@@ -19,7 +20,9 @@ database.db
 # Custom Mac OS File (not needed)
 .DS_Store
 
-
+# Ignore the enitre Transcript Directory So that I don't accidentally push my Student Unofficial Transcript AGAIN!!! 
+*adviseme\static\Transcripts
+*adviseme/static/Transcripts
 
 *.db
 adviseme/database.db
