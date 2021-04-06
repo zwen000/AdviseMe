@@ -90,7 +90,21 @@ class advisingNotesForm(FlaskForm):
     academic_comment = StringField('Academic Comment', validators=[DataRequired()])
     next_semester_comment = StringField('Next Semester Comment', validators=[DataRequired()])
     be_advised = BooleanField('Be advised?')
+    tutorial = BooleanField('tutorial')
+    counseling = BooleanField('counseling')
+    consultation = BooleanField('consultation')
+    career = BooleanField('career')
+    scholarships = BooleanField('scholarships')
+    internship = BooleanField('internship')
+    followup = BooleanField('followup')
+
     submit = SubmitField('Approved')
+
+class AcademicReviewForm(FlaskForm):
+    academic_note = StringField('academic_note', validators=[DataRequired()])
+    additional = StringField('additional', validators=[DataRequired()])
+    approval = BooleanField('Approved')
+    submit = SubmitField('submit')
 
 class UpdateStudentAccountForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])

@@ -724,18 +724,12 @@ def faculty():
 # function to get current semester 
 def get_semester(date):
     year = str(date.year)
-    m = date.month * 100
-    d = date.day
-    md = m + d
+    m = date.month
 
-    if ((md >= 301) and (md <= 531)):
-        semester = 'Spring'  # spring
-    elif ((md > 531) and (md < 901)):
-        semester = 'Summer'  # summer
-    elif ((md >= 901) and (md <= 1130)):
-        semester = 'Fall'  # fall
-    elif ((md > 1130) and (md <= 229)):
-        semester = 'Winter'  # winter
+    if m in (2,3,4,5,6,7):
+        semester='FALL'
+    elif m in (8,9,10,11,12,1):
+        semester='SPRING'
     else:
         raise IndexError("Invalid date")
 
@@ -779,6 +773,13 @@ def academicAdvising(note_id):
     if form.validate_on_submit():
         notes.academic_comment=form.academic_comment.data
         notes.next_semester_comment=form.next_semester_comment.data
+        notes.tutorial=form.tutorial.data
+        notes.counseling=form.counseling.data
+        notes.consultation=form.consultation.data
+        notes.career=form.career.data
+        notes.scholarships=form.scholarships.data
+        notes.internship=form.internship.data
+        notes.followup=form.followup.data
         notes.be_advised=form.be_advised.data
         if notes.Owner.credit_earned <= 45 and form.be_advised.data == True:
             notes.approval = True
@@ -788,6 +789,13 @@ def academicAdvising(note_id):
     elif request.method == 'GET':
         form.academic_comment.data=notes.academic_comment
         form.next_semester_comment.data=notes.next_semester_comment
+        form.tutorial.data=notes.tutorial
+        form.counseling.data=notes.counseling
+        form.consultation.data=notes.consultation
+        form.career.data=notes.career
+        form.scholarships.data=notes.scholarships
+        form.internship.data=notes.internship
+        form.followup.data=notes.followup
         form.be_advised.data=notes.be_advised
     return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
 
@@ -804,7 +812,7 @@ def noteReviewHome():
 @login_required
 def noteReview(note_id):
     notes=Notes.query.get_or_404(note_id)
-    form = NoteReviewForm()
+    form = AcademicReviewForm()
     if form.validate_on_submit():
         notes.academic_note=form.academic_note.data
         notes.additional=form.additional.data
@@ -821,9 +829,21 @@ def noteReview(note_id):
 @app.route('/workflow/')
 @login_required
 def workflow():
+    todaydate = date.today()
+    semester = get_semester(todaydate)
+    advisement = LiveAdvisementForm.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        semester = semester,
+                                        year =todaydate.year ).first()
+    
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
 
 
-    return render_template('workflow.html', title="workflow")
+
+    return render_template('workflow.html', title="workflow",advisement=advisement,notes=notes)
 
 @app.route('/workflow2/')
 @login_required
@@ -833,7 +853,7 @@ def workflow2():
     advisement = LiveAdvisementForm.query.filter_by(
                                         student_id=current_user.EMPLID,
                                         semester = semester,
-                                        year =todaydate.year ).first()
+                                        year =todaydate.year).first()
 
     if advisement:
         return redirect(url_for('workflow'))
@@ -845,6 +865,8 @@ def workflow2():
 def Advisement():
     form = AdvisementForm()
     GPA_QPA()
+    todaydate = date.today()
+    semester = get_semester(todaydate)
 
     enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
     course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
@@ -862,8 +884,15 @@ def Advisement():
             else:
                 enrollement.grade = ''
                 enrollement.attempt = True
-        note = Notes(EMPLID=current_user.EMPLID)   
+        note = Notes(EMPLID=current_user.EMPLID,
+                     semester= semester,
+                     year = todaydate.year)
+        liveadivsementform = LiveAdvisementForm(student_id=current_user.EMPLID,
+                                                semester= semester,
+                                                transcript= '',
+                                                year = todaydate.year)   
         db.session.add(note)
+        db.session.add(liveadivsementform)
         db.session.commit()        
         return redirect(url_for('student_profile'))                           
 

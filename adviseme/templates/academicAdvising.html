@@ -31,6 +31,41 @@
                     {{ form.next_semester_comment(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
+            <div class="form-check">
+				{{ form.tutorial(class="form-check-input") }}
+				{{ form.tutorial.label(class="form-check-label") }}
+			</div>
+
+            <div class="form-check">
+				{{ form.counseling(class="form-check-input") }}
+				{{ form.counseling.label(class="form-check-label") }}
+			</div>
+            
+            <div class="form-check">
+				{{ form.consultation(class="form-check-input") }}
+				{{ form.consultation.label(class="form-check-label") }}
+			</div>
+
+            <div class="form-check">
+				{{ form.career(class="form-check-input") }}
+				{{ form.career.label(class="form-check-label") }}
+			</div>
+
+            <div class="form-check">
+				{{ form.scholarships(class="form-check-input") }}
+				{{ form.scholarships.label(class="form-check-label") }}
+			</div>
+
+            <div class="form-check">
+				{{ form.internship(class="form-check-input") }}
+				{{ form.internship.label(class="form-check-label") }}
+			</div>
+
+            <div class="form-check">
+				{{ form.followup(class="form-check-input") }}
+				{{ form.followup.label(class="form-check-label") }}
+			</div>
+
 			<div class="form-check">
 				{{ form.be_advised(class="form-check-input") }}
 				{{ form.be_advised.label(class="form-check-label") }}
