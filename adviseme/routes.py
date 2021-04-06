@@ -4,7 +4,7 @@ import secrets
 from datetime import date
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
-from adviseme import app, bcrypt, db
+from adviseme import app, bcrypt, db 
 from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
@@ -88,7 +88,7 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me!
     _, f_ext = os.path.splitext(form_picture.filename)                              # the os module allows us to extract a file's extension
     picture_fn = random_hex + f_ext                                                 # filename = hex value + file extension (.jpg, .png)
-    picture_path = os.path.join(app.root_path, 'static/Profile_Pics', picture_fn)   # File/path/to/save/picture!
+    picture_path = os.path.join(app.root_path, 'static/Profile_Pics', picture_fn)   # File/path/to/save/picture! with specified file name! 
 
     # This entire section of the code below just compresses the image to save space on our devices/the hosting sever (once deployed)!
     #-----------------------------------------------
@@ -101,11 +101,21 @@ def save_picture(form_picture):
 
     return picture_fn
 
-def save_transcript(form_transcript):
-    random_hex = secrets.token_hex(8)                                               # We don't want to make this too large trust me!
-    _, f_ext = os.path.splitext(form_transcript.filename)                              # the os module allows us to extract a file's extension
-    transcript_fn = random_hex + f_ext                                                 # filename = hex value + file extension (.jpg, .png)
-    transcript_path = os.path.join(app.root_path, 'static/Transcript', transcript_fn)   # File/path/to/save/picture!
+def save_transcript(form_transcript, semester, year, student_id):
+    pdf = form_transcript 
+    random_hex = secrets.token_hex(8)                                                   # We don't want to make this too large trust me!
+    _, f_ext = os.path.splitext(form_transcript.filename)                               # the os module allows us to extract a file's extension
+    
+    transcript_fn = str(student_id) + '_' + str(year) +  '_' + random_hex + f_ext       # filename = hex value + file extension (.pdf)
+
+    if semester == "fall" or semester == "Fall":
+        transcript_path = os.path.join(app.root_path, f'static/Transcripts/FALL/', transcript_fn)  # File/path/to/save/transcript!
+        pdf.save(transcript_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
+    elif semester == "spring" or semester == "Spring":
+        transcript_path = os.path.join(app.root_path, f'static/Transcripts/SPRING/', transcript_fn)  # File/path/to/save/transcript!
+        pdf.save(transcript_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
+    else: 
+        print("An Error has occured, use a stack trace and debug this!")
 
     return transcript_fn
 
@@ -417,68 +427,6 @@ def evaluate_GPA(grade):
     # be assigned as default value of passed argument 
     return switcher.get(grade, "Not_Taken") 
 
-#@app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
-#@login_required
-#def courseinfo_edit(course_id):
-#    form = CourseInfoForm()
-#    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
-#    course = Course.query.get_or_404(course_id)
-#
-#    form.grade.choices = [(option.value) for option in Grade.query.all()]
-#
-#    if form.validate_on_submit():
-#        enrollement = Enrollement.query.filter_by(
-#                                    student_id=current_user.EMPLID,
-#                                    course_id = course.id).first()
-#        
-#        if not enrollement:
-#            enrollement = Enrollement(student_id=current_user.EMPLID,
-#                                    course_id = course.id,
-#                                    grade = form.grade.data,
-#                                    GPA_point = int(course.credits*evaluate_GPA(form.grade.data)),
-#                                    attempt=True)
-#            if course.id < 19:
-#                enrollement.QPA_point = evaluate_QPA(form.grade.data)
-#            else:
-#                enrollement.QPA_point = 0 
-#
-#            db.session.add(enrollement)
-#
-#            if form.grade.data == "F":
-#                student.credit_earned += 0
-#                enrollement.attempt = True
-#                enrollement.passed = False
-#            else:
-#                student.credit_earned += course.credits
-#                enrollement.attempt = True
-#                enrollement.passed = True
-#            db.session.commit()                
-#        else:
-#            if enrollement.attempt == True:
-#                if enrollement.passed == False and form.grade.data == "F":      # Failed the course the first time, retook it and failed again! (FF)
-#                    student.credit_earned += 0
-#                elif enrollement.passed == True and form.grade.data == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
-#                    student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
-#                    enrollement.passed = False                                  
-#                elif enrollement.passed == False and form.grade.data != "F":    # Failed the course the first time, retook it and passed!       (FP)
-#                    student.credit_earned += course.credits
-#                    enrollement.passed = True
-#                elif enrollement.passed == True and form.grade.data != "F":     # Passed the course the first time, retook it and passed again! (PP)
-#                    student.credit_earned += 0
-#                else: 
-#                    student.credit_earned += 0
-#
-#            enrollement.grade = form.grade.data
-#            enrollement.GPA_point = evaluate_GPA(form.grade.data)
-#            if course.id < 19:
-#                enrollement.QPA_point = evaluate_QPA(form.grade.data)
-#            else:
-#                enrollement.QPA_point = 0
-#            db.session.commit()
-#        
-#        return redirect(url_for('courseinfo_fill'))
-#
-#    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
 
 @app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
 @login_required
@@ -836,17 +784,17 @@ def workflow():
 def Advisement():
     form = AdvisementForm()  
     GPA_QPA()
-    liveadvisementform = LiveAdvisementForm(student_id =current_user.EMPLID)
-    transcript = url_for('static', filename='Transcript/'+ liveadvisementform.transcript)
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    transcript = url_for('static', filename='Transcript/'+ student.transcript)
 
     enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
     course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
-
+ 
     if form.validate_on_submit():
-        if form.transcript.data: 
-            liveadvisementform =LiveAdvisementForm(student_id =current_user.EMPLID)                    # If there exists valid form picture data (i.e .png, .jpg file)
-            transcript_file = save_transcript(form.transcript.data)      # Save the image!
-            liveadvisementform.transcript = transcript_file           # Update the current user profile photo in the database!
+        if form.transcript.data:                                          # If there exists valid form transcript data (i.e .pdf file)
+            transcript_file = save_transcript(form.transcript.data, form.semester.data, form.year.data, current_user.EMPLID)     # Save the transcript!
+            student.transcript = transcript_file                          # Update the current user transcript in the database!
+            db.session.commit()                                           # Commit changes to the DB
             print("Execution Complete!")
         
         for course in form.course.data:
@@ -865,6 +813,6 @@ def Advisement():
         db.session.add(note)
         db.session.commit()        
         return redirect(url_for('student_profile'))                           
-
+        
 
     return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, enrolled=enrolled, course_obj=course_obj, transcript=transcript)

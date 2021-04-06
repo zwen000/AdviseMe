@@ -81,6 +81,7 @@ class Student(db.Model):
     credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
     credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
+    transcript = db.Column(db.String(55), nullable=False, default='Computer_Science.pdf')
     GPA = db.Column(db.Integer, unique=False, nullable=True)
     QPA = db.Column(db.Integer, unique=False, nullable=True)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
