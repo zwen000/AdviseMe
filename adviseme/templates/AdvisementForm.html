@@ -22,7 +22,7 @@
             <p class="text">Student's Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.lastname }}</p>
 
  <div class="c_viewport rounded">
-                 <div class="push"></div>
+     <div class="push" style="height:1px;"></div>
     <table class="table table-striped bg-light text-center">
  <!-- Math-->
         <thead>
@@ -51,9 +51,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
 
-                        <td></td>
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -95,9 +105,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
 
-                        <td></td>
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -139,8 +159,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
-                        <td></td>
+
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -190,8 +221,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
-                        <td></td>
+
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -241,8 +283,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
-                        <td></td>
+
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -292,8 +345,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
-                        <td></td>
+
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -335,9 +399,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
 
-                        <td></td>
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -387,8 +461,19 @@
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
                         <td>{{ course_obj[i.data].name }}</td>
-                        <td>{{ enrolled[course_obj[i.data].id] }}</td>
-                        <td></td>
+
+                        {% if course_obj[i.data].id in enrolled %}
+                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                                <td></td>
+                                <td><input type="checkbox" checked="checked2" disabled/></td>
+                            {% else %}
+                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                                <td></td>
+                            {% endif%}
+                        {% else %}
+                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
+                            <td></td>
+                        {% endif%}
 
                         {% if course_obj[i.data].id not in enrolled %}
                             <td>{{ i }}</td>
@@ -402,11 +487,8 @@
             {% endfor %}
         </tbody>
     </table>
+     <br>
 <!--End of Flexible Core (Pathways)-->
-
-
-
-
 
         <ul>
             {% for error in form.course.errors %}
@@ -415,7 +497,8 @@
         </ul>
 </div>
 <!--  end of container  -->
-
+            <p class="text" style="float: right; display: inline;">QPA: {{ current_user.studentOwner.QPA }}</p>
+            <p class="text">GPA: {{ current_user.studentOwner.GPA }}</p>
             <!--          should make it a requirement to upload transcript or you can't submit --> 
 
             <p class="text">Upload your Transcript: </p>
@@ -434,6 +517,7 @@
                 {% endfor %}
             </ul>
         </div>
+
     </fieldset>
 
 
@@ -526,6 +610,8 @@ tbody {
     background-color: rgb(63,72,83);
     color:white;
 }
+
+
 
 
 </style>
