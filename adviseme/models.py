@@ -99,7 +99,7 @@ class Course(db.Model):
     dept = db.Column(db.String(30), nullable=False)                         # Course type: MATH, CSC, HIST, JWST, etc 
     description = db.Column(db.String(255), nullable=False)                 # C++, Learn Discrete math, etc ... 
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    designation = db.Column(db.String(255), unique=False, nullable=False)    # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement"
+    designation = db.Column(db.String(255), unique=False, nullable=False)   # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement", etc
     credits = db.Column(db.Integer, nullable=False, default=0)
     
     students = db.relationship('Enrollement', back_populates='course', lazy=True)

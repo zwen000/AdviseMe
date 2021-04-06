@@ -111,7 +111,7 @@ db.session.add(course_52)
 db.session.add(course_53)
 
 
-# --   (Pathways) Liberal Art courses: [CE = Creative Expression (1000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [CE = Creative Expression (1000 level)] ( NOTE: This does not include EVERY possible option in CCNY)
 
 course_54 = Course(id=54, serial='ART 10000', name='Intro to the world of Art', dept='ART', description='Learn the history of modern art', designation="[CE](1000)", credits=3)
 course_55 = Course(id=55, serial='MUS 10100', name='Introduction to Music', dept='MUS', description='Fundamentals of Music Theory', designation="[CE](1000)", credits=3)
@@ -124,7 +124,7 @@ db.session.add(course_56)
 db.session.add(course_57)
 
 
-# --   (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues (1000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues (1000 level)] ( NOTE: This does not include EVERY possible option in CCNY)
 course_58 = Course(id=58, serial='JWST 11700', name='The Bible as Literature', dept='JWST', description='Learn the history of bible literature', designation="[WCGI](1000)", credits=3)
 course_59 = Course(id=59, serial='WHUM 10100', name='World Humanities I', dept='ART', description='The foundation of world humanities', designation="[WCGI](1000)", credits=3)
 course_60 = Course(id=60, serial='WHUM 10200', name='World Humanities II', dept='ART', description='Intermediate world humanities principles', designation="[WCGI](1000)", credits=3)
@@ -144,7 +144,7 @@ db.session.add(course_64)
 db.session.add(course_65)
 
 
-# --   (Pathways) Liberal Art courses: [IS = Individual and Society (1000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [IS = Individual and Society (1000 level)] ( NOTE: This does not include EVERY possible option in CCNY)
 course_66 = Course(id=66, serial='ECO 10250', name='Principles of Microeconomics', dept='ECO', description='Learn economics on a Micro scale', designation="[IS](1000)", credits=3)
 course_67 = Course(id=67, serial='LIB 10000', name='Research in the Digital Age: Media & Information Literacy', dept='LIB', description='Learn about information on media techniques', designation="[IS](1000)", credits=3)
 course_68 = Course(id=68, serial='PSY 10200', name='Psychology in Modern World', dept='PSY', description='Understand the evolution of modern pschyology', designation="[IS](1000)", credits=3)
@@ -158,7 +158,7 @@ db.session.add(course_69)
 db.session.add(course_70)
 
 
-# --   (Pathways) Liberal Art courses: [US = US Experience in its Diversity (1000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [US = US Experience in its Diversity (1000 level)] ( NOTE: This does not include EVERY possible option in CCNY)
 course_71 = Course(id=71, serial='PSC 10100', name='American Government and Politics', dept='PSC', description='Our politics go back to our founding fathers', designation="[US](1000)", credits=3)
 course_72 = Course(id=72, serial='USSO 10100', name='US Society', dept='USSO', description='The history of the US', designation="[US](1000)", credits=3)
 course_73 = Course(id=73, serial='BLST 10100', name='African Heritage and the Afro-American Experience', dept='BLST', description='Afro-American Experience in America', designation="[US](1000)", credits=3)
@@ -170,7 +170,7 @@ db.session.add(course_73)
 db.session.add(course_74)
 
 
-# --   (Pathways) Liberal Art courses: [CE = Creative Expression (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [CE = Creative Expression (2000 level)] ( NOTE: This does not include EVERY possible option in CCNY)
 
 course_75 = Course(id=75, serial='AES 23202', name='Survey of World Architecture I', dept='AES', description='Arch. & Env. Studies', designation="[CE](2000)", credits=3)
 course_76 = Course(id=76, serial='AES 24202', name='Survey of World Architecture II', dept='AES', description='Arch. & Env. Studies', designation="[CE](2000)", credits=3)
@@ -181,7 +181,7 @@ db.session.add(course_76)
 db.session.add(course_77)
 
 
-# --   (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [WCGI = World Cultures and Global Issues (2000 level)] ( NOTE: This does not include EVERY possible option in CCNY)
 course_78 = Course(id=78, serial='ANTH 20000', name='Archaeology', dept='ANTH', description='Study of humans NOT Dinosaurs!', designation="[WCGI](2000)", credits=3)
 course_79 = Course(id=79, serial='ASIA 20200', name='Contemporary Asia', dept='ASIA', description='Learn about Asian Culture and history', designation="[WCGI](2000)", credits=3)
 course_80 = Course(id=80, serial='ASIA 20500', name='Contemporary China', dept='ASIA', description='History of Chinese Dynasties', designation="[WCGI](2000)", credits=3)
@@ -202,10 +202,10 @@ course_92 = Course(id=92, serial='THTR 21300', name='Theatre History 3', dept='T
 WCGI_2000 = [course_78, course_79, course_80, course_81, course_82, course_83, course_84, course_85, course_86, course_87, course_88, course_89, course_90, course_91, course_92]
 db.session.add_all(WCGI_2000)
 
-# --   (Pathways) Liberal Art courses: [IS = Individual and Society (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [IS = Individual and Society (2000 level)] ( NOTE: This does not include EVERY possible option in CCNY)
 course_93 = Course(id=93, serial='ANTH 20100', name='Cross Cultural Perspectives', dept='ANTH', description='Learn about different social norms and perspectives', designation="[IS](2000)", credits=3)
 course_94 = Course(id=94, serial='EDCE 25600', name='Language, Mind, and Society', dept='EDCE', description='Varies by instructor', designation="[IS](2000)", credits=3)
-course_95 = Course(id=95, serial='JWST 28100', name='The Holocaust', dept='JWST', description='Experience survivor stories of the past, and reflect on what you would do.', designation="[IS](2000)", credits=3)
+course_95 = Course(id=95, serial='JWST 28100', name='The Holocaust', dept='JWST', description='Experience survivor stories of the past, and reflect on what you would do. You don\'t need to answer. All questions are rhetorical!', designation="[IS](2000)", credits=3)
 
 
 db.session.add(course_93)
@@ -213,27 +213,57 @@ db.session.add(course_94)
 db.session.add(course_95)
 
 
-# --   (Pathways) Liberal Art courses: [US = U.S. Experince in its Diversity (2000 level)] (Note: This does not include EVERY possible option in CCNY)
+# --   (Pathways) Liberal Art courses: [US = U.S. Experince in its Diversity (2000 level)] (NOTE: This does not include EVERY possible option in CCNY)
 course_96 = Course(id=96, serial='HIST 24000', name='The United States: From Its Origins to 1877', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
-course_97 = Course(id=97, serial='HIST 24100', name='The United States since 1865', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
+course_97 = Course(id=97, serial='HIST 24100', name='The United States since 1865', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Civil Rights Movement, Cold War, to present', designation="[US](2000)", credits=3)
 
 db.session.add(course_96)
 db.session.add(course_97)
 
-"""
-course_98 = Course(id=98, serial=' ', name='', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
-course_99 = Course(id=99, serial=' ', name='', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
-course_100 = Course(id=100, serial=' ', name='', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
-course_101 = Course(id=101, serial=' ', name='', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
-course_102 = Course(id=102, serial=' ', name='', dept='HIST', description='Colonial Era to 1877', designation="[US](2000)", credits=3)
-course_103 = Course(id=103, serial=' ', name='', dept='HIST', description='The aftermath of the Civil war, reconstruction, jim crow, WW2, Cold War, to present', designation="[US](2000)", credits=3)
-"""
+
+# -- Technical Elective Options (Miscellanious) (NOTE: This does not include EVERY possible option in CCNY)
+
+course_98 = Course(id=98, serial='EAS 21700', name='Systems Analysis of the Earth', dept='EAS', description='Analysis and modeling of plate tectonics and climate change', designation="Technical Elective", credits=4)
+course_99 = Course(id=99, serial='EAS 22700', name='Structural Geology', dept='EAS', description='Geometry of elementary earth structures', designation="Technical Elective", credits=4)
+course_100 = Course(id=100, serial='EAS 30800', name='ESS Modeling/ Databases', dept='EAS', description='Modeling of global and local environmental problems', designation="Technical Elective", credits=3)
+course_101 = Course(id=101, serial='PHY 20300', name='General Physics I', dept='PHY', description='Introductory Physics for life science majors and pre-med/bio majors', designation="Technical Elective", credits=4)
+course_102 = Course(id=102, serial='PHY 20400', name='General Physics II', dept='PHY', description='Intermediate Physics for life science majors and pre-med/bio majors', designation="Technical Elective", credits=4)
+course_103 = Course(id=103, serial='PHYS 20900', name='University Physics III', dept='PHY', description='Calculus-based study of the basic concepts of wave motion, physical optics, and modern physics.', designation="Technical Elective", credits=4)
+course_104 = Course(id=104, serial='MATH 20500', name='Elements of Calculus', dept='MATH', description='Introduction to calculus for life science majors and pre-med/bio majors', designation="Technical Elective", credits=3)
+course_105 = Course(id=105, serial='MATH 21200', name='Calculus II with Introduction to Multivariable Functions', dept='MATH', description='Techniques of integration, improper integrals, infinite sequences and series, parametric equations, etc', designation="Technical Elective", credits=3)
+course_106 = Course(id=106, serial='MATH 21300', name='Calculus III with Vector Analysis', dept='MATH', description='Applications of partial differentiation, vector-valued functions, multiple integrals, vector fields, line integrals, and theorems of Green, Stokes, and Gauss.', designation="Technical Elective", credits=3)
+course_107 = Course(id=107, serial='MATH 39100', name='Methods of Differential Equations', dept='MATH', description='First order equations; higher order linear equations with constant coefficients, undetermined coefficients, variation of parameters, applications; Euler\'s equation.', designation="Technical Elective", credits=3)
+course_108 = Course(id=108, serial='MATH 39104', name='Methods of Differential Equations', dept='MATH', description='This course omits a few topics,e.g. Laplace transforms, in order to supplement the solution methods of Math 391 with some theoretical background, especially links with linear algebra.', designation="Technical Elective", credits=3)
+course_109 = Course(id=109, serial='MATH 39200', name='Linear Algebra and Vector Analysis for Engineers', dept='MATH', description='Matrix theory, linear equations, Gauss elimination, determinants, eigenvalue problems', designation="Technical Elective", credits=3)
+course_110 = Course(id=110, serial='MATH 39204', name='Linear Algebra and Vector Analysis for Engineers', dept='MATH', description='Matrix theory, linear equations, Gauss elimination, determinants, general vector spaces, basis and dimension,vector feild theory', designation="Technical Elective", credits=3)
+course_111 = Course(id=111, serial='CHEM 21000', name='Applied Chemistry For Biomedical Engineers', dept='CHEM', description='Intro to basic organic chemistry and how it relates to the human body', designation="Technical Elective", credits=4)
+course_112 = Course(id=112, serial='CHEM 24300', name='Quantitative Analysis', dept='CHEM', description='Volumetric, spectrophotometric and electrometric analyses.', designation="Technical Elective", credits=4)
+course_113 = Course(id=113, serial='CHEM 26100', name='Organic Chemistry I', dept='CHEM', description='The Course that makes all pre-med students cry!', designation="Technical Elective", credits=3)
+course_114 = Course(id=114, serial='BIO 20600', name='Introduction to Genetics', dept='BIO', description='DNA organization, chromosome structure, genes and alleles, etc', designation="Technical Elective", credits=4)
+course_115 = Course(id=115, serial='BIO 20700', name='Organismic Biology', dept='BIO', description='This course emphasizes the physiological adjustments organisms make to specific challenges in their environments', designation="Technical Elective", credits=4)
+course_116 = Course(id=116, serial='BIO 22800', name='Ecology and Evolution', dept='BIO', description='Introduction to the basic principles of ecology and evolutionary biology emphasizing quantitative approaches and hypothesis testing.', designation="Technical Elective", credits=4)
+course_117 = Course(id=117, serial='BIO 31100', name='Selected Topics In Biology', dept='BIO', description='Discussions, student seminars, literature survey, varies by instructor', designation="Technical Elective", credits=4)
+course_118 = Course(id=118, serial='BIO 32100', name='Physiological Processes', dept='BIO', description='This course is designed to introduce fundamental concepts of physiology to biomedical engineering students.', designation="Technical Elective", credits=4)
+course_119 = Course(id=119, serial='BIO 33000', name='Survey Of The Vertebrates', dept='BIO', description='Survey of the major features of the vertebrates, including brief modern classification of the major groups', designation="Technical Elective", credits=3)
+course_120 = Course(id=120, serial='BIO 34000', name='Biology Of Invertebrates', dept='BIO', description='The structure and function of various invertebrates selected to illustrate morphological, physiological and ecological adaptations.', designation="Technical Elective", credits=4)
+course_121 = Course(id=121, serial='ENGR 20400', name='Electrical Circuits', dept='ENGR', description='Intermediate circuits course', designation="Technical Elective", credits=3)
+course_122 = Course(id=122, serial='ENGR 23000', name='Thermodynamics', dept='ENGR', description='Introductory concepts and definitions. Zeroth Law and absolute temperature. Work and Heat, etc', designation="Technical Elective", credits=3)
+course_123 = Course(id=123, serial='ENGR 30000', name='Social, Economic And Cultural Impact Of Biomedical Technology', dept='ENGR', description='varies by instructor', designation="Technical Elective", credits=3)
+course_124 = Course(id=124, serial='ENGR 41230', name='The Management Of Hazardous Wastes', dept='ENGR', description='The course introduces the regulatory framework and science fundamentals for the management of hazardous wastes.', designation="Technical Elective", credits=3)
+
+course_125 = Course(id=125, serial='INDP XX001', name='Independent Study I', dept='Arbitrary', description='Varies by Instructor (departmental consent required)', designation="Technical Elective", credits=3)
+course_126 = Course(id=126, serial='INDP XX002', name='Independent Study II', dept='Arbitrary', description='Varies by Instructor (departmental consent required)', designation="Technical Elective", credits=3)
+
+
+Technical_Electives = [course_98, course_99, course_100, course_101, course_102, course_103, course_104, course_105, course_106, course_107, course_108, course_109, course_110, course_111, course_112, course_113, course_114, course_115, course_116, course_117, course_118, course_119, course_120, course_121, course_122, course_123, course_124, course_125, course_126]
+db.session.add_all(Technical_Electives)
 
 
 """
 # -- For anyone wondering this was the GSoE Flexible Core list I used: 
 # -- https://www.ccny.cuny.edu/engineering/flexible-core
 """
+
 
 # -- Grade Options:
 grade_1 = Grade(id=1, value='')
@@ -250,7 +280,7 @@ grade_11 = Grade(id=11, value='C-')
 grade_12 = Grade(id=12, value='D+')
 grade_13 = Grade(id=13, value='D')
 grade_14 = Grade(id=14, value='F')
-
+# grade_15 = Grade(id=15, value='T')      # This is for Transfer Students!!! I'm not sure if this will break anything, so I'll comment this out for now. Focus on one thing at a time! 
 
 db.session.add(grade_1)
 db.session.add(grade_2) 
@@ -278,7 +308,7 @@ db.session.commit()     # One single commit is much more efficient!
 # Only use this file by running: 
 
 #------------------------------------
-# $ python clean_up.py
+#     $ python clean_up.py
 #------------------------------------
 
 # This will re-create the DB file. And initialize the Databse with some starting data! 

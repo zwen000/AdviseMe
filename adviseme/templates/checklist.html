@@ -98,6 +98,10 @@
         </div>
       </section>
       <br>
+      
+      <!-- A note to Chrystal from Ray: It works, Just a reminder, in the CCNY cirriculum there are: 
+        2 technical electives, 2 free electives, and 4 liberal art courses (2 at 1000 lvl) + (2 at 2000 lvl) 
+        This current page shows if the student completed Any of the 2 courses! So the progress bar will be out of 2 (#/2) -->
 
       <!--Technical Electives Checklist (NEEDS TO BE FIXED) & PROGRESS TRACKER Already implemented just need to access technical electives-->
       <section class="checklist">
@@ -107,18 +111,18 @@
             </div>
         </button>
         <div class="content">
-          {% for A_tech_elective in courses_array %}
-            {% if A_tech_elective.designation == "Group A Technical Elective" %}  <!--Need to print technical electives not CSC Electives--> 
+          {% for technical_elective in courses_array %}
+            {% if technical_elective.designation == "Technical Elective" %}  <!--Need to print technical electives not CSC Electives--> 
               <input checked class="LibCheckBox" type="checkbox" disabled/>
-              <label class="checkbox collapsible2" for="course_serial">{{A_tech_elective.serial}}</label>
+              <label class="checkbox collapsible2" for="course_serial">{{technical_elective.serial}}</label>
               <div class="content2">
                 <ul>
-                  <li>Course Name: {{A_tech_elective.name}}</li>
-                  <li>Course Description: {{A_tech_elective.description}} </li>
-                  <li>Course Description: {{A_tech_elective.designation}} </li> 
-                  <li>Course Credit: {{A_tech_elective.credits}} </li>
+                  <li>Course Name: {{technical_elective.name}}</li>
+                  <li>Course Description: {{technical_elective.description}} </li>
+                  <li>Course Description: {{technical_elective.designation}} </li> 
+                  <li>Course Credit: {{technical_elective.credits}} </li>
                   {% for score in scores %}
-                    {% if score.grade and A_tech_elective.id == score.course_id %}
+                    {% if score.grade and technical_elective.id == score.course_id %}
                       <li>Grade: {{score.grade}} </li>
                     {% endif %}
                   {% endfor %}
@@ -131,45 +135,44 @@
         </div>
         </section>
         <br>
-                    <!--Free Electives Checklist -->
+    
+    <!--Free Electives Checklist -->
     <section class="checklist">
       <button type="button" class="collapsible subtitle">Free Electives
         <div class="progress">
           <div class="progress-inner8"><p id="progress_count8">{{ FE_width_num }}/2</p></div>
         </div>
       </button>
+
       <div class="content">
-        {% for math_course in courses %} <!--Need to fix so that free electives are displayed instead when completed -->
-          {% if math_course.dept == "MATH" %}
-          {%if math_course is in courses_array%}  
-            <input checked class="MathCheckBox" type="checkbox" disabled/>
-            <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
-            <div class="content2">
-              <ul>
-                <li>Course Name: {{math_course.name}}</li>
-                <hr>
-                <li>Course Description: {{math_course.description}} </li>
-                <hr>
-                <li>Course Designation: {{math_course.designation}}</li> 
-                <hr>
-                <li>Course Credit: {{math_course.credits}} </li>
-                {% for score in scores %}
-                  {% if score.grade and math_course.id == score.course_id %}
-                    <li>Grade: {{score.grade}} </li>
-                    <hr>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          <hr>
-          {% endif %}
-          {% endif %}
+        {% for course in free_electives %} <!--Need to fix so that free electives are displayed instead when completed -->  
+              <input checked class="MathCheckBox" type="checkbox" disabled/>
+              <label class="checkbox collapsible2" for="course_serial">{{course.serial}}</label>
+              <div class="content2">
+                <ul>
+                  <li>Course Name: {{ course.name }}</li>
+                  <hr>
+                  <li>Course Description: {{ course.description }} </li>
+                  <hr>
+                  <li>Course Designation: {{ course.designation }}</li> 
+                  <hr>
+                  <li>Course Credit: {{ course.credits }} </li>
+                  {% for score in scores %}
+                    {% if score.grade and course.id == score.course_id %}
+                      <li>Grade: {{score.grade}} </li>
+                      <hr>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+              <hr>
         {% endfor %}
         <p style="font-size: smaller;">Note: Acceptable free electives are any courses offered by the College except the following:
           <br> Remedial courses, including pre-calculus math.
           <br> Courses at a lower level than required courses.
           <br> Courses that substantially duplicate material covered in other courses for which credit has been granted.
-          <br> Worker education and independent study courses.</p>  
+          <br> Worker education and independent study courses.
+        </p>  
       </div>
     </section>
     <br>
@@ -275,7 +278,7 @@
                   </button>
                   <div class="content">
                     {% for liberal_art_course_req in lib_req_courses %}
-                    {% if liberal_art_course_req.designation == "Liberal Art" %} 
+                    {% if liberal_art_course_req.designation == "Required Liberal Art" %} 
                       {%if liberal_art_course_req is in courses_array%}  
                         <input checked type="checkbox" disabled/>
                         <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course_req.serial}}</label>

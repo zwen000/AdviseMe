@@ -294,7 +294,7 @@ def courseinfo_fill():
                             all_grade=all_grade, 
                             form=form)
 
-
+# 1000 level Liberal Arts
 @app.route('/course/info/elective/1000', methods=['GET', 'POST'])
 @login_required
 def Liberal_Art_1000():
@@ -328,7 +328,7 @@ def Liberal_Art_1000():
     return render_template('Elective_Grade_Form.html', title='Course Information', student=student, form=form)
 
 
-
+# 2000 level Liberal Arts
 @app.route('/course/info/elective/2000', methods=['GET', 'POST'])
 @login_required
 def Liberal_Art_2000():
@@ -360,6 +360,88 @@ def Liberal_Art_2000():
         return redirect(url_for('courseinfo_fill'))
     
     return render_template('Elective_Grade_Form.html', title='Course Information', student=student, form=form)
+
+
+
+# Free Electives:
+@app.route('/course/info/elective/generic', methods=['GET', 'POST'])
+@login_required
+def Free_Electives():
+    form = ElectiveForm()
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    courses = Course.query.all()
+
+    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="[CE](1000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](1000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[IS](1000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[US](1000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[CE](2000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](2000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[IS](2000)")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="[US](2000)")]
+
+    # There is overlap between Technical and Free Electives.  
+
+
+    form.grade.choices = [(grade_option.value) for grade_option in Grade.query.all()]
+    
+    if form.validate_on_submit():
+
+        for course in courses:
+            # print(course.serial)
+            if course.serial == form.elective.data:
+                id = course.id
+                print(course.id)            
+                for courseid, grade,EMPLID in all_grade:
+                    if courseid == id:
+                        all_grade.remove((id,grade,EMPLID))
+
+        grades=(id,form.grade.data,current_user.EMPLID)
+        stored_grade(grades)
+
+        return redirect(url_for('courseinfo_fill'))
+    
+    return render_template('Elective_Grade_Form.html', title='Course Information', student=student, form=form)
+
+
+# Technical_Electives
+@app.route('/course/info/elective/technical', methods=['GET', 'POST'])
+@login_required
+def Technical_Electives():
+    form = ElectiveForm()
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    courses = Course.query.all()
+
+    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="Group A")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group B")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group C")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(serial='ENGR 27600')]      # Engineering Economics counts as a Tech elective, Eco 10400 doesn't
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Technical Elective")]
+
+    # REMINDER: A Technical Elective by definition can be any CS class (like a course in group A,B,C) [exxluding core requirements]
+    # And any Science Elective, in Chemistry, Physics, Mathematics,  any course in EAS (Earth and Enviornmental System Sciences) & in Engineering.
+    # NOTE: 1000 level courses are not allowed ... 
+
+    form.grade.choices = [(grade_option.value) for grade_option in Grade.query.all()]
+    
+    if form.validate_on_submit():
+
+        for course in courses:
+            # print(course.serial)
+            if course.serial == form.elective.data:
+                id = course.id
+                print(course.id)            
+                for courseid, grade,EMPLID in all_grade:
+                    if courseid == id:
+                        all_grade.remove((id,grade,EMPLID))
+
+        grades=(id,form.grade.data,current_user.EMPLID)
+        stored_grade(grades)
+
+        return redirect(url_for('courseinfo_fill'))
+    
+    return render_template('Elective_Grade_Form.html', title='Course Information', student=student, form=form)
+
 
 
 
@@ -409,68 +491,7 @@ def evaluate_GPA(grade):
     # be assigned as default value of passed argument 
     return switcher.get(grade, "Not_Taken") 
 
-#@app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
-#@login_required
-#def courseinfo_edit(course_id):
-#    form = CourseInfoForm()
-#    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
-#    course = Course.query.get_or_404(course_id)
-#
-#    form.grade.choices = [(option.value) for option in Grade.query.all()]
-#
-#    if form.validate_on_submit():
-#        enrollement = Enrollement.query.filter_by(
-#                                    student_id=current_user.EMPLID,
-#                                    course_id = course.id).first()
-#        
-#        if not enrollement:
-#            enrollement = Enrollement(student_id=current_user.EMPLID,
-#                                    course_id = course.id,
-#                                    grade = form.grade.data,
-#                                    GPA_point = int(course.credits*evaluate_GPA(form.grade.data)),
-#                                    attempt=True)
-#            if course.id < 19:
-#                enrollement.QPA_point = evaluate_QPA(form.grade.data)
-#            else:
-#                enrollement.QPA_point = 0 
-#
-#            db.session.add(enrollement)
-#
-#            if form.grade.data == "F":
-#                student.credit_earned += 0
-#                enrollement.attempt = True
-#                enrollement.passed = False
-#            else:
-#                student.credit_earned += course.credits
-#                enrollement.attempt = True
-#                enrollement.passed = True
-#            db.session.commit()                
-#        else:
-#            if enrollement.attempt == True:
-#                if enrollement.passed == False and form.grade.data == "F":      # Failed the course the first time, retook it and failed again! (FF)
-#                    student.credit_earned += 0
-#                elif enrollement.passed == True and form.grade.data == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
-#                    student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
-#                    enrollement.passed = False                                  
-#                elif enrollement.passed == False and form.grade.data != "F":    # Failed the course the first time, retook it and passed!       (FP)
-#                    student.credit_earned += course.credits
-#                    enrollement.passed = True
-#                elif enrollement.passed == True and form.grade.data != "F":     # Passed the course the first time, retook it and passed again! (PP)
-#                    student.credit_earned += 0
-#                else: 
-#                    student.credit_earned += 0
-#
-#            enrollement.grade = form.grade.data
-#            enrollement.GPA_point = evaluate_GPA(form.grade.data)
-#            if course.id < 19:
-#                enrollement.QPA_point = evaluate_QPA(form.grade.data)
-#            else:
-#                enrollement.QPA_point = 0
-#            db.session.commit()
-#        
-#        return redirect(url_for('courseinfo_fill'))
-#
-#    return render_template('course_info_edit.html', title='Course Information', student=student, form=form)
+
 
 @app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
 @login_required
@@ -581,6 +602,19 @@ def student_profile():
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
 
+def get_Free_Electives():
+    free_electives  = [ (course_option.serial) for course_option in Course.query.filter_by(designation="[CE](1000)") ]
+    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](1000)") ]
+    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[IS](1000)") ]
+    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[US](1000)") ]
+    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[CE](2000)") ]
+    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](2000)") ]
+    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[IS](2000)") ]
+    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[US](2000)") ]
+    # print("Function call sucessful ... ")
+
+    return free_electives
+
 @app.route('/checklist')
 @login_required
 def checklist():
@@ -594,7 +628,10 @@ def checklist():
 
     math_courses = Course.query.filter_by(dept='MATH').all()
     student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
-    
+
+    free_electives = get_Free_Electives()       # Gives me all the Free Electives 
+    # print(free_electives)
+
     courses_array = []
     for courseObj in student_info:
         # print(courseObj)
@@ -698,6 +735,7 @@ def checklist():
                             science_courses = science_courses,
                             courses_array=courses_array, 
                             math_courses=math_courses,
+                            free_electives=free_electives, 
                             CS_width_num =  int(CS_width_num),
                             CSE_width_num =  int(CSE_width_num),
                             Math_width_num =  int(Math_width_num),
