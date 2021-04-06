@@ -21,29 +21,8 @@
             <p class="text">Academic Advising Semester: {{ form.semester }}{{ form.year }}<p class="text" style="float: right; display: inline;">Empl ID: {{ current_user.studentOwner.EMPLID }}</p></p>
             <p class="text">Student's Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.lastname }}</p>
 
-            <!--          should make it a requirement to upload transcript or you can't submit --> 
-
-            <p class="text">Upload your Transcript: </p>
-            {{ form.transcript(class="form-control-file") }}
-            <!-- Standard Exception Handling: -->
-            {% if form.transcript.errors %}
-                {% for error in form.transcript.errors %}
-                    <span class="text-danger">{{ error }}</span><br>
-                {% endfor %}
-            {% endif %}
-            <br>
-            <center>{{ form.submit(class="custom-button-submit") }}</center>
-            <ul>
-                {% for error in form.course.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </fieldset>
-
-
-
-<div class="c_viewport rounded">
+ <div class="c_viewport rounded">
+                 <div class="push"></div>
     <table class="table table-striped bg-light text-center">
  <!-- Math-->
         <thead>
@@ -435,11 +414,34 @@
             {% endfor %}
         </ul>
 </div>
-
 <!--  end of container  -->
 
+            <!--          should make it a requirement to upload transcript or you can't submit --> 
+
+            <p class="text">Upload your Transcript: </p>
+            {{ form.transcript(class="form-control-file") }}
+            <!-- Standard Exception Handling: -->
+            {% if form.transcript.errors %}
+                {% for error in form.transcript.errors %}
+                    <span class="text-danger">{{ error }}</span><br>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <center>{{ form.submit(class="custom-button-submit") }}</center>
+            <ul>
+                {% for error in form.course.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </fieldset>
+
+
+
+
+
 </form>
-</div>
+
 
 <br>
 <br>
@@ -508,7 +510,7 @@ th .sub_category {
 thead th{
   top:0;
   position:sticky;
-  z-index: 2;
+  z-index: 0;
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
