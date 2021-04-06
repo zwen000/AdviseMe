@@ -695,12 +695,10 @@ def checklist():
     #progress bar for Technical Electives
     checklistProgressInterval_TE = 100 / 2
     Tech_width = 0
-    tech_courses = []
     #Need to fix to cater to technical electives
-    for tech_elective in tech_courses:
-        for score in scores:
-            if score.grade and tech_elective.id == score.course_id:
-                Science_width += checklistProgressInterval_TE
+    for technical_elective in courses_array:
+        if technical_elective.designation == "Technical Elective":
+            Tech_width += checklistProgressInterval_TE
     Tech_width_num = Tech_width/100 * 2
 
     #progress bar for Flexible Pathways
@@ -724,12 +722,10 @@ def checklist():
     #progress bar for free electives
     checklistProgressInterval_FE = 100 / 2
     FE_width = 0
-    free_courses = []
     #Need to fix to cater to free electives
-    for free_elective in free_courses:
-        for score in scores:
-            if score.grade and free_elective.id == score.course_id:
-                FE_width += checklistProgressInterval_FE
+    for course in free_electives:
+        if course in courses_array:
+            FE_width += checklistProgressInterval_FE
     FE_width_num = FE_width/100 * 2
 
 
@@ -957,5 +953,5 @@ def Advisement():
 def View_Transcript():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
-
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
+
