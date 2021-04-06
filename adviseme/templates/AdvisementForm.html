@@ -43,7 +43,7 @@
 
 
 
-<div class="c_viewport">
+<div class="c_viewport rounded">
     <table class="table table-striped bg-light text-center">
  <!-- Math-->
         <thead>
@@ -67,7 +67,7 @@
 
         <tbody>
             {% for i in form.course %}
-                {% if course_obj[i.data].dept == "MATH" %}
+                {% if course_obj[i.data].dept == "MATH" and course_obj[i.data].designation=='Core Requirement'  %}
                     <tr>
                         <td>{{ course_obj[i.data].serial }}</td>
                         <td>{{ course_obj[i.data].credits }}</td>
@@ -488,7 +488,9 @@ font-weight: bold;
 }
 
 
-
+th .sub_category {
+    background-color: #1BA6E0;
+}
 
 .c_viewport{
   color: rgb(27,30,36);
@@ -517,6 +519,12 @@ table {
 thead>tr:nth-child(2) th {
     top: 35px;
 }
+
+tbody {
+    background-color: rgb(63,72,83);
+    color:white;
+}
+
 
 </style>
 
