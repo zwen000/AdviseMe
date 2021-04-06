@@ -12,6 +12,7 @@
     </span>
     <span class="align-middle" >Filled out Advisement Form</span>
   </div>
+  {%if  current_user.studentOwner.credit_earned > 45 %}
   {%if notes.be_advised == True%}
   <span class="progress" >
     <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -39,7 +40,7 @@
     <span>Faculty Advisor Revision</span>
   </div>
   {%endif%}
-
+  {%endif%}
   {%if notes.approval == True %}
   <span class="progress" >
     <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>

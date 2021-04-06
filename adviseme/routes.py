@@ -44,7 +44,7 @@ def register():
             flash('Your account has been created! You are now able to log in', 'success')
             return redirect(url_for('login'))
         else:
-            flash('Enter your citymail Please!', 'danger')
+            flash(f'Enter your citymail Please!', 'danger')
     return render_template('register.html', title='Register', form=form)
 
 
@@ -781,7 +781,7 @@ def get_semester(date):
     else:
         raise IndexError("Invalid date")
 
-    return semester +" "+ year
+    return semester
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome/')
@@ -913,8 +913,6 @@ def workflow2():
 def Advisement():
     form = AdvisementForm()
     GPA_QPA()
-    todaydate = date.today()
-    semester = get_semester(todaydate)
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
 
@@ -941,12 +939,12 @@ def Advisement():
                 enrollement.grade = ''
                 enrollement.attempt = True
         note = Notes(EMPLID=current_user.EMPLID,
-                     semester= semester,
-                     year = todaydate.year)
+                     semester= form.semester.data,
+                     year = form.year.data)
         liveadivsementform = LiveAdvisementForm(student_id=current_user.EMPLID,
-                                                semester= semester,
-                                                transcript= '',
-                                                year = todaydate.year)   
+                                                semester=form.semester.data,
+                                                transcript=transcript_file,
+                                                year = form.year.data)   
         db.session.add(note)
         db.session.add(liveadivsementform)
         db.session.commit()        

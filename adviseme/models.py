@@ -121,7 +121,7 @@ class LiveAdvisementForm(db.Model):
     semester = db.Column(db.String(30), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False, default=date.today())
-    transcript =  db.Column(db.String(20), nullable=False, default='')
+    transcript = db.Column(db.String(55), nullable=False, default='Computer_Science.pdf')
 
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
     facutly_id = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True) 
