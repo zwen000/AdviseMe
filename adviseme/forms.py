@@ -116,7 +116,7 @@ class UpdateStudentAccountForm(FlaskForm):
 
 
 class AdvisementForm(FlaskForm):
-    semester = SelectField("semester", choices=[("fall", "Fall"), ("spring", "Spring")])
+    semester = SelectField("semester", choices=[("fall", "FALL"), ("spring", "SPRING")])
     year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year-1, date.today().year+2)])
     transcript = FileField("Upload Transcript", validators=[FileAllowed(['pdf']), FileRequired()])
 
