@@ -128,4 +128,4 @@ class AdvisementForm(FlaskForm):
         option_widget=widgets.CheckboxInput()
     )
 
-    submit = SubmitField('Submit')
+    submit = SubmitField('Submit to Advisor')

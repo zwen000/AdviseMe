@@ -106,16 +106,11 @@ def save_transcript(form_transcript, semester, year, student_id):
     random_hex = secrets.token_hex(8)                                                   # We don't want to make this too large trust me!
     _, f_ext = os.path.splitext(form_transcript.filename)                               # the os module allows us to extract a file's extension
     
-    transcript_fn = str(student_id) + '_' + str(year) +  '_' + random_hex + f_ext       # filename = hex value + file extension (.pdf)
+    transcript_fn = str(student_id) + '_' + str(semester) + '_' + str(year) +  '_' + random_hex + f_ext       
+    # Example -- filename = "student_id_Fall_2021_sdsdf799w7e98797ed.pdf"
 
-    if semester == "fall" or semester == "Fall":
-        transcript_path = os.path.join(app.root_path, f'static/Transcripts/FALL/', transcript_fn)  # File/path/to/save/transcript!
-        pdf.save(transcript_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
-    elif semester == "spring" or semester == "Spring":
-        transcript_path = os.path.join(app.root_path, f'static/Transcripts/SPRING/', transcript_fn)  # File/path/to/save/transcript!
-        pdf.save(transcript_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
-    else: 
-        print("An Error has occured, use a stack trace and debug this!")
+    transcript_path = os.path.join(app.root_path, f'static/Transcripts/', transcript_fn)  # File/path/to/save/transcript!
+    pdf.save(transcript_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
 
     return transcript_fn
 
@@ -785,7 +780,7 @@ def Advisement():
     form = AdvisementForm()  
     GPA_QPA()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
-    transcript = url_for('static', filename='Transcript/'+ student.transcript)
+    transcript = url_for('static', filename='Transcript/'+ student.transcript)   
 
     enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
     course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
@@ -815,4 +810,13 @@ def Advisement():
         return redirect(url_for('student_profile'))                           
         
 
-    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, enrolled=enrolled, course_obj=course_obj, transcript=transcript)
+    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student, enrolled=enrolled, course_obj=course_obj, transcript=transcript)
+
+@app.route('/Advisement/Transcript', methods=['GET', 'POST'])
+@login_required
+def View_Transcript():
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    transcript = url_for('static', filename='Transcript/'+ student.transcript)
+
+    return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
+

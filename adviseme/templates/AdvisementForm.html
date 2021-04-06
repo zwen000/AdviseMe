@@ -4,12 +4,23 @@
     <fieldset>
         {{ form.hidden_tag() }}
         {{ form.csrf_token }}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <a class="text-left" href="{{ url_for('student_profile') }}">Back to profile?</a>
+                </div>
+                <div class="col">
+                    <a class="text-right" href="{{ url_for('View_Transcript') }}">View Previous Transcript/Cirriculum?</a>
+                </div>
+            </div>
+        </div>
+
         <div class="content-section">
             <hr><center><h1 class="title">Live Advisement Form</h1></center><hr>
             <p class="text" style="float: right; display: inline;">Date: {{ form.date }}</p>
             <p class="text">Academic Advising Semester: {{ form.semester }}{{ form.year }}<p class="text" style="float: right; display: inline;">Empl ID: {{ current_user.studentOwner.EMPLID }}</p></p>
             <p class="text">Student's Name: {{ current_user.studentOwner.firstname }} {{ current_user.studentOwner.lastname }}</p>
-        
+
             <table class="table table-striped bg-light text-center">
                 <thead>
                     <tr class="text-muted">
@@ -42,6 +53,7 @@
 
             <!--          form.iter_choices() -->
             <!--          should make it a requirement to upload transcript or you can't submit --> 
+
             <p class="text">Upload your Transcript: </p>
             {{ form.transcript(class="form-control-file") }}
             <!-- Standard Exception Handling: -->
@@ -50,8 +62,8 @@
                     <span class="text-danger">{{ error }}</span><br>
                 {% endfor %}
             {% endif %}
-
-            {{ form.submit }}
+            <br>
+            <center>{{ form.submit(class="custom-button-submit") }}</center>
             <ul>
                 {% for error in form.course.errors %}
                     <li>{{ error }}</li>
@@ -62,8 +74,18 @@
 </form>
 </div>
 
+<br>
+<br>
+<br>
+<p><b>File Location:</b> {{ transcript }} </p>
+<br>
+<br>
+<br>
+
+
 <style>
-    .title{
+   
+.title{
    color: #233B7E;
    font-size: 43px;
 }
@@ -77,6 +99,25 @@
     padding-top: 2%;
     padding-right: 5%;
     padding-left: 5%;
+}
+
+.custom-button-submit {
+background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+border-radius: 50px;
+color: hsl(0, 0%, 100%);
+padding: 10px;
+border: none;
+width: 30%;
+cursor: pointer;
+font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+}
+.custom-button-submit:hover{
+    transition: ease-in;
+    background: #233B7E;
+    color: white;
 }
 
 </style>
