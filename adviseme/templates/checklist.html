@@ -146,26 +146,28 @@
 
       <div class="content">
         {% for course in free_electives %} <!--Need to fix so that free electives are displayed instead when completed -->  
-              <input checked class="MathCheckBox" type="checkbox" disabled/>
-              <label class="checkbox collapsible2" for="course_serial">{{course.serial}}</label>
-              <div class="content2">
-                <ul>
-                  <li>Course Name: {{ course.name }}</li>
-                  <hr>
-                  <li>Course Description: {{ course.description }} </li>
-                  <hr>
-                  <li>Course Designation: {{ course.designation }}</li> 
-                  <hr>
-                  <li>Course Credit: {{ course.credits }} </li>
-                  {% for score in scores %}
-                    {% if score.grade and course.id == score.course_id %}
-                      <li>Grade: {{score.grade}} </li>
-                      <hr>
-                    {% endif %}
-                  {% endfor %}
-                </ul>
-              </div>
-              <hr>
+          {% if course is in courses_array %}
+            <input checked class="MathCheckBox" type="checkbox" disabled/>
+            <label class="checkbox collapsible2" for="course_serial">{{course.serial}}</label>
+            <div class="content2">
+              <ul>
+                <li>Course Name: {{ course.name }}</li>
+                <hr>
+                <li>Course Description: {{ course.description }} </li>
+                <hr>
+                <li>Course Designation: {{ course.designation }}</li> 
+                <hr>
+                <li>Course Credit: {{ course.credits }} </li>
+                {% for score in scores %}
+                  {% if score.grade and course.id == score.course_id %}
+                    <li>Grade: {{score.grade}} </li>
+                    <hr>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+            <hr>
+          {% endif %}
         {% endfor %}
         <p style="font-size: smaller;">Note: Acceptable free electives are any courses offered by the College except the following:
           <br> Remedial courses, including pre-calculus math.
@@ -190,8 +192,8 @@
       </button>
       <div class="content">
         {% for math_course in courses %}
-          {% if math_course.dept == "MATH" %}
-          {%if math_course is in courses_array%}  
+          {% if math_course.dept == "MATH" and math_course.designation == "Core Requirement" %}
+          {%if math_course is in courses_array %}  
             <input checked class="MathCheckBox" type="checkbox" disabled/>
             <label class="checkbox collapsible2" for="course_serial">{{math_course.serial}}</label>
             <div class="content2">
@@ -243,8 +245,8 @@
         </button>
         <div class="content">
         {% for science_elective in science_courses %}
-        {% for score in scores %}
-        {% if score.grade and science_elective.id == score.course_id %} <!-- Core Requirement CS courses -->
+          {% for score in scores %}
+            {% if score.grade and science_elective.id == score.course_id %} <!-- Core Requirement CS courses -->
               <input checked class="ScienceCheckBox" type="checkbox" disabled/>
               <label class="checkbox collapsible2" for="course_serial">{{science_elective.serial}}</label>
                         <div class="content2">
@@ -263,12 +265,12 @@
                         </div>
                     <hr>
             {% endif %}
-          {% endfor %}          
+          {% endfor %} 
         {% endfor %} 
         <p style="font-size: smaller;">Note: You are required to take one science sequence and one additional science course.</p>
         </div>
         </section>
-<br>
+        <br>
 
                 <!--Liberal Art Required Checklist -->
                 <section class="checklist">

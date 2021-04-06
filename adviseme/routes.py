@@ -613,15 +613,15 @@ def student_profile():
     return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
 
 def get_Free_Electives():
-    free_electives  = [ (course_option.serial) for course_option in Course.query.filter_by(designation="[CE](1000)") ]
-    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](1000)") ]
-    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[IS](1000)") ]
-    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[US](1000)") ]
-    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[CE](2000)") ]
-    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[WCGI](2000)") ]
-    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[IS](2000)") ]
-    free_electives += [ (course_option.serial) for course_option in Course.query.filter_by(designation="[US](2000)") ]
-    # print("Function call sucessful ... ")
+    free_electives  = [ (course_option) for course_option in Course.query.filter_by(designation="[CE](1000)") ]
+    free_electives += [ (course_option) for course_option in Course.query.filter_by(designation="[WCGI](1000)") ]
+    free_electives += [ (course_option) for course_option in Course.query.filter_by(designation="[IS](1000)") ]
+    free_electives += [ (course_option) for course_option in Course.query.filter_by(designation="[US](1000)") ]
+    free_electives += [ (course_option) for course_option in Course.query.filter_by(designation="[CE](2000)") ]
+    free_electives += [ (course_option) for course_option in Course.query.filter_by(designation="[WCGI](2000)") ]
+    free_electives += [ (course_option) for course_option in Course.query.filter_by(designation="[IS](2000)") ]
+    free_electives += [ (course_option) for course_option in Course.query.filter_by(designation="[US](2000)") ]
+    # print(free_electives[0].id, free_electives[0].serial, free_electives[0].credits)
 
     return free_electives
 
@@ -673,13 +673,13 @@ def checklist():
     CSE_width_num = CSE_width/100 * 4
 
 
-    #progress bar for Math
+    #progress bar for Math   
     checklistProgressInterval_Math = 100 / 4
     Math_width = 0
     for math_course in courses_array:
         for score in scores:
             if score.grade and math_course.id == score.course_id:
-                if math_course.dept == "MATH":
+                if math_course.dept == "MATH" and math_course.designation == "Core Requirement":
                     Math_width += checklistProgressInterval_Math
     Math_width_num = Math_width/100 * 4
 
@@ -744,8 +744,8 @@ def checklist():
                             cs_courses=cs_courses,
                             science_courses = science_courses,
                             courses_array=courses_array,
-                            math_courses=math_courses,
                             free_electives=free_electives,
+                            math_courses=math_courses,
                             CS_width_num =  int(CS_width_num),
                             CSE_width_num =  int(CSE_width_num),
                             Math_width_num =  int(Math_width_num),
