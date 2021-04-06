@@ -27,8 +27,6 @@ class Faculty(db.Model):
     staff_role =db.Column(db.String(30), nullable=False)
     User = db.relationship('User', backref='FacultyOwner', lazy=True)
     Notes = db.relationship('Notes', backref='Reviewer', lazy=True)
-    Advisement = db.relationship('LiveAdvisementForm', backref='Reviewer', lazy=True)
-
 
     def __repr__(self):
         return f"Faculty('{self.EMPLID}')"
@@ -85,10 +83,11 @@ class Student(db.Model):
     credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
     credit_taken=db.Column(db.Integer, unique=False, nullable=False, default=0)
     graduating = db.Column(db.Boolean, nullable=False, default=False)
+    needs_advising = db.Column(db.Boolean, nullable=False, default=False)
+    transcript = db.Column(db.String(55), nullable=False, default='Computer_Science.pdf')
     GPA = db.Column(db.Integer, unique=False, nullable=True)
     QPA = db.Column(db.Integer, unique=False, nullable=True)
     Notes = db.relationship('Notes', backref='Owner', lazy=True)
-    Advisement = db.relationship('LiveAdvisementForm', backref='Owner', lazy=True)
     user = db.relationship('User', backref='studentOwner', lazy=True)
 
     courses = db.relationship('Enrollement', back_populates='student', lazy=True)
@@ -104,7 +103,7 @@ class Course(db.Model):
     dept = db.Column(db.String(30), nullable=False)                         # Course type: MATH, CSC, HIST, JWST, etc 
     description = db.Column(db.String(255), nullable=False)                 # C++, Learn Discrete math, etc ... 
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    designation = db.Column(db.String(255), unique=False, nullable=False)    # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement"
+    designation = db.Column(db.String(255), unique=False, nullable=False)   # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement", etc
     credits = db.Column(db.Integer, nullable=False, default=0)
     
     students = db.relationship('Enrollement', back_populates='course', lazy=True)
@@ -122,10 +121,9 @@ class LiveAdvisementForm(db.Model):
     semester = db.Column(db.String(30), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False, default=date.today())
-    transcript =  db.Column(db.String(20), nullable=False)
+    transcript =  db.Column(db.String(20), nullable=False, default='')
 
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
     facutly_id = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True) 
 
     student = db.relationship('Student', backref='advisementform', lazy=True)
-
