@@ -910,5 +910,5 @@ def Advisement():
 def View_Transcript():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
-
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
+
