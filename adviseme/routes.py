@@ -44,7 +44,7 @@ def register():
             flash('Your account has been created! You are now able to log in', 'success')
             return redirect(url_for('login'))
         else:
-            flash('Enter your citymail Please!', 'danger')
+            flash(f'Enter your citymail Please!', 'danger')
     return render_template('register.html', title='Register', form=form)
 
 
@@ -768,22 +768,16 @@ def faculty():
 # function to get current semester
 def get_semester(date):
     year = str(date.year)
-    m = date.month * 100
-    d = date.day
-    md = m + d
+    m = date.month
 
-    if ((md >= 301) and (md <= 531)):
-        semester = 'Spring'  # spring
-    elif ((md > 531) and (md < 901)):
-        semester = 'Summer'  # summer
-    elif ((md >= 901) and (md <= 1130)):
-        semester = 'Fall'  # fall
-    elif ((md > 1130) and (md <= 229)):
-        semester = 'Winter'  # winter
+    if m in (2,3,4,5,6,7):
+        semester='FALL'
+    elif m in (8,9,10,11,12,1):
+        semester='SPRING'
     else:
         raise IndexError("Invalid date")
 
-    return semester +" "+ year
+    return semester
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome/')
@@ -823,6 +817,13 @@ def academicAdvising(note_id):
     if form.validate_on_submit():
         notes.academic_comment=form.academic_comment.data
         notes.next_semester_comment=form.next_semester_comment.data
+        notes.tutorial=form.tutorial.data
+        notes.counseling=form.counseling.data
+        notes.consultation=form.consultation.data
+        notes.career=form.career.data
+        notes.scholarships=form.scholarships.data
+        notes.internship=form.internship.data
+        notes.followup=form.followup.data
         notes.be_advised=form.be_advised.data
         if notes.Owner.credit_earned <= 45 and form.be_advised.data == True:
             notes.approval = True
@@ -832,6 +833,13 @@ def academicAdvising(note_id):
     elif request.method == 'GET':
         form.academic_comment.data=notes.academic_comment
         form.next_semester_comment.data=notes.next_semester_comment
+        form.tutorial.data=notes.tutorial
+        form.counseling.data=notes.counseling
+        form.consultation.data=notes.consultation
+        form.career.data=notes.career
+        form.scholarships.data=notes.scholarships
+        form.internship.data=notes.internship
+        form.followup.data=notes.followup
         form.be_advised.data=notes.be_advised
     return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
 
@@ -848,7 +856,7 @@ def noteReviewHome():
 @login_required
 def noteReview(note_id):
     notes=Notes.query.get_or_404(note_id)
-    form = NoteReviewForm()
+    form = AcademicReviewForm()
     if form.validate_on_submit():
         notes.academic_note=form.academic_note.data
         notes.additional=form.additional.data
@@ -865,7 +873,36 @@ def noteReview(note_id):
 @app.route('/workflow/')
 @login_required
 def workflow():
-    return render_template('workflow.html', title="workflow")
+    todaydate = date.today()
+    semester = get_semester(todaydate)
+    advisement = LiveAdvisementForm.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        semester = semester,
+                                        year =todaydate.year ).first()
+    
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
+
+
+
+    return render_template('workflow.html', title="workflow",advisement=advisement,notes=notes)
+
+@app.route('/workflow2/')
+@login_required
+def workflow2():
+    todaydate = date.today()
+    semester = get_semester(todaydate)
+    advisement = LiveAdvisementForm.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        semester = semester,
+                                        year =todaydate.year).first()
+
+    if advisement:
+        return redirect(url_for('workflow'))
+    return render_template('workflow2.html', title="workflow")
+
 
 @app.route('/Advisement', methods=['GET', 'POST'])
 @login_required
@@ -897,11 +934,17 @@ def Advisement():
             else:
                 enrollement.grade = ''
                 enrollement.attempt = True
-        note = Notes(EMPLID=current_user.EMPLID)
+        note = Notes(EMPLID=current_user.EMPLID,
+                     semester= form.semester.data,
+                     year = form.year.data)
+        liveadivsementform = LiveAdvisementForm(student_id=current_user.EMPLID,
+                                                semester=form.semester.data,
+                                                transcript=transcript_file,
+                                                year = form.year.data)   
         db.session.add(note)
-        db.session.commit()
-        return redirect(url_for('student_profile'))
-
+        db.session.add(liveadivsementform)
+        db.session.commit()        
+        return redirect(url_for('student_profile'))                           
 
     return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student, enrolled=enrolled, course_obj=course_obj, transcript=transcript)
 

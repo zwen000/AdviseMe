@@ -35,7 +35,9 @@ class Faculty(db.Model):
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # faculty advisor data stored
-    semester = db.Column(db.Date, nullable=False, default=date.today())     # to store the exact day on current semester
+    semester = db.Column(db.String(30), nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date, nullable=False, default=date.today())    # to store the exact day on current semester
     academic_comment = db.Column(db.Text, nullable=False, default='')       # comment for academic from advising notes
     next_semester_comment = db.Column(db.Text, nullable=False, default='')  # comment for next semester
     be_advised = db.Column(db.Boolean, nullable=False, default=False)       # boolean check for notes if it's done
@@ -119,7 +121,7 @@ class LiveAdvisementForm(db.Model):
     semester = db.Column(db.String(30), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     date = db.Column(db.Date, nullable=False, default=date.today())
-    transcript =  db.Column(db.String(20), nullable=False, default='')
+    transcript = db.Column(db.String(55), nullable=False, default='Computer_Science.pdf')
 
     student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
     facutly_id = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True) 
