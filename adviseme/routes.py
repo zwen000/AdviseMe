@@ -699,6 +699,8 @@ def checklist():
     for technical_elective in courses_array:
         if technical_elective.designation == "Technical Elective":
             Tech_width += checklistProgressInterval_TE
+        elif technical_elective.serial == "ENGR 27600":     # ENGR 27600: Engineering Economics can count as a Technical Elective/Eco 10400 does not count since it's 1000 level. 
+            Tech_width += checklistProgressInterval_TE
     Tech_width_num = Tech_width/100 * 2
 
     #progress bar for Flexible Pathways
@@ -953,5 +955,6 @@ def Advisement():
 def View_Transcript():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
+    
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
 
