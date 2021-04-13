@@ -878,7 +878,24 @@ def Advisement():
     enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
     course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
 
+    electives = []
+    tech_elec = Course.query.join(Enrollement, Enrollement.course_id==Course.id).add_columns(Enrollement.grade)\
+        .filter(Enrollement.student_id==current_user.studentOwner.EMPLID, Course.designation=="Technical Elective").all()
+    if len(tech_elec) >= 2:
+        electives.extend(tech_elec[0:2])
+    elif len(tech_elec) == 1:
+        electives.extend(tech_elec)
+        electives.append(None)
+    else:
+        electives.append(None)
+        electives.append(None)
+
+    ce = Course.query.join(Enrollement, Enrollement.course_id==Course.id).add_columns(Enrollement.grade)\
+        .filter((Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")).first()
+    electives.append(ce)
+
     if form.validate_on_submit():
+        # return "{}".format(form.tech_elec_check2.data) #for test
         if form.transcript.data:                                          # If there exists valid form transcript data (i.e .pdf file)
             transcript_file = save_transcript(form.transcript.data, form.semester.data, form.year.data, current_user.EMPLID)     # Save the transcript!
             student.transcript = transcript_file                          # Update the current user transcript in the database!
@@ -903,7 +920,7 @@ def Advisement():
         return redirect(url_for('student_profile'))
 
 
-    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student, enrolled=enrolled, course_obj=course_obj, transcript=transcript)
+    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student, enrolled=enrolled, course_obj=course_obj, transcript=transcript, electives=electives)
 
 @app.route('/Advisement/Transcript', methods=['GET', 'POST'])
 @login_required

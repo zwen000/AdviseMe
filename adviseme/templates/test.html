@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST" action="" enctype="multipart/form-data" role="form">
+
+        <table class="table table-striped bg-light text-center">
+            <thead>
+                <tr>
+                    <th>
+                        header
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{ form.tech_elec}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% for i in electives %}
+                <tr>{{ i }}</tr><br>
+                {% endfor %}
+            </tbody>
+
+        </table>
+        {{ form.submit }}
+    </form>
+</body>
+</html>
