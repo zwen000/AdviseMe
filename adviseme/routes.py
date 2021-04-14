@@ -884,15 +884,26 @@ def Advisement():
     if len(tech_elec) >= 2:
         electives.extend(tech_elec[0:2])
     elif len(tech_elec) == 1:
-        electives.extend(tech_elec)
-        electives.append(None)
+        electives.extend(tech_elec) #0
+        electives.append(None) #1
     else:
-        electives.append(None)
-        electives.append(None)
+        electives.append(None) #0
+        electives.append(None) #1
 
     ce = Course.query.join(Enrollement, Enrollement.course_id==Course.id).add_columns(Enrollement.grade)\
-        .filter((Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")).first()
-    electives.append(ce)
+        .filter((Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)"), Enrollement.student_id==current_user.studentOwner.EMPLID).first()
+    use = Course.query.join(Enrollement, Enrollement.course_id==Course.id).add_columns(Enrollement.grade)\
+        .filter((Course.designation=="[US](1000)")|(Course.designation=="[US](2000)"), Enrollement.student_id==current_user.studentOwner.EMPLID).first()
+    is_ = Course.query.join(Enrollement, Enrollement.course_id == Course.id).add_columns(Enrollement.grade) \
+        .filter((Course.designation == "[IS](1000)") | (Course.designation == "[IS](2000)"),
+                Enrollement.student_id == current_user.studentOwner.EMPLID).first()
+    wcgi = Course.query.join(Enrollement, Enrollement.course_id == Course.id).add_columns(Enrollement.grade) \
+        .filter((Course.designation == "[WCGI](1000)") | (Course.designation == "[WCGI](2000)"),
+                Enrollement.student_id == current_user.studentOwner.EMPLID).first()
+    electives.append(ce) #2
+    electives.append(use) #3
+    electives.append(is_) #4
+    electives.append(wcgi) #5
 
     if form.validate_on_submit():
         # return "{}".format(form.tech_elec_check2.data) #for test
@@ -919,8 +930,9 @@ def Advisement():
         db.session.commit()
         return redirect(url_for('student_profile'))
 
-
     return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student, enrolled=enrolled, course_obj=course_obj, transcript=transcript, electives=electives)
+
+
 
 @app.route('/Advisement/Transcript', methods=['GET', 'POST'])
 @login_required

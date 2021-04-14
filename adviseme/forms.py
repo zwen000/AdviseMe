@@ -151,7 +151,8 @@ class AdvisementForm(FlaskForm):
 
     CE = QuerySelectMultipleField(
         'Creative Expression',
-        query_factory=lambda: Course.query.filter((Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")),
+        query_factory=lambda: Course.query.filter(
+            (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")),
         allow_blank=True,
         widget=widgets.Select(multiple=False),
         get_label='serial'
@@ -168,5 +169,24 @@ class AdvisementForm(FlaskForm):
     )
     USE_check = BooleanField('US Experience in its Diversity')
 
+    IS = QuerySelectMultipleField(
+        'Individual and Society',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[IS](1000)") | (Course.designation == "[IS](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    IS_check = BooleanField('Individual and Society')
+
+    WCGI = QuerySelectMultipleField(
+        'World Cultures and Global Issues',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[WCGI](1000)") | (Course.designation == "[WCGI](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    WCGI_check = BooleanField('World Cultures and Global Issues')
 
     submit = SubmitField('Submit to Advisor')

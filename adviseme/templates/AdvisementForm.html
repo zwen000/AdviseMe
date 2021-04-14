@@ -425,7 +425,7 @@
                 {% endif %}
             {% endfor %}
         </tbody>
-<!--End ofRequired Liberal Art-->
+<!--End of Required Liberal Art-->
 
     <!--Technical Elective-->
         <thead>
@@ -567,16 +567,112 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ form.USE }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td> {{ form.USE_check  }}</td>
-            </tr>
+            {% if electives[3] == None %}
+                <tr>
+                    <td>{{ form.USE }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.USE_check  }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[3][0].serial }}</td>
+                    <td>{{ electives[3][0].credits }}</td>
+                    <td>{{ electives[3][0].name }}</td>
+                    {% if electives[3][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[3][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
         </tbody>
         <!--End of Libral Art-US -->
+
+        <!-- Libral Art-IS = Individual and Society -->
+        <thead>
+            <tr class="table-secondary">
+                <th class="sub_category">Individual and Society</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if electives[4] == None %}
+                <tr>
+                    <td>{{ form.IS }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.IS_check  }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[4][0].serial }}</td>
+                    <td>{{ electives[4][0].credits }}</td>
+                    <td>{{ electives[4][0].name }}</td>
+                    {% if electives[4][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[4][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
+        </tbody>
+        <!--End of Libral Art-IS = Individual and Society -->
+
+        <!-- Libral Art-World Cultures and Global Issues -->
+        <thead>
+            <tr class="table-secondary">
+                <th class="sub_category">World Cultures and Global Issues</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if electives[5] == None %}
+                <tr>
+                    <td>{{ form.WCGI }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.WCGI_check  }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[5][0].serial }}</td>
+                    <td>{{ electives[5][0].credits }}</td>
+                    <td>{{ electives[5][0].name }}</td>
+                    {% if electives[5][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[5][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
+        </tbody>
+
+        <!--End of Libral Art-World Cultures and Global Issues -->
+
     </table>
 
 <!--End of Technical Elective-->
