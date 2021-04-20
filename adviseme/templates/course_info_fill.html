@@ -33,7 +33,7 @@
                 <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
                     <div class="row">       <!-- Inner Grid -->
                         <div class="col-12 mb-4">
-                            <legend class="border-bottom mb-2">Student Info Form</legend>
+                            <legend class="border-bottom mb-2">Course Info Form</legend>
                         </div>
                         <div class="card shadow p-3">
                         <div class="rounded mx-auto d-block">
@@ -46,8 +46,11 @@
 
                         </div>
                     </div>
+                    
                     <br>
-                        <table class="table table-striped bg-light text-center">
+                    <div class="c_viewport rounded">
+                        <div class="push" style="height:1px;"></div>
+                       <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
                                     <th>Course Code:</th>
@@ -220,7 +223,7 @@
                                     {% endfor %}
 
                                     <tr class="thead-dark">
-                                        <th>Flexible Core (Pathways):</th>
+                                        <th>Pathways & Electives:</th>
                                         <th> </th>
                                         <th> </th>
                                         <th> </th>
@@ -262,6 +265,7 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -306,7 +310,7 @@ color: #233B7E;
 
 .content-section{
 width: 65%;
-padding: 2%;
+padding: 2.5%;
 background: #FFFFFF;
 box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
 border-radius: 15px;
@@ -354,7 +358,7 @@ font-weight: bold;
     }
     .card {
         border-radius: 15px;
-        width: 28%;
+        width: 30%;
         margin: 0 auto; /* Added */
         float: none; /* Added */
         margin-bottom: 5%; /* Added */
@@ -372,6 +376,20 @@ font-family:Georgia, 'Times New Roman', Times, serif;
 .sub_category{
     font-size: medium;
     color:#233B7E;
+}
+.c_viewport{
+  color: rgb(27,30,36);
+  margin: 20px 0;
+  height: 700px;
+  overflow: auto;
+  box-shadow:0 0 20px rgba(0, 0, 0, 0.1);
+}
+table {
+    position:relative;
+}
+
+thead>tr:nth-child(2) th {
+    top: 35px;
 }
 </style>
 {% endblock content %} 
