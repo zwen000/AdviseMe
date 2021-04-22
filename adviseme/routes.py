@@ -925,6 +925,85 @@ def Advisement():
             else:
                 enrollement.grade = ''
                 enrollement.attempt = True
+        
+        for course in form.tech_elec1.data:
+            enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course.id).first()
+            if not enrollement:
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                        course_id = course.id,
+                                        attempt = True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+        
+        for course in form.tech_elec2.data:
+            enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course.id).first()
+            if not enrollement:
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                        course_id = course.id,
+                                        attempt = True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+        
+        for course in form.CE.data:
+            enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course.id).first()
+            if not enrollement:
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                        course_id = course.id,
+                                        attempt = True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+
+        for course in form.USE.data:
+            enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course.id).first()
+            if not enrollement:
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                        course_id = course.id,
+                                        attempt = True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+
+        for course in form.IS.data:
+            enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course.id).first()
+            if not enrollement:
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                        course_id = course.id,
+                                        attempt = True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+        
+        for course in form.WCGI.data:
+            enrollement = Enrollement.query.filter_by(
+                                        student_id=current_user.EMPLID,
+                                        course_id = course.id).first()
+            if not enrollement:
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                        course_id = course.id,
+                                        attempt = True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+
         note = Notes(EMPLID=current_user.EMPLID)
         db.session.add(note)
         db.session.commit()
