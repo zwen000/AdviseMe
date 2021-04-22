@@ -190,3 +190,26 @@ class AdvisementForm(FlaskForm):
     WCGI_check = BooleanField('World Cultures and Global Issues')
 
     submit = SubmitField('Submit to Advisor')
+
+class ReviewForm(FlaskForm):
+    course = QuerySelectMultipleField(
+        'Course',
+        query_factory=lambda: Course.query,
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
+    )
+
+    q1 = TextAreaField('Advisement Question 1', validators=[DataRequired()])
+    q2 = TextAreaField('Advisement Question 2', validators=[DataRequired()])
+    q3 = BooleanField('Advisement Question 3')
+
+    tutorial = BooleanField('Tutorial Services')
+    counseling = BooleanField('Counseling(Psychological, Financial, Personal, etc)')
+    consultation = BooleanField('Faculty Consultation(Office Hours)')
+    career = BooleanField('Career Advisement')
+    scholarships = BooleanField('Scholarships')
+    internship = BooleanField('Internship Opportunities')
+    followup = BooleanField('Follow-up Advisement Sessions')
+
+    approve = BooleanField('Approval toggle')
+    submit = SubmitField('submit')
