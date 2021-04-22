@@ -1022,3 +1022,36 @@ def View_Transcript():
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
 
+# @app.route('/faculty/review/<int:student_id>', methods=['GET', 'POST'])
+@app.route('/faculty/review/', methods=['GET', 'POST'])
+@login_required
+def faculty_review():
+    student_id = 23396710
+
+    form = ReviewForm()
+    temp = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id).all()
+    course = {i[0]:i[1] for i in temp}
+    for i in Course.query.all():
+        if i not in course:
+            course[i] = None
+
+    electives = dict()
+    tech_elec = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, Course.designation=="Technical Elective").all()
+    CE = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")).all()
+    US = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[US](1000)")|(Course.designation=="[US](2000)")).all()
+    IS = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation == "[IS](1000)")|(Course.designation == "[IS](2000)")).all()
+    WCGI = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id == Course.id) \
+        .filter(Enrollement.student_id == student_id,
+                (Course.designation == "[WCGI](1000)")|(Course.designation == "[WCGI](2000)")).all()
+    electives["Technical Elective"] = tech_elec
+    electives["CE"] = CE
+    electives["US"] = US
+    electives["IS"] = IS
+    electives["WCGI"] = WCGI
+
+    return render_template('AdvisementReview.html', form=form, course=course, electives=electives)
