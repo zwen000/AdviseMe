@@ -117,6 +117,7 @@ def save_transcript(form_transcript, semester, year, student_id):
 
 # Student fill out the basic info on the first time once they signed in
 @app.route('/studentinfo_fill', methods=['GET', 'POST'])
+@login_required
 def studentinfo_fill():
     form = StudentInfoForm()
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -151,11 +152,8 @@ def student_course_info():
         # print(courseObj.grade)
         courses += Course.query.filter_by(id=courseObj.course_id)
 
-
-
     for i in courses:
         print(i)
-
 
     if form.validate_on_submit():
         course = Course(    serial=form.serial.data,
@@ -177,11 +175,34 @@ def stored_grade(alist):
     all_grade.append(alist)
     return all_grade
 
-
 def remove_list():
     for tup in list(all_grade):
         if tup[2] == current_user.EMPLID:
             all_grade.remove(tup)                                        # Clear the list when all data store into db
+
+
+
+all_pathway = []
+def stored_pathway(alist):
+    all_pathway.append(alist)
+    return all_pathway
+
+def pathway_check():
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
+    for tup in list(all_pathway):
+        if tup[1] == True:
+            for flexible_course in student_info:
+                if flexible_course.course_id == tup[0]:
+                    flexible_course.component = True
+                    db.session.commit()
+        elif tup[1] == False:
+            for free_course in student_info:
+                if free_course.course_id == tup[0]:
+                    free_course.component = False 
+                    db.session.commit()
+        else: 
+            print("Null Case!")
+            
 
 def GPA_QPA():
     num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count()
@@ -193,12 +214,14 @@ def GPA_QPA():
         if score.GPA_point:
             student.GPA += int(score.GPA_point)
 
-    if num_of_courses == 0:             # divide by zero error check!
+    if student.credit_earned == 0:             # divide by zero error check!
         print("No classes added yet!")
     else:
-        print("The GPA should be: ", student.GPA, "/", num_of_courses, " = ", student.GPA/num_of_courses )
+        print("The GPA should be: ", student.GPA, "/", student.credit_earned, " = ", student.GPA/student.credit_earned )
         student.GPA /= student.credit_earned
-        student.GPA = round(student.GPA,3)
+        # print("Raw Score >> ", student.GPA)
+        student.GPA = round(student.GPA, 3)
+        # print("Rounded >> ", student.GPA)
         db.session.commit()
 
     student.QPA = 0
@@ -277,7 +300,7 @@ def courseinfo_fill():
                                 student.credit_earned += 0
                                 enrollement.attempt = False
                             elif enrollement.passed == True and grade == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
-                                student.credit_earned -= course.credits                     # The first passing grade could have been added by user error!
+                                student.credit_earned -= course.credits           # The first passing grade could have been added by user error!
                                 enrollement.passed = False
                                 enrollement.attempt = False
                             elif enrollement.passed == False and grade != "F":    # Failed the course the first time, retook it and passed!       (FP)
@@ -294,6 +317,7 @@ def courseinfo_fill():
                         else:
                             enrollement.QPA_point = 0
                     db.session.commit()
+        pathway_check()
         remove_list()
         return redirect(url_for('student_profile'))
 
@@ -313,6 +337,7 @@ def courseinfo_fill():
 def Liberal_Art_1000():
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
     courses = Course.query.all()
 
     form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="[CE](1000)")]
@@ -327,13 +352,16 @@ def Liberal_Art_1000():
         for course in courses:
             # print(course.serial)
             if course.serial == form.elective.data:
-                id = course.id
+                id = course.id 
                 print(course.id)
                 for courseid, grade,EMPLID in all_grade:
-                    if courseid == id:
+                    if courseid == id:                          # removes duplicates from the array! 
                         all_grade.remove((id,grade,EMPLID))
 
-        grades=(id,form.grade.data,current_user.EMPLID)
+        pathway=(id, True, current_user.EMPLID)
+        stored_pathway(pathway)
+
+        grades=(id, form.grade.data, current_user.EMPLID)       # This goes into the enrollements table! 
         stored_grade(grades)
 
         return redirect(url_for('courseinfo_fill'))
@@ -347,6 +375,7 @@ def Liberal_Art_1000():
 def Liberal_Art_2000():
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
     courses = Course.query.all()
 
     form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="[CE](2000)")]
@@ -359,13 +388,16 @@ def Liberal_Art_2000():
     if form.validate_on_submit():
 
         for course in courses:
-            print(course.serial)
+            # print(course.serial)
             if course.serial == form.elective.data:
                 id = course.id
                 print(course.id)
                 for courseid, grade, EMPLID in all_grade:
                     if courseid == id:
                         all_grade.remove((id,grade,EMPLID))
+
+        pathway=(id, True, current_user.EMPLID)
+        stored_pathway(pathway)
 
         grades=(id,form.grade.data,current_user.EMPLID)
         stored_grade(grades)
@@ -382,6 +414,7 @@ def Liberal_Art_2000():
 def Free_Electives():
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
     courses = Course.query.all()
 
     form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="[CE](1000)")]
@@ -405,9 +438,12 @@ def Free_Electives():
             if course.serial == form.elective.data:
                 id = course.id
                 print(course.id)
-                for courseid, grade,EMPLID in all_grade:
+                for courseid, grade,EMPLID in all_grade:        # removes duplicate courses! 
                     if courseid == id:
                         all_grade.remove((id,grade,EMPLID))
+
+        pathway=(id, False, current_user.EMPLID)
+        stored_pathway(pathway)
 
         grades=(id,form.grade.data,current_user.EMPLID)
         stored_grade(grades)
@@ -625,17 +661,14 @@ def get_Free_Electives():
 
     return free_electives
 
+
 @app.route('/checklist')
 @login_required
 def checklist():
     courses = Course.query.all()
     cs_courses = Course.query.filter_by(dept='CSC').all()
     lib_req_courses = Course.query.filter_by(designation ="Required Liberal Art").all()
-    science_courses = []
-    for sciences in courses:
-        if sciences.id >= 43 and sciences.id <= 48:
-            science_courses +=  Course.query.filter_by(id=sciences.id)
-
+    science_courses = Course.query.filter_by(designation="Science Elective").all()
     math_courses = Course.query.filter_by(dept='MATH').all()
     student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
 
@@ -647,10 +680,17 @@ def checklist():
         # print(courseObj)
         courses_array += Course.query.filter_by(id=courseObj.course_id)
 
-    """
-    for i in courses_array:
-        print(i)
-    """
+    pathway_courses = []
+    free_courses = []
+    for course in student_info:
+        if course.component == True:
+            pathway_courses += Course.query.filter_by(id=course.course_id)
+            # print(pathway_courses)
+        elif course.component == False:
+            free_courses += Course.query.filter_by(id=course.course_id)
+            # print(free_courses)
+        else: 
+            pass    # This is the case when the component is NULL ... 
 
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
@@ -724,12 +764,13 @@ def checklist():
     #progress bar for free electives
     checklistProgressInterval_FE = 100 / 2
     FE_width = 0
+    
     #Need to fix to cater to free electives
-    for course in free_electives:
+    for course in free_courses:
         if course in courses_array:
             FE_width += checklistProgressInterval_FE
     FE_width_num = FE_width/100 * 2
-
+    
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -742,7 +783,8 @@ def checklist():
                             cs_courses=cs_courses,
                             science_courses = science_courses,
                             courses_array=courses_array,
-                            free_electives=free_electives,
+                            pathway_courses=pathway_courses,
+                            free_courses=free_courses,
                             math_courses=math_courses,
                             CS_width_num =  int(CS_width_num),
                             CSE_width_num =  int(CSE_width_num),
@@ -780,6 +822,7 @@ def get_semester(date):
         raise IndexError("Invalid date")
 
     return semester
+
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome/')
@@ -845,6 +888,7 @@ def academicAdvising(note_id):
         form.be_advised.data=notes.be_advised
     return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
 
+
 # academic advisor should review completed advising forms and notes in this page
 @app.route('/noteReviewHome')
 @login_required
@@ -871,6 +915,8 @@ def noteReview(note_id):
         form.additional.data=notes.additional
         form.approval.data=notes.approval
     return render_template('noteReview.html', title='noteReview',notes=notes,form=form)
+
+
 
 @app.route('/workflow/')
 @login_required
@@ -957,4 +1003,3 @@ def View_Transcript():
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
     
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
-

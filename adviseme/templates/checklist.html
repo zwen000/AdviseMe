@@ -129,7 +129,7 @@
                 </ul>
               </div>
               <hr>
-            {% elif technical_elective.serial == "ENGR 27600" %}
+            {% elif technical_elective.serial == "ENGR 27600" %}    <!-- Edge Case -->
               <input checked class="LibCheckBox" type="checkbox" disabled/>
                 <label class="checkbox collapsible2" for="course_serial">{{technical_elective.serial}}</label>
                 <div class="content2">
@@ -162,29 +162,27 @@
       </button>
 
       <div class="content">
-        {% for course in free_electives %} <!--Need to fix so that free electives are displayed instead when completed -->  
-          {% if course is in courses_array %}
-            <input checked class="MathCheckBox" type="checkbox" disabled/>
-            <label class="checkbox collapsible2" for="course_serial">{{course.serial}}</label>
-            <div class="content2">
-              <ul>
-                <li>Course Name: {{ course.name }}</li>
-                <hr>
-                <li>Course Description: {{ course.description }} </li>
-                <hr>
-                <li>Course Designation: {{ course.designation }}</li> 
-                <hr>
-                <li>Course Credit: {{ course.credits }} </li>
-                {% for score in scores %}
-                  {% if score.grade and course.id == score.course_id %}
-                    <li>Grade: {{score.grade}} </li>
-                    <hr>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-            <hr>
-          {% endif %}
+        {% for course in free_courses %} <!--Need to fix so that free electives are displayed instead when completed -->  
+          <input checked class="MathCheckBox" type="checkbox" disabled/>
+          <label class="checkbox collapsible2" for="course_serial">{{course.serial}}</label>
+          <div class="content2">
+            <ul>
+              <li>Course Name: {{ course.name }}</li>
+              <hr>
+              <li>Course Description: {{ course.description }} </li>
+              <hr>
+              <li>Course Designation: {{ course.designation }}</li> 
+              <hr>
+              <li>Course Credit: {{ course.credits }} </li>
+              {% for score in scores %}
+                {% if score.grade and course.id == score.course_id %}
+                  <li>Grade: {{score.grade}} </li>
+                  <hr>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
         {% endfor %}
         <p style="font-size: smaller;">Note: Acceptable free electives are any courses offered by the College except the following:
           <br> Remedial courses, including pre-calculus math.
@@ -298,47 +296,47 @@
                   </button>
                   <div class="content">
                     {% for liberal_art_course_req in lib_req_courses %}
-                    {% if liberal_art_course_req.designation == "Required Liberal Art" %} 
-                      {%if liberal_art_course_req is in courses_array%}  
-                        <input checked type="checkbox" disabled/>
-                        <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course_req.serial}}</label>
-                        <div class="content2">
-                          <ul>
-                            <li>Course Name: {{liberal_art_course_req.name}}</li>
-                            <hr>
-                            <li>Course Description: {{liberal_art_course_req.description}} </li>
-                            <hr>
-                            <li>Course Designation: {{liberal_art_course_req.designation}}</li> 
-                            <hr>
-                            <li>Course Credit: {{liberal_art_course_req.credits}} </li>
-                            {% for score in scores %}
-                              {% if score.grade and liberal_art_course_req.id == score.course_id %}
-                                <li>Grade: {{score.grade}} </li>
-                                <hr>
-                              {% endif %}
-                            {% endfor %}
-                          </ul>
-                        </div>
-                      <hr>
-                      {%else%}
-                      <input type="checkbox" disabled/>
-                      <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course_req.serial}}</label>
-                      <div class="content2">
-                        <ul>
-                          <li>Course Name: {{liberal_art_course_req.name}}</li>
+                      {% if liberal_art_course_req.designation == "Required Liberal Art" %} 
+                        {%if liberal_art_course_req is in courses_array%}  
+                          <input checked type="checkbox" disabled/>
+                          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course_req.serial}}</label>
+                          <div class="content2">
+                            <ul>
+                              <li>Course Name: {{liberal_art_course_req.name}}</li>
+                              <hr>
+                              <li>Course Description: {{liberal_art_course_req.description}} </li>
+                              <hr>
+                              <li>Course Designation: {{liberal_art_course_req.designation}}</li> 
+                              <hr>
+                              <li>Course Credit: {{liberal_art_course_req.credits}} </li>
+                              {% for score in scores %}
+                                {% if score.grade and liberal_art_course_req.id == score.course_id %}
+                                  <li>Grade: {{score.grade}} </li>
+                                  <hr>
+                                {% endif %}
+                              {% endfor %}
+                              </ul>
+                            </div>
                           <hr>
-                          <li>Course Description: {{liberal_art_course_req.description}} </li>
+                        {%else%}
+                          <input type="checkbox" disabled/>
+                          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course_req.serial}}</label>
+                          <div class="content2">
+                            <ul>
+                              <li>Course Name: {{liberal_art_course_req.name}}</li>
+                              <hr>
+                              <li>Course Description: {{liberal_art_course_req.description}} </li>
+                              <hr>
+                              <li>Course Designation: {{liberal_art_course_req.designation}}</li> 
+                              <hr>
+                              <li>Course Credit: {{liberal_art_course_req.credits}} </li>
+                          </div>
                           <hr>
-                          <li>Course Designation: {{liberal_art_course_req.designation}}</li> 
-                          <hr>
-                          <li>Course Credit: {{liberal_art_course_req.credits}} </li>
-                      </div>
-                    <hr>
-                      {% endif %}
+                        {% endif %}
                       {% endif %}
                     {% endfor %}
-                    <p style="font-size: smaller;">Note: Reqired two english courses, speech, and either ENGR 27600 <i>or</i> ECO 10400</p>  
-                  </div>
+                <p style="font-size: smaller;">Note: Reqired two english courses, speech, and either ENGR 27600 <i>or</i> ECO 10400</p>  
+              </div>
                 </section>
                 <br>
         
@@ -351,8 +349,7 @@
           </div>
       </button>
       <div class="content">
-      {% for liberal_art_course in courses_array %}
-        {% if liberal_art_course.designation == "[IS](1000)" %}     <!-- Individual & Society (1000 level) -->
+      {% for liberal_art_course in pathway_courses %}
         <input checked class="LibCheckBox" type="checkbox" disabled/>
           <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
           <div class="content2">
@@ -374,163 +371,6 @@
             </ul>
           </div>
           <hr>
-        {% elif liberal_art_course.designation == "[IS](2000)" %}     <!-- Individual & Society (2000 level) -->
-        <input checked class="LibCheckBox" type="checkbox" disabled/>
-          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-          <div class="content2">
-            <ul>
-              <li>Course Name: {{liberal_art_course.name}}</li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.description}} </li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.designation}} </li> 
-              <hr>
-              <li>Course Credit: {{liberal_art_course.credits}} </li>
-              <hr>
-              {% for score in scores %}
-                {% if score.grade and liberal_art_course.id == score.course_id %}
-                  <li>Grade: {{score.grade}} </li>
-                  <hr>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-        {% elif liberal_art_course.designation == "[WCGI](1000)" %}   <!-- World Cultures & Global Issues (1000 level) -->
-        <input checked class="LibCheckBox" type="checkbox" disabled/>
-          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-          <div class="content2">
-            <ul>
-              <li>Course Name: {{liberal_art_course.name}}</li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.description}} </li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.designation}} </li> 
-              <hr>
-              <li>Course Credit: {{liberal_art_course.credits}} </li>
-              <hr>
-              {% for score in scores %}
-                {% if score.grade and liberal_art_course.id == score.course_id %}
-                  <li>Grade: {{score.grade}} </li>
-                  <hr>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-        {% elif liberal_art_course.designation == "[WCGI](2000)" %}   <!-- World Cultures & Global Issues (2000 level) -->
-        <input checked class="LibCheckBox" type="checkbox" disabled/>
-          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-          <div class="content2">
-            <ul>
-              <li>Course Name: {{liberal_art_course.name}}</li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.description}} </li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.designation}} </li> 
-              <hr>
-              <li>Course Credit: {{liberal_art_course.credits}} </li>
-              <hr>
-              {% for score in scores %}
-                {% if score.grade and liberal_art_course.id == score.course_id %}
-                  <li>Grade: {{score.grade}} </li>
-                  <hr>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-        {% elif liberal_art_course.designation == "[US](1000)" %}     <!-- US Experience in its Diversity (1000 level) -->
-        <input checked class="LibCheckBox" type="checkbox" disabled/>
-          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-          <div class="content2">
-            <ul>
-              <li>Course Name: {{liberal_art_course.name}}</li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.description}} </li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.designation}} </li> 
-              <hr>
-              <li>Course Credit: {{liberal_art_course.credits}} </li>
-              <hr>
-              {% for score in scores %}
-                {% if score.grade and liberal_art_course.id == score.course_id %}
-                  <li>Grade: {{score.grade}} </li>
-                  <hr>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-        {% elif liberal_art_course.designation == "[US](2000)" %}     <!-- US Experience in its Diversity (2000 level) -->
-        <input checked class="LibCheckBox" type="checkbox" disabled/>
-          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-          <div class="content2">
-            <ul>
-              <li>Course Name: {{liberal_art_course.name}}</li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.description}} </li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.designation}} </li> 
-              <hr>
-              <li>Course Credit: {{liberal_art_course.credits}} </li>
-              <hr>
-              {% for score in scores %}
-                {% if score.grade and liberal_art_course.id == score.course_id %}
-                  <li>Grade: {{score.grade}} </li>
-                  <hr>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-        {% elif liberal_art_course.designation == "[CE](1000)" %}     <!-- Creative Expression (1000 level) -->
-        <input checked class="LibCheckBox" type="checkbox" disabled/>
-          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-          <div class="content2">
-            <ul>
-              <li>Course Name: {{liberal_art_course.name}}</li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.description}} </li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.designation}} </li> 
-              <hr>
-              <li>Course Credit: {{liberal_art_course.credits}} </li>
-              <hr>
-              {% for score in scores %}
-                {% if score.grade and liberal_art_course.id == score.course_id %}
-                  <li>Grade: {{score.grade}} </li>
-                  <hr>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-        {% elif liberal_art_course.designation == "[CE](2000)" %}     <!-- Creative Expression (2000 level) -->
-        <input checked class="LibCheckBox" type="checkbox" disabled/>
-          <label class="checkbox collapsible2" for="course_serial">{{liberal_art_course.serial}}</label>
-          <div class="content2">
-            <ul>
-              <li>Course Name: {{liberal_art_course.name}}</li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.description}} </li>
-              <hr>
-              <li>Course Description: {{liberal_art_course.designation}} </li> 
-              <hr>
-              <li>Course Credit: {{liberal_art_course.credits}} </li>
-              <hr>
-              {% for score in scores %}
-                {% if score.grade and liberal_art_course.id == score.course_id %}
-                  <li>Grade: {{score.grade}} </li>
-                  <hr>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-        {% else %}
-            <!-- In ANY other case do Nothing. Just relax and have some coffee! :) -->
-        {% endif %}
       {% endfor %}  
       <p style="font-size: smaller;">Four courses from a list of General Education courses, at least two of which must be at the 200 level or above.</p>
       </div>
