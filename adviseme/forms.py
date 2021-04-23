@@ -7,6 +7,7 @@ from wtforms_sqlalchemy.fields import *
 from adviseme.models import *
 from datetime import date
 
+
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -130,6 +131,8 @@ class UpdateStudentAccountForm(FlaskForm):
                 raise ValidationError('The email is already in use!')
 
 
+
+
 class AdvisementForm(FlaskForm):
     semester = SelectField("semester", choices=[("SPRING", "Spring"), ("FALL", "Fall")])
     year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year, date.today().year+2)])
@@ -143,4 +146,85 @@ class AdvisementForm(FlaskForm):
         option_widget=widgets.CheckboxInput()
     )
 
+    tech_elec1 = QuerySelectMultipleField(
+        'Technical Elective 1',
+        query_factory=lambda: Course.query.filter_by(designation="Technical Elective"),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    tech_elec_check1 = BooleanField('Technical Elective 1')
+
+    tech_elec2 = QuerySelectMultipleField(
+        'Technical Elective 2',
+        query_factory=lambda: Course.query.filter_by(designation="Technical Elective"),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    tech_elec_check2 = BooleanField('Technical Elective 2')
+
+    CE = QuerySelectMultipleField(
+        'Creative Expression',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    CE_check = BooleanField('Creative Expression')
+
+    USE = QuerySelectMultipleField(
+        'US Experience in its Diversity',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[US](1000)") | (Course.designation == "[US](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    USE_check = BooleanField('US Experience in its Diversity')
+
+    IS = QuerySelectMultipleField(
+        'Individual and Society',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[IS](1000)") | (Course.designation == "[IS](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    IS_check = BooleanField('Individual and Society')
+
+    WCGI = QuerySelectMultipleField(
+        'World Cultures and Global Issues',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[WCGI](1000)") | (Course.designation == "[WCGI](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    WCGI_check = BooleanField('World Cultures and Global Issues')
+
     submit = SubmitField('Submit to Advisor')
+
+class ReviewForm(FlaskForm):
+    course = QuerySelectMultipleField(
+        'Course',
+        query_factory=lambda: Course.query,
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
+    )
+
+    q1 = TextAreaField('Advisement Question 1', validators=[DataRequired()])
+    q2 = TextAreaField('Advisement Question 2', validators=[DataRequired()])
+    q3 = BooleanField('Advisement Question 3')
+
+    tutorial = BooleanField('Tutorial Services')
+    counseling = BooleanField('Counseling(Psychological, Financial, Personal, etc)')
+    consultation = BooleanField('Faculty Consultation(Office Hours)')
+    career = BooleanField('Career Advisement')
+    scholarships = BooleanField('Scholarships')
+    internship = BooleanField('Internship Opportunities')
+    followup = BooleanField('Follow-up Advisement Sessions')
+
+    approve = BooleanField('Approval toggle')
+    submit = SubmitField('submit')

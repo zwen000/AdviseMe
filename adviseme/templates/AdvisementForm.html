@@ -54,7 +54,7 @@
                         <td>{{ course_obj[i.data].name }}</td>
 
                         {% if course_obj[i.data].id in enrolled %}
-                            {% if enrolled[course_obj[i.data].id] == "IP"%}
+                            {% if enrolled[course_obj[i.data].id] == "IP" %}
                                 <td></td>
                                 <td><input type="checkbox" checked="checked2" disabled/></td>
                             {% else %}
@@ -371,12 +371,13 @@
                 {% endif %}
             {% endfor %}
         </tbody>
+
 <!--End of Group C Elective-->
 
 <!--Required Liberal Art -->
         <thead>
             <tr class="thead-dark">
-                <th class="course_header">Required Liberal Art</th>
+                <th class="course_header">English and General Education Requirements</th>
                 <th> </th>
                 <th> </th>
                 <th> </th>
@@ -425,12 +426,85 @@
                 {% endif %}
             {% endfor %}
         </tbody>
-<!--End ofRequired Liberal Art-->
+<!--End of Required Liberal Art-->
 
-<!--Flexible Core (Pathways)-->
+    <!--Technical Elective-->
         <thead>
             <tr class="thead-dark">
-                <th class="course_header">Flexible Core (Pathways)</th>
+                <th class="course_header">Technical Elective</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <tr class="thead-dark text-muted">
+                <th>Course Code:</th>
+                <th>Credits awarded:</th>
+                <th>Course Name:</th>
+                <th>Grade:</th>
+                <th>Currentaly Enrolled</th>
+                <th>Intended Next Semester</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if electives[0] == None %}
+                <tr>
+                    <td>{{ form.tech_elec1 }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.tech_elec_check1 }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[0][0].serial }}</td>
+                    <td>{{ electives[0][0].credits }}</td>
+                    <td>{{ electives[0][0].name }}</td>
+                    {% if electives[0][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[0][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
+
+            {% if electives[1] == None %}
+                <tr>
+                    <td>{{ form.tech_elec2 }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.tech_elec_check2 }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[1][0].serial }}</td>
+                    <td>{{ electives[1][0].credits }}</td>
+                    <td>{{ electives[1][0].name }}</td>
+                    {% if electives[1][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[1][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
+        </tbody>
+        <!--End of Technical Elective-->
+
+        <!-- Libral Art-Creative Expression -->
+        <thead>
+            <tr class="thead-dark">
+                <th class="course_header">Libral Art</th>
                 <th> </th>
                 <th> </th>
                 <th> </th>
@@ -446,7 +520,7 @@
                 <th>Intended Next Semester</th>
             </tr>
             <tr class="table-secondary">
-                <th class="sub_category">10000 Level(Required to take 2 of the following)</th>
+                <th class="sub_category">Creative Expression</th>
                 <th> </th>
                 <th> </th>
                 <th> </th>
@@ -454,42 +528,155 @@
                 <th> </th>
             </tr>
         </thead>
-
         <tbody>
-            {% for i in form.course %}
-                {% if course_obj[i.data].designation == "Group A Elective" %}
-                    <tr>
-                        <td>{{ course_obj[i.data].serial }}</td>
-                        <td>{{ course_obj[i.data].credits }}</td>
-                        <td>{{ course_obj[i.data].name }}</td>
-
-                        {% if course_obj[i.data].id in enrolled %}
-                            {% if enrolled[course_obj[i.data].id] == "IP"%}
-                                <td></td>
-                                <td><input type="checkbox" checked="checked2" disabled/></td>
-                            {% else %}
-                                <td>{{ enrolled[course_obj[i.data].id] }}</td>
-                                <td></td>
-                            {% endif%}
-                        {% else %}
-                            <td>{{ enrolled[course_obj[i.data].id] }}</td>
-                            <td></td>
-                        {% endif%}
-
-                        {% if course_obj[i.data].id not in enrolled %}
-                            <td>{{ i }}</td>
-                        {% elif enrolled[course_obj[i.data].id] == "F"%}
-                            <td>{{ i }}</td>
-                        {%  else %}
-                            <td></td>
-                        {% endif%}
-                    </tr>
-                {% endif %}
-            {% endfor %}
+            {% if electives[2] == None %}
+                <tr>
+                    <td>{{ form.CE }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.CE_check  }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[2][0].serial }}</td>
+                    <td>{{ electives[2][0].credits }}</td>
+                    <td>{{ electives[2][0].name }}</td>
+                    {% if electives[2][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[2][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
         </tbody>
+        <!--End of Libral Art-Creative Expression -->
+
+        <!-- Libral Art-US -->
+        <thead>
+            <tr class="table-secondary">
+                <th class="sub_category">US Experience in its Diversity</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if electives[3] == None %}
+                <tr>
+                    <td>{{ form.USE }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.USE_check  }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[3][0].serial }}</td>
+                    <td>{{ electives[3][0].credits }}</td>
+                    <td>{{ electives[3][0].name }}</td>
+                    {% if electives[3][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[3][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
+        </tbody>
+        <!--End of Libral Art-US -->
+
+        <!-- Libral Art-IS = Individual and Society -->
+        <thead>
+            <tr class="table-secondary">
+                <th class="sub_category">Individual and Society</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if electives[4] == None %}
+                <tr>
+                    <td>{{ form.IS }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.IS_check  }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[4][0].serial }}</td>
+                    <td>{{ electives[4][0].credits }}</td>
+                    <td>{{ electives[4][0].name }}</td>
+                    {% if electives[4][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[4][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
+        </tbody>
+        <!--End of Libral Art-IS = Individual and Society -->
+
+        <!-- Libral Art-World Cultures and Global Issues -->
+        <thead>
+            <tr class="table-secondary">
+                <th class="sub_category">World Cultures and Global Issues</th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if electives[5] == None %}
+                <tr>
+                    <td>{{ form.WCGI }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> {{ form.WCGI_check  }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>{{ electives[5][0].serial }}</td>
+                    <td>{{ electives[5][0].credits }}</td>
+                    <td>{{ electives[5][0].name }}</td>
+                    {% if electives[5][1] == "IP" %}
+                        <td></td>
+                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                    {% else %}
+                        <td>{{ electives[5][1]  }}</td>
+                        <td></td>
+                    {% endif %}
+                    <td> </td>
+                </tr>
+            {% endif %}
+        </tbody>
+
+        <!--End of Libral Art-World Cultures and Global Issues -->
+
     </table>
-     <br>
-<!--End of Flexible Core (Pathways)-->
+
+<!--End of Technical Elective-->
 
         <ul>
             {% for error in form.course.errors %}
@@ -498,6 +685,7 @@
         </ul>
 </div>
 <!--  end of container  -->
+
             <p class="text" style="float: right; display: inline;">QPA: {{ current_user.studentOwner.QPA }}</p>
             <p class="text">GPA: {{ current_user.studentOwner.GPA }}</p>
             <!--          should make it a requirement to upload transcript or you can't submit --> 

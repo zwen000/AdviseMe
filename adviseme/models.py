@@ -70,6 +70,7 @@ class Enrollement(db.Model):
     QPA_point = db.Column(db.Integer)
     attempt = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     passed = db.Column(db.Boolean, unique=False, nullable=False, default=False)
+
     student = db.relationship('Student', back_populates='courses', lazy=True)
     course = db.relationship('Course', back_populates='students', lazy=True)
 
