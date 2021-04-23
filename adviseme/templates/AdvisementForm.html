@@ -7,10 +7,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <a class="text-left" href="{{ url_for('student_profile') }}">Back to profile?</a>
+                    <a style="text-align:left; text-decoration: none;" href="{{ url_for('student_profile') }}">Back to profile?</a>
                 </div>
                 <div class="col">
-                    <a class="float: right; display: inline;" href="{{ url_for('View_Transcript') }}">View Previous Transcript/Cirriculum?</a>
+                    <a style="float: right; display: inline; text-decoration: none;" href="{{ url_for('View_Transcript') }}">| View Previous Transcript/Cirriculum?</a>
+                    <a style="float: right; display: inline; text-decoration: none;" href="{{ url_for('courseinfo_fill') }}">Update Grades | </a>
                 </div>
             </div>
         </div>

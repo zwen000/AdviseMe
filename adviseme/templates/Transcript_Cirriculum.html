@@ -4,8 +4,12 @@
     <h3 class="mt-auto mb-5"><center>Cirriculum Information: </center></h3>
     <object data="{{ url_for('static', filename='Transcripts/Computer_Science.pdf')}}" type="application/pdf" style="min-height:100vh;width:100%"></object>
 
-    <h3 class="mt-auto mb-5"><center>Student Unofficial Transcript Information: </center></h3>
-    <object data="{{ url_for('static', filename='Transcripts/')}}{{ student.transcript }}" type="application/pdf" style="min-height:100vh;width:100%"></object>
+    {% if transcript == "/static/Transcript/Computer_Science.pdf" or transcript == "/static/Transcripts/Computer_Science.pdf" %}
+        <center><p><b>Transcript Preview not loaded! Please upload your transcript First.</b></p></center>
+    {% else %}
+        <h3 class="mt-auto mb-5"><center>Student Unofficial Transcript Information: </center></h3>
+        <object data="{{ url_for('static', filename='Transcripts/')}}{{ student.transcript }}" type="application/pdf" style="min-height:100vh;width:100%"></object>
+    {% endif %}
 
     <br>    <!-- There is a better way to do this using Bootsrap or CSS -->
     <br>    <!-- There is a better way to do this using Bootsrap or CSS -->
