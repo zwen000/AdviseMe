@@ -9,7 +9,6 @@ from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 
-
 @app.route('/')
 def landing():
     return render_template('index.html', title="Welcome!")
@@ -960,7 +959,19 @@ def Advisement():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
 
-    enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
+    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)  # returns enrollement table with all courses student has taken! 
+
+    pathway_courses = []
+    free_courses = []
+    for course in student_info:
+        if course.component == True:
+            pathway_courses += Course.query.filter_by(id=course.course_id)
+        elif course.component == False:
+            free_courses += Course.query.filter_by(id=course.course_id)
+        else: 
+            pass    # This is the case when the component is NULL ... 
+
+    enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}    # Why are you using a for loop when you can query everything with one call?
     course_obj = {i[0]:i[1] for i in form.course.iter_choices()} # checkbox_field_id: course_object
 
     if form.validate_on_submit():
@@ -992,9 +1003,18 @@ def Advisement():
         db.session.add(note)
         db.session.add(liveadivsementform)
         db.session.commit()        
-        return redirect(url_for('student_profile'))                           
+        return redirect(url_for('student_profile'))
 
-    return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student, enrolled=enrolled, course_obj=course_obj, transcript=transcript)
+    return render_template('AdvisementForm.html', title="Live Advisement Form", 
+                            form=form, 
+                            student=student, 
+                            enrolled=enrolled,
+                            student_info=student_info, 
+                            pathway_courses=pathway_courses,
+                            free_courses=free_courses, 
+                            course_obj=course_obj, 
+                            transcript=transcript)
+
 
 @app.route('/Advisement/Transcript', methods=['GET', 'POST'])
 @login_required
@@ -1003,3 +1023,11 @@ def View_Transcript():
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
     
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
+
+
+@app.route('/faculty/Advisement/Display/', methods=['GET', 'POST'])
+@login_required
+def list_students():
+
+    students = Student.query.filter_by(needs_advising=True)
+    return render_template('faculty_home.html', students=students)
