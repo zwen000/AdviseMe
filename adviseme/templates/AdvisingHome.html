@@ -8,7 +8,7 @@
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ note.Owner.firstname }}</a>
             </div>
-            <h2><a class="article-title" href="{{ url_for('academicAdvising', note_id=note.id) }}"> Notes </a></h2>
+            <h2><a class="article-title" href="{{ url_for('faculty_review', note_id=note.id) }}"> Notes </a></h2>
           </div>
         </article>
       {%endif%}
@@ -23,7 +23,7 @@
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ note.Owner.firstname }}</a>
             </div>
-            <h2><a class="article-title" href="{{ url_for('academicAdvising', note_id=note.id) }}">Note</a></h2>
+            <h2><a class="article-title" href="{{ url_for('faculty_review', note_id=note.id) }}">Note</a></h2>
           </div>
         </article>
       {%endif%}

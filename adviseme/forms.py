@@ -88,19 +88,6 @@ class FacultyInfoForm(FlaskForm):
     bio = TextAreaField('Student Bio (Optional)')   
     submit = SubmitField('Update')
 
-class advisingNotesForm(FlaskForm):
-    academic_comment = StringField('Academic Comment', validators=[DataRequired()])
-    next_semester_comment = StringField('Next Semester Comment', validators=[DataRequired()])
-    be_advised = BooleanField('Be advised?')
-    tutorial = BooleanField('tutorial')
-    counseling = BooleanField('counseling')
-    consultation = BooleanField('consultation')
-    career = BooleanField('career')
-    scholarships = BooleanField('scholarships')
-    internship = BooleanField('internship')
-    followup = BooleanField('followup')
-
-    submit = SubmitField('Approved')
 
 class AcademicReviewForm(FlaskForm):
     academic_note = StringField('academic_note', validators=[DataRequired()])
@@ -136,7 +123,6 @@ class UpdateStudentAccountForm(FlaskForm):
 class AdvisementForm(FlaskForm):
     semester = SelectField("semester", choices=[("SPRING", "Spring"), ("FALL", "Fall")])
     year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year, date.today().year+2)])
-    date = date.today()
     transcript = FileField("Upload Transcript", validators=[FileAllowed(['pdf']), FileRequired()])
 
     course = QuerySelectMultipleField(
@@ -228,3 +214,4 @@ class ReviewForm(FlaskForm):
 
     approve = BooleanField('Approval toggle')
     submit = SubmitField('submit')
+
