@@ -847,43 +847,6 @@ def AdvisingHome():
     notes = Notes.query.all()
     return render_template('AdvisingHome.html', notes=notes)
 
-
-# faculty can go editing the direct advising note in this route
-@app.route('/academicAdvising/<int:note_id>', methods=['GET', 'POST'])
-@login_required
-def academicAdvising(note_id):
-    notes = Notes.query.get_or_404(note_id)
-    form = advisingNotesForm()
-    if form.validate_on_submit():
-        notes.academic_comment=form.academic_comment.data
-        notes.next_semester_comment=form.next_semester_comment.data
-        notes.tutorial=form.tutorial.data
-        notes.counseling=form.counseling.data
-        notes.consultation=form.consultation.data
-        notes.career=form.career.data
-        notes.scholarships=form.scholarships.data
-        notes.internship=form.internship.data
-        notes.followup=form.followup.data
-        notes.be_advised=form.be_advised.data
-        if notes.Owner.credit_earned <= 45 and form.be_advised.data == True:
-            notes.approval = True
-        db.session.commit()
-        flash('Notes saved!', 'success')
-        return redirect(url_for('AdvisingHome'))
-    elif request.method == 'GET':
-        form.academic_comment.data=notes.academic_comment
-        form.next_semester_comment.data=notes.next_semester_comment
-        form.tutorial.data=notes.tutorial
-        form.counseling.data=notes.counseling
-        form.consultation.data=notes.consultation
-        form.career.data=notes.career
-        form.scholarships.data=notes.scholarships
-        form.internship.data=notes.internship
-        form.followup.data=notes.followup
-        form.be_advised.data=notes.be_advised
-    return render_template('academicAdvising.html', title='academicAdvising',notes=notes,form=form)
-
-
 # academic advisor should review completed advising forms and notes in this page
 @app.route('/noteReviewHome')
 @login_required
@@ -989,13 +952,90 @@ def Advisement():
             else:
                 enrollement.grade = ''
                 enrollement.attempt = True
-        note = Notes(EMPLID=current_user.EMPLID,
-                     semester= form.semester.data,
-                     year = form.year.data)
-        liveadivsementform = LiveAdvisementForm(student_id=current_user.EMPLID,
-                                                semester=form.semester.data,
-                                                transcript=transcript_file,
-                                                year = form.year.data)   
+
+        if form.tech_elec_check1.data == True:
+            for course in form.tech_elec1.data:
+                enrollement = Enrollement.query.filter_by(
+                                            student_id=current_user.EMPLID,
+                                            course_id = course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                            course_id = course.id,
+                                            attempt = True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+        if form.tech_elec_check2.data == True:    
+            for course in form.tech_elec2.data:
+                enrollement = Enrollement.query.filter_by(
+                                            student_id=current_user.EMPLID,
+                                            course_id = course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                            course_id = course.id,
+                                            attempt = True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+        if form.CE_check.data == True:     
+            for course in form.CE.data:
+                enrollement = Enrollement.query.filter_by(
+                                            student_id=current_user.EMPLID,
+                                            course_id = course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                            course_id = course.id,
+                                            attempt = True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+
+        if form.USE_check.data == True:
+            for course in form.USE.data:
+                enrollement = Enrollement.query.filter_by(
+                                            student_id=current_user.EMPLID,
+                                            course_id = course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                            course_id = course.id,
+                                            attempt = True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+        
+        if form.IS_check.data == True:
+            for course in form.IS.data:
+                enrollement = Enrollement.query.filter_by(
+                                            student_id=current_user.EMPLID,
+                                            course_id = course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                            course_id = course.id,
+                                            attempt = True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+        if form.WCGI_check.data == True:
+            for course in form.WCGI.data:
+                enrollement = Enrollement.query.filter_by(
+                                            student_id=current_user.EMPLID,
+                                            course_id = course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                            course_id = course.id,
+                                            attempt = True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+
+        note = Notes(EMPLID=current_user.EMPLID,semester=form.semester.data,year=form.year.data)
+
         db.session.add(note)
         db.session.add(liveadivsementform)
         db.session.commit()        
@@ -1021,9 +1061,75 @@ def View_Transcript():
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
 
 
-@app.route('/faculty/Advisement/Display/', methods=['GET', 'POST'])
+# faculty can go editing the direct advising note in this route
+# @app.route('/faculty/review/<int:student_id>', methods=['GET', 'POST'])
+@app.route('/faculty/review/<int:note_id>', methods=['GET', 'POST'])
 @login_required
-def list_students():
+def faculty_review(note_id):
+    notes = Notes.query.get_or_404(note_id)
+    student_id = notes.Owner.EMPLID
 
-    students = Student.query.filter_by(needs_advising=True)
-    return render_template('faculty_home.html', students=students)
+    form = ReviewForm()
+    temp = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id).all()
+    course = {i[0]:i[1] for i in temp}
+    for i in Course.query.all():
+        if i not in course:
+            course[i] = None
+
+    electives = dict()
+    tech_elec = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, Course.designation=="Technical Elective").all()
+    CE = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")).all()
+    US = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[US](1000)")|(Course.designation=="[US](2000)")).all()
+    IS = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation == "[IS](1000)")|(Course.designation == "[IS](2000)")).all()
+    WCGI = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id == Course.id) \
+        .filter(Enrollement.student_id == student_id,
+                (Course.designation == "[WCGI](1000)")|(Course.designation == "[WCGI](2000)")).all()
+    electives["Technical Elective"] = tech_elec
+    electives["CE"] = CE
+    electives["US"] = US
+    electives["IS"] = IS
+    electives["WCGI"] = WCGI
+
+    if form.validate_on_submit():
+        notes.academic_comment=form.q1.data
+        notes.next_semester_comment=form.q2.data
+        notes.q3=form.q3.data
+        notes.tutorial=form.tutorial.data
+        notes.counseling=form.counseling.data
+        notes.consultation=form.consultation.data
+        notes.career=form.career.data
+        notes.scholarships=form.scholarships.data
+        notes.internship=form.internship.data
+        notes.followup=form.followup.data
+        notes.be_advised=form.approve.data
+        if notes.Owner.credit_earned <= 45 and form.approve.data == True:
+            notes.approval = True
+        db.session.commit()
+        flash('Notes saved!', 'success')
+        return redirect(url_for('AdvisingHome'))
+    elif request.method == 'GET':
+        form.q1.data=notes.academic_comment
+        form.q2.data=notes.next_semester_comment
+        form.q3.data=notes.q3
+        form.tutorial.data=notes.tutorial
+        form.counseling.data=notes.counseling
+        form.consultation.data=notes.consultation
+        form.career.data=notes.career
+        form.scholarships.data=notes.scholarships
+        form.internship.data=notes.internship
+        form.followup.data=notes.followup
+        form.approve.data=notes.be_advised
+
+    return render_template('AdvisementReview.html', form=form, course=course,notes=notes, electives=electives)
+
+#@app.route('/faculty/Advisement/Display/', methods=['GET', 'POST'])
+#@login_required
+#def list_students():
+
+#    students = Student.query.filter_by(needs_advising=True)
+#    return render_template('faculty_home.html', students=students)

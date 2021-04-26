@@ -40,8 +40,9 @@ class Notes(db.Model):
     date = db.Column(db.Date, nullable=False, default=date.today())    # to store the exact day on current semester
     academic_comment = db.Column(db.Text, nullable=False, default='')       # comment for academic from advising notes
     next_semester_comment = db.Column(db.Text, nullable=False, default='')  # comment for next semester
+    q3 = db.Column(db.Boolean, nullable=False, default=False)
     be_advised = db.Column(db.Boolean, nullable=False, default=False)       # boolean check for notes if it's done
-    academic_note = db.Column(db.Text, nullable=False, default='')          # after notes are done by faculty then send to academic advisor
+    
     # no.4 question boolean check
     tutorial = db.Column(db.Boolean, nullable=False, default=False)         # tutorial services
     counseling = db.Column(db.Boolean, nullable=False, default=False)       # counseling
@@ -51,6 +52,7 @@ class Notes(db.Model):
     internship = db.Column(db.Boolean, nullable=False, default=False)       # internship oppotunities
     followup = db.Column(db.Boolean, nullable=False, default=False)         # follow-up advisement sessions
     # academic advisor data stored
+    academic_note = db.Column(db.Text, nullable=False, default='')          # after notes are done by faculty then send to academic advisor
     additional = db.Column(db.Text, nullable=False, default='')             # additional suggest/comment from academic advisor
     approval = db.Column(db.Boolean, nullable=False, default=False)         # check if it's done by advisor
     EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
@@ -117,14 +119,3 @@ class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     value = db.Column(db.String(15))
 
-class LiveAdvisementForm(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    semester = db.Column(db.String(30), nullable=False)
-    year = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.Date, nullable=False, default=date.today())
-    transcript = db.Column(db.String(55), nullable=False, default='Computer_Science.pdf')
-
-    student_id = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
-    facutly_id = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True) 
-
-    student = db.relationship('Student', backref='advisementform', lazy=True)
