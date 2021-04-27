@@ -801,8 +801,10 @@ def checklist():
 @app.route('/faculty/')
 @login_required
 def faculty():
+    semester = get_semester(date.today())
+    notes = Notes.query.filter_by(semester=semester).all()
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
-    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image)
+    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes)
 
 # function to get current semester
 def get_semester(date):
@@ -881,11 +883,6 @@ def noteReview(note_id):
 def workflow():
     todaydate = date.today()
     semester = get_semester(todaydate)
-    advisement = LiveAdvisementForm.query.filter_by(
-                                        student_id=current_user.EMPLID,
-                                        semester = semester,
-                                        year =todaydate.year ).first()
-    
     notes = Notes.query.filter_by(
                                 EMPLID=current_user.EMPLID,
                                 semester = semester,
@@ -893,19 +890,19 @@ def workflow():
 
 
 
-    return render_template('workflow.html', title="workflow",advisement=advisement,notes=notes)
+    return render_template('workflow.html', title="workflow",notes=notes)
 
 @app.route('/workflow2/')
 @login_required
 def workflow2():
     todaydate = date.today()
     semester = get_semester(todaydate)
-    advisement = LiveAdvisementForm.query.filter_by(
-                                        student_id=current_user.EMPLID,
-                                        semester = semester,
-                                        year =todaydate.year).first()
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
 
-    if advisement:
+    if notes:
         return redirect(url_for('workflow'))
     return render_template('workflow2.html', title="workflow")
 
@@ -973,7 +970,7 @@ def Advisement():
                 enrollement.grade = ''
                 enrollement.attempt = True
 
-        if tech_elec_check1 == True:
+        if form.tech_elec_check1.data == True:
             for course in form.tech_elec1.data:
                 enrollement = Enrollement.query.filter_by(
                     student_id=current_user.EMPLID,
@@ -986,7 +983,7 @@ def Advisement():
                 else:
                     enrollement.grade = ''
                     enrollement.attempt = True
-        if tech_elec_check2 == True:
+        if form.tech_elec_check2.data == True:
             for course in form.tech_elec2.data:
                 enrollement = Enrollement.query.filter_by(
                     student_id=current_user.EMPLID,
@@ -999,7 +996,7 @@ def Advisement():
                 else:
                     enrollement.grade = ''
                     enrollement.attempt = True
-        if CE_check == True:
+        if form.CE_check.data == True:
             for course in form.CE.data:
                 enrollement = Enrollement.query.filter_by(
                     student_id=current_user.EMPLID,
@@ -1013,7 +1010,7 @@ def Advisement():
                     enrollement.grade = ''
                     enrollement.attempt = True
 
-        if USE_check == True:
+        if form.USE_check.data == True:
             for course in form.USE.data:
                 enrollement = Enrollement.query.filter_by(
                     student_id=current_user.EMPLID,
@@ -1027,7 +1024,7 @@ def Advisement():
                     enrollement.grade = ''
                     enrollement.attempt = True
 
-        if IS_check == True:
+        if form.IS_check.data == True:
             for course in form.IS.data:
                 enrollement = Enrollement.query.filter_by(
                     student_id=current_user.EMPLID,
@@ -1040,7 +1037,7 @@ def Advisement():
                 else:
                     enrollement.grade = ''
                     enrollement.attempt = True
-        if WCGI_check == True:
+        if form.WCGI_check.data == True:
             for course in form.WCGI.data:
                 enrollement = Enrollement.query.filter_by(
                     student_id=current_user.EMPLID,
@@ -1054,7 +1051,7 @@ def Advisement():
                     enrollement.grade = ''
                     enrollement.attempt = True
 
-        note = Notes(EMPLID=current_user.EMPLID)
+        note = Notes(EMPLID=current_user.EMPLID,year=form.year.data,semester=form.semester.data)
         db.session.add(note)
         db.session.commit()
         return redirect(url_for('student_profile'))
