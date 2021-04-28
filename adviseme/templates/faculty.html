@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <center>
   <div class='row'>
     <div class='column'>
@@ -17,27 +18,30 @@
   <div class="c_viewport rounded">
     <div class="push" style="height:1px;"></div>
     <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
+    <div class="search-container">
+      <form action="/action_page.php">
+        <input type="text" placeholder="Search.. " name="search">
+      </form>
+    </div>
     <hr>
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Academic Advisor'%}
         {% for note in notes %}
-          {%if note.Owner.credit_earned <= 45 and note.be_advised ==False %}
+          {%if note.Owner.credit_earned <= 45 and note.be_advised == False %}
       <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
       </button>
       <div class="content">
-        <a class="f_link" href="#">Link to student profile</a>
-        <br>
         <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
       </div>
-      {%endif%}
-      {% endfor %}
-    {%endif%}
     </section>
-
+    <br>
+    {%endif%}
+    {% endfor %}
+  {%endif%}
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Faculty Advisor'%}
       {% for note in notes %}
-        {%if note.Owner.credit_earned > 45 and note.be_advised ==False %}
+        {%if note.Owner.credit_earned > 45 and note.be_advised == False %}
       <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
       </button>
       <div class="content">
@@ -45,16 +49,23 @@
         <br>
         <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
       </div>
-      {%endif%}
-      {% endfor %}
-    {%endif%}
     </section>
     <br>
+    {%endif%}
+    {% endfor %}
+  {%endif%}
 </div>
 </div>
 
 <style>
-  
+  * {box-sizing: border-box;}
+  input[type=text] {
+  padding: 10px;
+  border-color: #3772D7;
+  box-shadow: none; 
+  width: 100%;
+  font:  15px  Open Sans Condensed, sans-serif;
+}
     /* Style the button that is used to open and close the collapsible content */
     .collapsible {
   background-color: #d4e2ee;

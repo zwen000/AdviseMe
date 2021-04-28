@@ -41,8 +41,6 @@
                             {% if '@citymail.cuny.edu' in current_user.email %}
                                <a class="nav-item nav-link" href="{{ url_for('student_profile') }}">My Profile</a>
                                <a class="nav-item nav-link" href="{{ url_for('checklist') }}">Checklist</a>
-                            {% else %}
-                                <a class="nav-item nav-link" href="{{ url_for('faculty') }}">My Profile</a>
                             {% endif %}
                         {% else %}
                             <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
@@ -60,15 +58,15 @@
                             {% else %}
                                 <!-- Navbar for Faculty-->
                                 {%if current_user.FacultyOwner.staff_role == 'Academic Advisor' %}
-                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Advisement</a>
-                                <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Note Review</a>
-                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Edit Form</a>
-                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Edit Workflow</a>
-                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
+                                <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Archieve |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout |</a>
                                 {% else %}
-                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Advisement</a>
-                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Edit Form</a>
-                                <a class="nav-item nav-link" href="{{ url_for('AdvisingHome') }}">Edit Workflow</a> 
+                                <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement</a>
+                                <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form</a>
+                                <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow</a> 
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                                 {% endif %}
                             {% endif %}

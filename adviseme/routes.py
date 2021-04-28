@@ -820,6 +820,14 @@ def get_semester(date):
 
     return semester
 
+#Faculty can edit workflow:
+@app.route('/EditWorkflow/')
+@login_required
+def EditWorkflow():
+    return render_template("EditWorkflow.html", title="Edit Workflow")
+
+
+
 
 # Student can view all notes in this advisingNotesHome route
 @app.route('/advisingNotesHome/')
