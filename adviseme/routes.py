@@ -801,10 +801,11 @@ def checklist():
 @app.route('/faculty/')
 @login_required
 def faculty():
+    year = str(date.year)
     semester = get_semester(date.today())
     notes = Notes.query.filter_by(semester=semester).all()
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
-    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes)
+    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester = semester, year = year)
 
 # function to get current semester
 def get_semester(date):
