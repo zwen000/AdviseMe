@@ -842,31 +842,24 @@ def noteReview(note_id):
 def workflow():
     todaydate = date.today()
     semester = get_semester(todaydate)
-    advisement = LiveAdvisementForm.query.filter_by(
-                                        student_id=current_user.EMPLID,
-                                        semester = semester,
-                                        year =todaydate.year ).first()
-    
     notes = Notes.query.filter_by(
                                 EMPLID=current_user.EMPLID,
                                 semester = semester,
                                 year =todaydate.year ).first()
 
-
-
-    return render_template('workflow.html', title="workflow",advisement=advisement,notes=notes)
+    return render_template('workflow.html', title="workflow",notes=notes)
 
 @app.route('/workflow2/')
 @login_required
 def workflow2():
     todaydate = date.today()
     semester = get_semester(todaydate)
-    advisement = LiveAdvisementForm.query.filter_by(
-                                        student_id=current_user.EMPLID,
-                                        semester = semester,
-                                        year =todaydate.year).first()
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
 
-    if advisement:
+    if notes:
         return redirect(url_for('workflow'))
     return render_template('workflow2.html', title="workflow")
 
@@ -1029,12 +1022,16 @@ def View_Transcript():
 
 
 # faculty can go editing the direct advising note in this route
-# @app.route('/faculty/review/<int:student_id>', methods=['GET', 'POST'])
 @app.route('/faculty/review/<int:note_id>', methods=['GET', 'POST'])
 @login_required
 def faculty_review(note_id):
     notes = Notes.query.get_or_404(note_id)
+
     student_id = notes.Owner.EMPLID
+    # student_id = 233967
+    # notes = Notes.query.filter(Student.EMPLID == student_id).first()
+
+    student = Student.query.filter_by(EMPLID=student_id).first()
 
     form = ReviewForm()
     temp = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
@@ -1092,4 +1089,15 @@ def faculty_review(note_id):
         form.followup.data=notes.followup
         form.approve.data=notes.be_advised
 
-    return render_template('AdvisementReview.html', form=form, course=course,notes=notes, electives=electives)
+    return render_template('AdvisementReview.html', form=form, course=course, electives=electives, student=student, notes=notes)
+
+
+@app.route('/faculty/review/transcript/<int:student_id>', methods=['GET', 'POST'])
+@login_required
+def Faculty_View_Transcript(student_id):
+    student = Student.query.filter_by(EMPLID=student_id).first()
+    transcript = url_for('static', filename='Transcript/' + student.transcript)
+
+    return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student,
+                           transcript=transcript)
+

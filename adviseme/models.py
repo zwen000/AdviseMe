@@ -56,6 +56,7 @@ class Notes(db.Model):
     additional = db.Column(db.Text, nullable=False, default='')             # additional suggest/comment from academic advisor
     approval = db.Column(db.Boolean, nullable=False, default=False)         # check if it's done by advisor
     EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
+
     FacultyEMPLID = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True)    # separate student and faculty ID!!!
     Student = db.relationship('Student', backref='advisingnote', lazy=True)
 
