@@ -51,13 +51,14 @@
                         {% if current_user.is_authenticated %}
                             {% if '@citymail.cuny.edu' in current_user.email %}
                                 <!-- Navbar for Students-->
-                                <a class="nav-item nav-link" href="{{ url_for('Advisement') }}">Advisement Form</a> 
+                                <a class="nav-item nav-link" href="{{ url_for('Advisement') }}">Advisement Form</a>
                                 <a class="nav-item nav-link" href="{{ url_for('advisingNotesHome') }}">Advising Notes</a>
                                 <a class="nav-item nav-link" href="{{ url_for('workflow2') }}">Workflow</a>
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}
                                 <!-- Navbar for Faculty-->
-                                {%if current_user.FacultyOwner.staff_role == 'Academic Advisor' %}
+
+                                {% if current_user.FacultyOwner.staff_role == 'Academic Advisor' %}
                                 <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement |</a>
                                 <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Archieve |</a>
                                 <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form |</a>
@@ -67,6 +68,7 @@
                                 <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement</a>
                                 <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form</a>
                                 <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow</a> 
+
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                                 {% endif %}
                             {% endif %}

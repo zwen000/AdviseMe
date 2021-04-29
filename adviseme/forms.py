@@ -124,6 +124,7 @@ class AdvisementForm(FlaskForm):
     semester = SelectField("semester", choices=[("SPRING", "Spring"), ("FALL", "Fall")])
     date =date.today()
     year = SelectField("year", choices=[(str(year), str(year)) for year in range(date.today().year, date.today().year+2)])
+    date = date.today()
     transcript = FileField("Upload Transcript", validators=[FileAllowed(['pdf']), FileRequired()])
 
     course = QuerySelectMultipleField(
@@ -214,5 +215,5 @@ class ReviewForm(FlaskForm):
     followup = BooleanField('Follow-up Advisement Sessions')
 
     approve = BooleanField('Approval toggle')
-    submit = SubmitField('submit')
+    submit = SubmitField('Viewed')
 

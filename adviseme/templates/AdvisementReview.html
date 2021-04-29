@@ -1,475 +1,196 @@
 {% extends "layout.html"%}
 {% block content %}
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
 <form method="POST" action="" enctype="multipart/form-data" role="form">
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
-    <fieldset>
+    <div class="container">
+        <hr><center><h1 class="title">Course Checklist for Computer Science</h1></center><hr>
         <div class="content-section">
-            <hr><center><h1 class="title">Course Checklist for Computer Science</h1></center><hr>
 
-        <div class="c_viewport rounded">
-            <table class="table table-striped bg-light text-center">
+            <br>
+            <p class="text">Academic Advising Semester: {{ notes.semester }} {{ notes.year }}<p class="text">Date of Submission: {{ notes.date }}</p>
+            <p class="text" style="float: right; display: inline;">Empl ID: {{ student.EMPLID }}</p></p>
+            <p class="text">Student's Name: {{ student.firstname }} {{ student.lastname }}</p>
+            <p class="text" style="float: right; display: inline;">QPA: {{ student.QPA }}</p>
+            <p class="text">GPA: {{ student.GPA }}</p>
+        </div>
 
-                <!-- Math-->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Math</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in course.items() %}
-                    {% if course.dept == "MATH" and course.designation=='Core Requirement' %}
-                        <tr>
-                            <td>{{ course.serial }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td>{{ course.name }}</td>
-                            {% if enroll==None %}
-                                <td></td><td></td><td></td>
-                            {% elif enroll.attempt==1 and enroll.passed==0 %}
-                                {% if enroll.grade == "IP" %}
-                                    <td></td>
-                                    <td><input type="checkbox" checked="checked2" disabled/></td>
-                                    <td></td>
-                                {% elif enroll.grade == '' %}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+        <div class="row">
+
+            <div class="c_viewport double-column rounded">
+                <table class="table table-striped bg-light text-center no-gutters">
+
+                    <!-- Math-->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Math</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr class="thead-dark text-muted">
+                            <th>Course Code:</th>
+                            <th>Credits awarded:</th>
+                            <th>Course Name:</th>
+                            <th>Grade:</th>
+                            <th>Currentaly Enrolled</th>
+                            <th>Intended Next Semester</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in course.items() %}
+                        {% if course.dept == "MATH" and course.designation=='Core Requirement' %}
+                            <tr>
+                                <td>{{ course.serial }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>{{ course.name }}</td>
+                                {% if enroll==None %}
+                                    <td></td><td></td><td></td>
+                                {% elif enroll.attempt==1 and enroll.passed==0 %}
+                                    {% if enroll.grade == "IP" %}
+                                        <td></td>
+                                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                                        <td></td>
+                                    {% elif enroll.grade == '' %}
+                                        <td></td>
+                                        <td></td>
+                                        <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                    {% else %}
+                                        <td>{{ enroll.grade }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
                                 {% else %}
                                     <td>{{ enroll.grade }}</td>
                                     <td></td>
                                     <td></td>
                                 {% endif %}
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-                <!-- End of Math-->
-                <!-- Science Elective-->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Science</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in course.items() %}
-                    {% if course.designation=="Science Elective" %}
-                        <tr>
-                            <td>{{ course.serial }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td>{{ course.name }}</td>
-                            {% if enroll==None %}
-                                <td></td><td></td><td></td>
-                            {% elif enroll.attempt==1 and enroll.passed==0 %}
-                                {% if enroll.grade == "IP" %}
-                                    <td></td>
-                                    <td><input type="checkbox" checked="checked2" disabled/></td>
-                                    <td></td>
-                                {% elif enroll.grade == '' %}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
-                                {% else %}
-                                    <td>{{ enroll.grade }}</td>
-                                    <td></td>
-                                    <td></td>
-                                {% endif %}
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-                <!--End of Science Elective-->
-
-                <!--Core Requirement-->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Computer Science</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in course.items() %}
-                    {% if course.dept != "MATH" and course.designation=='Core Requirement' %}
-                        <tr>
-                            <td>{{ course.serial }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td>{{ course.name }}</td>
-                            {% if enroll==None %}
-                                <td></td><td></td><td></td>
-                            {% elif enroll.attempt==1 and enroll.passed==0 %}
-                                {% if enroll.grade == "IP" %}
-                                    <td></td>
-                                    <td><input type="checkbox" checked="checked2" disabled/></td>
-                                    <td></td>
-                                {% elif enroll.grade == '' %}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
-                                {% else %}
-                                    <td>{{ enroll.grade }}</td>
-                                    <td></td>
-                                    <td></td>
-                                {% endif %}
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-                <!-- End of Core Requirement-->
-
-                <!--Group A Elective-->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Computer Science Electives</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                    <tr class="table-secondary">
-                        <th class="sub_category">Group A: Theory and Application</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in course.items() %}
-                    {% if course.designation=='Group A Elective' %}
-                        <tr>
-                            <td>{{ course.serial }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td>{{ course.name }}</td>
-                            {% if enroll==None %}
-                                <td></td><td></td><td></td>
-                            {% elif enroll.attempt==1 and enroll.passed==0 %}
-                                {% if enroll.grade == "IP" %}
-                                    <td></td>
-                                    <td><input type="checkbox" checked="checked2" disabled/></td>
-                                    <td></td>
-                                {% elif enroll.grade == '' %}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
-                                {% else %}
-                                    <td>{{ enroll.grade }}</td>
-                                    <td></td>
-                                    <td></td>
-                                {% endif %}
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-                <!--End of Group A Elective-->
-
-                <!--Group B Elective-->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Computer Science Electives</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                    <tr class="table-secondary">
-                        <th class="sub_category">Group B: Theory and Application</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in course.items() %}
-                    {% if course.designation=='Group B Elective' %}
-                        <tr>
-                            <td>{{ course.serial }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td>{{ course.name }}</td>
-                            {% if enroll==None %}
-                                <td></td><td></td><td></td>
-                            {% elif enroll.attempt==1 and enroll.passed==0 %}
-                                {% if enroll.grade == "IP" %}
-                                    <td></td>
-                                    <td><input type="checkbox" checked="checked2" disabled/></td>
-                                    <td></td>
-                                {% elif enroll.grade == '' %}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
-                                {% else %}
-                                    <td>{{ enroll.grade }}</td>
-                                    <td></td>
-                                    <td></td>
-                                {% endif %}
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-                <!--End of Group B Elective-->
-
-                <!--Group C Elective-->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Computer Science Electives</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                    <tr class="table-secondary">
-                        <th class="sub_category">Group C: Theory and Application</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in course.items() %}
-                    {% if course.designation=='Group C Elective' %}
-                        <tr>
-                            <td>{{ course.serial }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td>{{ course.name }}</td>
-                            {% if enroll==None %}
-                                <td></td><td></td><td></td>
-                            {% elif enroll.attempt==1 and enroll.passed==0 %}
-                                {% if enroll.grade == "IP" %}
-                                    <td></td>
-                                    <td><input type="checkbox" checked="checked2" disabled/></td>
-                                    <td></td>
-                                {% elif enroll.grade == '' %}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
-                                {% else %}
-                                    <td>{{ enroll.grade }}</td>
-                                    <td></td>
-                                    <td></td>
-                                {% endif %}
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-                <!--End of Group C Elective-->
-
-                <!--Required Liberal Art -->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">English and General Education Requirements</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in course.items() %}
-                    {% if course.designation=='Required Liberal Art' %}
-                        <tr>
-                            <td>{{ course.serial }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td>{{ course.name }}</td>
-                            {% if enroll==None %}
-                                <td></td><td></td><td></td>
-                            {% elif enroll.attempt==1 and enroll.passed==0 %}
-                                {% if enroll.grade == "IP" %}
-                                    <td></td>
-                                    <td><input type="checkbox" checked="checked2" disabled/></td>
-                                    <td></td>
-                                {% elif enroll.grade == '' %}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
-                                {% else %}
-                                    <td>{{ enroll.grade }}</td>
-                                    <td></td>
-                                    <td></td>
-                                {% endif %}
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-                <!--End of Required Liberal Art-->
-
-                 <!--Technical Elective-->
-                {% if electives["Technical Elective"]|length > 0 %}
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Technical Elective</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    <tr class="thead-dark text-muted">
-                        <th>Course Code:</th>
-                        <th>Credits awarded:</th>
-                        <th>Course Name:</th>
-                        <th>Grade:</th>
-                        <th>Currentaly Enrolled</th>
-                        <th>Intended Next Semester</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for course, enroll in electives["Technical Elective"] %}
-                    <tr>
-                        <td>{{ course.serial }}</td>
-                        <td>{{ course.credits }}</td>
-                        <td>{{ course.name }}</td>
-                        {% if enroll.attempt==1 and enroll.passed==0 %}
-                            {% if enroll.grade == "IP" %}
-                                <td></td>
-                                <td><input type="checkbox" checked="checked2" disabled/></td>
-                                <td></td>
-                            {% elif enroll.grade == '' %}
-                                <td></td>
-                                <td></td>
-                                <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
-                            {% else %}
-                                <td>{{ enroll.grade }}</td>
-                                <td></td>
-                                <td></td>
-                            {% endif %}
-                        {% else %}
-                            <td>{{ enroll.grade }}</td>
-                            <td></td>
-                            <td></td>
+                            </tr>
                         {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-                {% endif %}
-                <!--End of Technical Elective-->
+                    {% endfor %}
+                    </tbody>
+                    <!-- End of Math-->
+                    <!-- Science Elective-->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Science</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr class="thead-dark text-muted">
+                            <th>Course Code:</th>
+                            <th>Credits awarded:</th>
+                            <th>Course Name:</th>
+                            <th>Grade:</th>
+                            <th>Currentaly Enrolled</th>
+                            <th>Intended Next Semester</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in course.items() %}
+                        {% if course.designation=="Science Elective" %}
+                            <tr>
+                                <td>{{ course.serial }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>{{ course.name }}</td>
+                                {% if enroll==None %}
+                                    <td></td><td></td><td></td>
+                                {% elif enroll.attempt==1 and enroll.passed==0 %}
+                                    {% if enroll.grade == "IP" %}
+                                        <td></td>
+                                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                                        <td></td>
+                                    {% elif enroll.grade == '' %}
+                                        <td></td>
+                                        <td></td>
+                                        <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                    {% else %}
+                                        <td>{{ enroll.grade }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <!--End of Science Elective-->
 
-                <!-- Libral Art-Creative Expression -->
-                <thead>
-                    <tr class="thead-dark">
-                        <th class="course_header">Libral Art</th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
+                    <!--Core Requirement-->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Computer Science</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr class="thead-dark text-muted">
+                            <th>Course Code:</th>
+                            <th>Credits awarded:</th>
+                            <th>Course Name:</th>
+                            <th>Grade:</th>
+                            <th>Currentaly Enrolled</th>
+                            <th>Intended Next Semester</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in course.items() %}
+                        {% if course.dept != "MATH" and course.designation=='Core Requirement' %}
+                            <tr>
+                                <td>{{ course.serial }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>{{ course.name }}</td>
+                                {% if enroll==None %}
+                                    <td></td><td></td><td></td>
+                                {% elif enroll.attempt==1 and enroll.passed==0 %}
+                                    {% if enroll.grade == "IP" %}
+                                        <td></td>
+                                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                                        <td></td>
+                                    {% elif enroll.grade == '' %}
+                                        <td></td>
+                                        <td></td>
+                                        <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                    {% else %}
+                                        <td>{{ enroll.grade }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <!-- End of Core Requirement-->
 
-                    {% if electives["CE"]|length > 0 %}
+                    <!--Group A Elective-->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Computer Science Electives</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
                         <tr class="thead-dark text-muted">
                             <th>Course Code:</th>
                             <th>Credits awarded:</th>
@@ -479,295 +200,616 @@
                             <th>Intended Next Semester</th>
                         </tr>
                         <tr class="table-secondary">
-                            <th class="sub_category">Creative Expression</th>
+                            <th class="sub_category">Group A: Theory and Application</th>
                             <th> </th>
                             <th> </th>
                             <th> </th>
                             <th> </th>
                             <th> </th>
                         </tr>
-                    {% endif %}
-                </thead>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in course.items() %}
+                        {% if course.designation=='Group A Elective' %}
+                            <tr>
+                                <td>{{ course.serial }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>{{ course.name }}</td>
+                                {% if enroll==None %}
+                                    <td></td><td></td><td></td>
+                                {% elif enroll.attempt==1 and enroll.passed==0 %}
+                                    {% if enroll.grade == "IP" %}
+                                        <td></td>
+                                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                                        <td></td>
+                                    {% elif enroll.grade == '' %}
+                                        <td></td>
+                                        <td></td>
+                                        <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                    {% else %}
+                                        <td>{{ enroll.grade }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <!--End of Group A Elective-->
 
-                {% if electives["CE"]|length > 0 %}
-                <tbody>
-                {% for course, enroll in electives["CE"] %}
-                    <tr>
-                        <td>{{ course.serial }}</td>
-                        <td>{{ course.credits }}</td>
-                        <td>{{ course.name }}</td>
-                        {% if enroll.attempt==1 and enroll.passed==0 %}
-                            {% if enroll.grade == "IP" %}
-                                <td></td>
-                                <td><input type="checkbox" checked="checked2" disabled/></td>
-                                <td></td>
-                            {% elif enroll.grade == '' %}
-                                <td></td>
-                                <td></td>
-                                <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                    <!--Group B Elective-->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Computer Science Electives</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr class="thead-dark text-muted">
+                            <th>Course Code:</th>
+                            <th>Credits awarded:</th>
+                            <th>Course Name:</th>
+                            <th>Grade:</th>
+                            <th>Currentaly Enrolled</th>
+                            <th>Intended Next Semester</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th class="sub_category">Group B: Theory and Application</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in course.items() %}
+                        {% if course.designation=='Group B Elective' %}
+                            <tr>
+                                <td>{{ course.serial }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>{{ course.name }}</td>
+                                {% if enroll==None %}
+                                    <td></td><td></td><td></td>
+                                {% elif enroll.attempt==1 and enroll.passed==0 %}
+                                    {% if enroll.grade == "IP" %}
+                                        <td></td>
+                                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                                        <td></td>
+                                    {% elif enroll.grade == '' %}
+                                        <td></td>
+                                        <td></td>
+                                        <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                    {% else %}
+                                        <td>{{ enroll.grade }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <!--End of Group B Elective-->
+
+                    <!--Group C Elective-->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Computer Science Electives</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr class="thead-dark text-muted">
+                            <th>Course Code:</th>
+                            <th>Credits awarded:</th>
+                            <th>Course Name:</th>
+                            <th>Grade:</th>
+                            <th>Currentaly Enrolled</th>
+                            <th>Intended Next Semester</th>
+                        </tr>
+                        <tr class="table-secondary">
+                            <th class="sub_category">Group C: Theory and Application</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in course.items() %}
+                        {% if course.designation=='Group C Elective' %}
+                            <tr>
+                                <td>{{ course.serial }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>{{ course.name }}</td>
+                                {% if enroll==None %}
+                                    <td></td><td></td><td></td>
+                                {% elif enroll.attempt==1 and enroll.passed==0 %}
+                                    {% if enroll.grade == "IP" %}
+                                        <td></td>
+                                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                                        <td></td>
+                                    {% elif enroll.grade == '' %}
+                                        <td></td>
+                                        <td></td>
+                                        <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                    {% else %}
+                                        <td>{{ enroll.grade }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <!--End of Group C Elective-->
+
+                    <!--Required Liberal Art -->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">English and General Education Requirements</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr class="thead-dark text-muted">
+                            <th>Course Code:</th>
+                            <th>Credits awarded:</th>
+                            <th>Course Name:</th>
+                            <th>Grade:</th>
+                            <th>Currentaly Enrolled</th>
+                            <th>Intended Next Semester</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in course.items() %}
+                        {% if course.designation=='Required Liberal Art' %}
+                            <tr>
+                                <td>{{ course.serial }}</td>
+                                <td>{{ course.credits }}</td>
+                                <td>{{ course.name }}</td>
+                                {% if enroll==None %}
+                                    <td></td><td></td><td></td>
+                                {% elif enroll.attempt==1 and enroll.passed==0 %}
+                                    {% if enroll.grade == "IP" %}
+                                        <td></td>
+                                        <td><input type="checkbox" checked="checked2" disabled/></td>
+                                        <td></td>
+                                    {% elif enroll.grade == '' %}
+                                        <td></td>
+                                        <td></td>
+                                        <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                    {% else %}
+                                        <td>{{ enroll.grade }}</td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                    <!--End of Required Liberal Art-->
+
+                     <!--Technical Elective-->
+                    {% if electives["Technical Elective"]|length > 0 %}
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Technical Elective</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr class="thead-dark text-muted">
+                            <th>Course Code:</th>
+                            <th>Credits awarded:</th>
+                            <th>Course Name:</th>
+                            <th>Grade:</th>
+                            <th>Currentaly Enrolled</th>
+                            <th>Intended Next Semester</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for course, enroll in electives["Technical Elective"] %}
+                        <tr>
+                            <td>{{ course.serial }}</td>
+                            <td>{{ course.credits }}</td>
+                            <td>{{ course.name }}</td>
+                            {% if enroll.attempt==1 and enroll.passed==0 %}
+                                {% if enroll.grade == "IP" %}
+                                    <td></td>
+                                    <td><input type="checkbox" checked="checked2" disabled/></td>
+                                    <td></td>
+                                {% elif enroll.grade == '' %}
+                                    <td></td>
+                                    <td></td>
+                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
                             {% else %}
                                 <td>{{ enroll.grade }}</td>
                                 <td></td>
                                 <td></td>
                             {% endif %}
-                        {% else %}
-                            <td>{{ enroll.grade }}</td>
-                            <td></td>
-                            <td></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-                {% endif %}
-                <!--End of Libral Art-Creative Expression -->
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    {% endif %}
+                    <!--End of Technical Elective-->
 
-                <!-- Libral Art-US -->
-                <thead>
+                    <!-- Libral Art-Creative Expression -->
+                    <thead>
+                        <tr class="thead-dark">
+                            <th class="course_header">Libral Art</th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+
+                        {% if electives["CE"]|length > 0 %}
+                            <tr class="thead-dark text-muted">
+                                <th>Course Code:</th>
+                                <th>Credits awarded:</th>
+                                <th>Course Name:</th>
+                                <th>Grade:</th>
+                                <th>Currentaly Enrolled</th>
+                                <th>Intended Next Semester</th>
+                            </tr>
+                            <tr class="table-secondary">
+                                <th class="sub_category">Creative Expression</th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                            </tr>
+                        {% endif %}
+                    </thead>
+
+                    {% if electives["CE"]|length > 0 %}
+                    <tbody>
+                    {% for course, enroll in electives["CE"] %}
+                        <tr>
+                            <td>{{ course.serial }}</td>
+                            <td>{{ course.credits }}</td>
+                            <td>{{ course.name }}</td>
+                            {% if enroll.attempt==1 and enroll.passed==0 %}
+                                {% if enroll.grade == "IP" %}
+                                    <td></td>
+                                    <td><input type="checkbox" checked="checked2" disabled/></td>
+                                    <td></td>
+                                {% elif enroll.grade == '' %}
+                                    <td></td>
+                                    <td></td>
+                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+                            {% else %}
+                                <td>{{ enroll.grade }}</td>
+                                <td></td>
+                                <td></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    {% endif %}
+                    <!--End of Libral Art-Creative Expression -->
+
+                    <!-- Libral Art-US -->
+                    <thead>
+                        {% if electives["US"]|length > 0 %}
+                            <tr class="table-secondary">
+                                <th class="sub_category">US Experience in its Diversity</th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                            </tr>
+                        {% endif %}
+                    </thead>
+
                     {% if electives["US"]|length > 0 %}
-                        <tr class="table-secondary">
-                            <th class="sub_category">US Experience in its Diversity</th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                        </tr>
-                    {% endif %}
-                </thead>
-
-                {% if electives["US"]|length > 0 %}
-                <tbody>
-                {% for course, enroll in electives["US"] %}
-                    <tr>
-                        <td>{{ course.serial }}</td>
-                        <td>{{ course.credits }}</td>
-                        <td>{{ course.name }}</td>
-                        {% if enroll.attempt==1 and enroll.passed==0 %}
-                            {% if enroll.grade == "IP" %}
-                                <td></td>
-                                <td><input type="checkbox" checked="checked2" disabled/></td>
-                                <td></td>
-                            {% elif enroll.grade == '' %}
-                                <td></td>
-                                <td></td>
-                                <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                    <tbody>
+                    {% for course, enroll in electives["US"] %}
+                        <tr>
+                            <td>{{ course.serial }}</td>
+                            <td>{{ course.credits }}</td>
+                            <td>{{ course.name }}</td>
+                            {% if enroll.attempt==1 and enroll.passed==0 %}
+                                {% if enroll.grade == "IP" %}
+                                    <td></td>
+                                    <td><input type="checkbox" checked="checked2" disabled/></td>
+                                    <td></td>
+                                {% elif enroll.grade == '' %}
+                                    <td></td>
+                                    <td></td>
+                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
                             {% else %}
                                 <td>{{ enroll.grade }}</td>
                                 <td></td>
                                 <td></td>
                             {% endif %}
-                        {% else %}
-                            <td>{{ enroll.grade }}</td>
-                            <td></td>
-                            <td></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-                {% endif %}
-                <!--End of Libral Art-US -->
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    {% endif %}
+                    <!--End of Libral Art-US -->
 
-                <!-- Libral Art-IS = Individual and Society -->
-                <thead>
+                    <!-- Libral Art-IS = Individual and Society -->
+                    <thead>
+                        {% if electives["IS"]|length > 0 %}
+                            <tr class="table-secondary">
+                                <th class="sub_category">Individual and Society</th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                            </tr>
+                        {% endif %}
+                    </thead>
+
                     {% if electives["IS"]|length > 0 %}
-                        <tr class="table-secondary">
-                            <th class="sub_category">Individual and Society</th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                        </tr>
-                    {% endif %}
-                </thead>
-
-                {% if electives["IS"]|length > 0 %}
-                <tbody>
-                {% for course, enroll in electives["IS"] %}
-                    <tr>
-                        <td>{{ course.serial }}</td>
-                        <td>{{ course.credits }}</td>
-                        <td>{{ course.name }}</td>
-                        {% if enroll.attempt==1 and enroll.passed==0 %}
-                            {% if enroll.grade == "IP" %}
-                                <td></td>
-                                <td><input type="checkbox" checked="checked2" disabled/></td>
-                                <td></td>
-                            {% elif enroll.grade == '' %}
-                                <td></td>
-                                <td></td>
-                                <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                    <tbody>
+                    {% for course, enroll in electives["IS"] %}
+                        <tr>
+                            <td>{{ course.serial }}</td>
+                            <td>{{ course.credits }}</td>
+                            <td>{{ course.name }}</td>
+                            {% if enroll.attempt==1 and enroll.passed==0 %}
+                                {% if enroll.grade == "IP" %}
+                                    <td></td>
+                                    <td><input type="checkbox" checked="checked2" disabled/></td>
+                                    <td></td>
+                                {% elif enroll.grade == '' %}
+                                    <td></td>
+                                    <td></td>
+                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
                             {% else %}
                                 <td>{{ enroll.grade }}</td>
                                 <td></td>
                                 <td></td>
                             {% endif %}
-                        {% else %}
-                            <td>{{ enroll.grade }}</td>
-                            <td></td>
-                            <td></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-                {% endif %}
-                <!--End of Libral Art-IS = Individual and Society -->
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    {% endif %}
+                    <!--End of Libral Art-IS = Individual and Society -->
 
-                <!-- Libral Art-World Cultures and Global Issues -->
-                <thead>
+                    <!-- Libral Art-World Cultures and Global Issues -->
+                    <thead>
+                        {% if electives["WCGI"]|length > 0 %}
+                            <tr class="table-secondary">
+                                <th class="sub_category">World Cultures and Global Issues</th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                                <th> </th>
+                            </tr>
+                        {% endif %}
+                    </thead>
+
                     {% if electives["WCGI"]|length > 0 %}
-                        <tr class="table-secondary">
-                            <th class="sub_category">World Cultures and Global Issues</th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                            <th> </th>
-                        </tr>
-                    {% endif %}
-                </thead>
-
-                {% if electives["WCGI"]|length > 0 %}
-                <tbody>
-                {% for course, enroll in electives["WCGI"] %}
-                    <tr>
-                        <td>{{ course.serial }}</td>
-                        <td>{{ course.credits }}</td>
-                        <td>{{ course.name }}</td>
-                        {% if enroll.attempt==1 and enroll.passed==0 %}
-                            {% if enroll.grade == "IP" %}
-                                <td></td>
-                                <td><input type="checkbox" checked="checked2" disabled/></td>
-                                <td></td>
-                            {% elif enroll.grade == '' %}
-                                <td></td>
-                                <td></td>
-                                <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                    <tbody>
+                    {% for course, enroll in electives["WCGI"] %}
+                        <tr>
+                            <td>{{ course.serial }}</td>
+                            <td>{{ course.credits }}</td>
+                            <td>{{ course.name }}</td>
+                            {% if enroll.attempt==1 and enroll.passed==0 %}
+                                {% if enroll.grade == "IP" %}
+                                    <td></td>
+                                    <td><input type="checkbox" checked="checked2" disabled/></td>
+                                    <td></td>
+                                {% elif enroll.grade == '' %}
+                                    <td></td>
+                                    <td></td>
+                                    <td class="intend"><input type="checkbox" checked="checked2" disabled/></td>
+                                {% else %}
+                                    <td>{{ enroll.grade }}</td>
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
                             {% else %}
                                 <td>{{ enroll.grade }}</td>
                                 <td></td>
                                 <td></td>
                             {% endif %}
-                        {% else %}
-                            <td>{{ enroll.grade }}</td>
-                            <td></td>
-                            <td></td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-                {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    {% endif %}
 
-                <!--End of Libral Art-World Cultures and Global Issues -->
-            </table>
+                    <!--End of Libral Art-World Cultures and Global Issues -->
+                </table>
+
+            </div> <!--c_viewport -->
+
+            <div class="c_viewport column" style="font-size:13px;">
+                <div class="row">
+
+<!--                 <div class="col-md-10 col-xl-6 ">-->
+                  <div class="card">
+                    <div class="card-header">
+                      <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" style="background-color:#3872d7;">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Academic Advising Note </a>
+                        </li>
+                      </ul>
+                    </div>
+
+
+                    <div class="form-group card-body px-4">
+                      <!-- Tab panes -->
+                      <div class="tab-content text-center">
+        <!--                <p><span class="category2">Adviser Name: </span>   </p>-->
+                        <p class="category">1. I have reviewed the student's transcript and discussed academic performance.</p>
+                          <div class="answer px-3">
+                            <p><span class="category2">Comments:</span><br>{{ form.q1() }}</p>
+                          </div>
+                          <ul>
+                            {% for error in form.q1.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                          </ul>
+                          <hr>
+
+                          <p class="category">2. I have reviewed the student's intended course schedule for next semester.</p>
+                          <div class="answer px-3">
+                            <p><span class="category2">Recommended changes/comments:</span><br>{{ form.q2 }}</p>
+                          </div>
+                          <ul>
+                            {% for error in form.q2.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                          </ul>
+                          <hr>
+
+                          <p class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</p>
+                              <div class="answer px-3">
+                                {{ form.q3(**{'data-toggle':'toggle', 'data-on':'Yes', 'data-off':'No', 'data-onstyle':"success", 'data-offstyle':"danger"}) }}
+                              </div>
+
+                          <ul>
+                            {% for error in form.q3.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                          </ul>
+                            <hr>
+
+                          <p class="category">4. I have reviewed the student's intended course schedule for next semester.</p>
+                          <div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                     {{ form.tutorial.label }} {{ form.tutorial(class="checkbox") }}
+                                </li>
+                                <li class="list-group-item">
+                                    {{ form.counseling.label }} {{ form.counseling(class="checkbox") }}
+                                </li>
+                                <li class="list-group-item">
+                                    {{ form.consultation.label }} {{ form.consultation(class="checkbox") }}
+                                </li>
+                                <li class="list-group-item">
+                                    {{ form.career.label }} {{ form.career(class="checkbox") }}
+                                </li>
+                                <li class="list-group-item">
+                                    {{ form.scholarships.label }} {{ form.scholarships(class="checkbox") }}
+                                </li>
+                                <li class="list-group-item">
+                                    {{ form.internship.label }} {{ form.internship(class="checkbox") }}
+
+                                </li>
+                                <li class="list-group-item">
+                                    {{ form.followup.label }} {{ form.followup(class="checkbox") }}
+
+                                </li>
+                            </ul>
+                              {{ form.approve(**{'data-toggle':'toggle', 'data-on':'Approve', 'data-off':'Decline', 'data-onstyle':"success", 'data-offstyle':"danger"}) }}
+                          </div>
+
+                        </div>
+
+
+
+
+
+                        </div>
+
+<!--                      </div>-->
+                    </div>
+
+                </div>
+
+            </div>
         </div>
-        </div>
-
-    </fieldset>
-
-    <div class="container mt-5 pt-3" style="font-size:14px;">
         <div class="row">
-
-        <div class="col-md-10 ml-auto col-xl-6 mr-auto pb-5">
-          <div class="card">
-            <div class="card-header">
-              <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" style="background-color:#3872d7;">
-                <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Academic Advising Note </a>
-                </li>
-              </ul>
-            </div>
-
-
-            <div class="form-group card-body px-4">
-              <!-- Tab panes -->
-              <div class="tab-content text-center">
-<!--                <p><span class="category2">Adviser Name: </span>   </p>-->
-                <p class="category">1. I have reviewed the student's transcript and discussed academic performance.</p>
-                  <div class="answer px-3">
-                    <p><span class="category2">Comments:</span><br>{{ form.q1 }}</p>
-                  </div>
-                  <ul>
-                    {% for error in form.q1.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  <hr>
-
-                  <p class="category">2. I have reviewed the student's intended course schedule for next semester.</p>
-                  <div class="answer px-3">
-                    <p><span class="category2">Recommended changes/comments:</span><br>{{ form.q2 }}</p>
-                  </div>
-                  <ul>
-                    {% for error in form.q2.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  <hr>
-
-                  <p class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</p>
-                      <div class="answer px-3">
-                        {{ form.q3(**{'data-toggle':'toggle', 'data-on':'Yes', 'data-off':'No', 'data-onstyle':"success", 'data-offstyle':"danger"}) }}
-                      </div>
-
-                  <ul>
-                    {% for error in form.q3.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                    <hr>
-
-                  <p class="category">4. I have reviewed the student's intended course schedule for next semester.</p>
-                  <div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                             {{ form.tutorial.label }} {{ form.tutorial(class="checkbox") }}
-                        </li>
-                        <li class="list-group-item">
-                            {{ form.counseling.label }} {{ form.counseling(class="checkbox") }}
-                        </li>
-                        <li class="list-group-item">
-                            {{ form.consultation.label }} {{ form.consultation(class="checkbox") }}
-                        </li>
-                        <li class="list-group-item">
-                            {{ form.career.label }} {{ form.career(class="checkbox") }}
-                        </li>
-                        <li class="list-group-item">
-                            {{ form.scholarships.label }} {{ form.scholarships(class="checkbox") }}
-                        </li>
-                        <li class="list-group-item">
-                            {{ form.internship.label }} {{ form.internship(class="checkbox") }}
-
-                        </li>
-                        <li class="list-group-item">
-                            {{ form.followup.label }} {{ form.followup(class="checkbox") }}
-
-                        </li>
-                    </ul>
-                      {{ form.approve(**{'data-toggle':'toggle', 'data-on':'Approve', 'data-off':'Decline', 'data-onstyle':"success", 'data-offstyle':"danger"}) }}
-                  </div>
-                  {{ form.submit(class="custom-button-submit") }}
-                </div>
-
-
-
-
-
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
+            <p class="text"><a href="{{ url_for('Faculty_View_Transcript', student_id=student.EMPLID) }}">View {{ student.firstname }} {{ student.lastname }}'s Transcript</a></p>
         </div>
+        <br>
+        <div class="pb-3" style="text-align:center;">
+            {{ form.submit(class="custom-button-submit") }}
+        </div>
+
+
+
     </div>
+
+
+
 </form>
 
 
 
 
 <style>
+.column { 
+  float: left; 
+  width: 33%;
+  padding: 2%;
+
+ } 
+
+.double-column { 
+  display: flex; 
+  flex-direction: column; 
+  flex-basis: 100%; 
+  flex: 2; 
+ }
+
+.row:after { 
+    content: ""; 
+    display: table; 
+    clear: both; 
+}
+
 textarea {
     border: 2px solid grey;
     border-radius:4px;
@@ -787,8 +829,10 @@ textarea {
 .text{
     color: #233B7E;
    font-size: 16px;
+   font-weight: bold;
 
 }
+
 .content-section{
     padding-top: 2%;
     padding-right: 5%;
@@ -821,7 +865,6 @@ th .sub_category {
 
 .c_viewport{
   color: rgb(27,30,36);
-  margin: 20px 0;
   height: 700px;
   overflow: auto;
   box-shadow:0 0 20px rgba(0, 0, 0, 0.1);
@@ -1170,7 +1213,7 @@ footer p a:hover{
     color: #e86c42;
 }
 
-@media screen and (max-width: 768px) {
+<!--@media screen and (max-width: 768px) {-->
 
     .nav-tabs {
         display: inline-block;
@@ -1183,7 +1226,7 @@ footer p a:hover{
     .nav-tabs .nav-item>.nav-link {
         margin-bottom: 5px;
     }
-}
+<!--}-->
 
   @keyframes check {0% {height: 0;width: 0;}
     25% {height: 0;width: 10px;}
