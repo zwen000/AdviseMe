@@ -2,6 +2,7 @@
 {% block content %}
 
 {% for note in notes %}
+  {% if note.approval ==False %}
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
@@ -10,6 +11,8 @@
       <h2><a class="article-title" href="{{ url_for('noteReview', note_id=note.id) }}">Note</a></h2>
     </div>
   </article>
+  {% endif %}
 {% endfor %}
+
 
 {% endblock content %}

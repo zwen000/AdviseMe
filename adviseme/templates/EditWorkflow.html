@@ -1,5 +1,79 @@
+{% extends "layout.html" %}
 {% block content %}
 
-<h1>Edit Workflow Page!</h1>
+<div class="c_viewport rounded">
+    <div class="push" style="height:1px;"></div>
+<center><legend class="border-bottom mb-4 title">Edit Workflow</legend></center>
+<h6 class="sub-title">For students under 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="#">|| Preview Workflow ||</a></h6>
+<input checked class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Submit Advisement Form</label>
+<br>
+<input checked class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Academic Advisor Approval</label>
+<br>
+<input class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Faculty Advisor Approval</label>
+<br>
+<input checked class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Eligible for Enrollment</label>
 
+<hr>
+
+<h6 class="sub-title">For students above 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="#">|| Preview Workflow ||</a></h6>
+<input checked class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Submit Advisement Form</label>
+<br>
+<input  checked class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Academic Advisor Approval</label>
+<br>
+<input checked class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Faculty Advisor Approval</label>
+<br>
+<input checked class="sub-title" type="checkbox" />
+<label class="info" for="course_serial">Eligible for Enrollment</label>
+<hr>
+</div>
+
+<style>
+    body{
+        padding-top: 1.75% ;
+    }
+
+    .c_viewport{
+        padding-top: 2.9%;
+  padding-right: 4%;
+  padding-left: 4%;
+  color: rgb(27,30,36);
+  margin: 20px 0;
+  height: 585px;
+  overflow: auto;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+}
+    .title{
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 32px;
+    color: #233B7E;
+    }
+
+    .title:hover{
+    color: #3772D7;
+    }
+    .sub-title{
+        text-decoration-line: underline;
+        font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 21px;
+
+    }
+.info{
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;   
+    color: #233B7E;
+    </style>
 {% endblock content %}
