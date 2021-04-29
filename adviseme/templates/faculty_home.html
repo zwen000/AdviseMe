@@ -1,0 +1,9 @@
+{% extends "layout.html"%}
+{% block content %}
+
+    {% for student in students %}
+        <p> Name: {{ student.firstname }} {{ student.lastname }}</p>
+        <p>GPA: {{ student.GPA }}</p>
+    {% endfor %}
+
+{% endblock content %}

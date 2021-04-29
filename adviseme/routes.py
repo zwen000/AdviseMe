@@ -97,6 +97,7 @@ def save_picture(form_picture):
     #-----------------------------------------------
 
     image_compressed.save(picture_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
+    # Add the cloudinary API here for deployment
 
     return picture_fn
 
@@ -197,11 +198,11 @@ def pathway_check():
         elif tup[1] == False:
             for free_course in student_info:
                 if free_course.course_id == tup[0]:
-                    free_course.component = False 
+                    free_course.component = False
                     db.session.commit()
-        else: 
+        else:
             print("Null Case!")
-            
+
 
 def GPA_QPA():
     num_of_courses = Enrollement.query.filter_by(student_id=current_user.EMPLID).count()
@@ -351,16 +352,16 @@ def Liberal_Art_1000():
         for course in courses:
             # print(course.serial)
             if course.serial == form.elective.data:
-                id = course.id 
+                id = course.id
                 print(course.id)
                 for courseid, grade,EMPLID in all_grade:
-                    if courseid == id:                          # removes duplicates from the array! 
+                    if courseid == id:                          # removes duplicates from the array!
                         all_grade.remove((id,grade,EMPLID))
 
         pathway=(id, True, current_user.EMPLID)
         stored_pathway(pathway)
 
-        grades=(id, form.grade.data, current_user.EMPLID)       # This goes into the enrollements table! 
+        grades=(id, form.grade.data, current_user.EMPLID)       # This goes into the enrollements table!
         stored_grade(grades)
 
         return redirect(url_for('courseinfo_fill'))
@@ -437,7 +438,7 @@ def Free_Electives():
             if course.serial == form.elective.data:
                 id = course.id
                 print(course.id)
-                for courseid, grade,EMPLID in all_grade:        # removes duplicate courses! 
+                for courseid, grade,EMPLID in all_grade:        # removes duplicate courses!
                     if courseid == id:
                         all_grade.remove((id,grade,EMPLID))
 
@@ -688,11 +689,12 @@ def checklist():
         elif course.component == False:
             free_courses += Course.query.filter_by(id=course.course_id)
             # print(free_courses)
-        else: 
-            pass    # This is the case when the component is NULL ... 
+        else:
+            pass    # This is the case when the component is NULL ...
 
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
+
     #progress bar for Computer Science
     checklistProgressInterval_CS = 100 / 18   # <--- (Instead of 18 you set a variable like CS_count then query and count them)
     CS_width = 0
@@ -712,7 +714,7 @@ def checklist():
     CSE_width_num = CSE_width/100 * 4
 
 
-    #progress bar for Math   
+    #progress bar for Math
     checklistProgressInterval_Math = 100 / 4
     Math_width = 0
     for math_course in courses_array:
@@ -738,7 +740,7 @@ def checklist():
     for technical_elective in courses_array:
         if technical_elective.designation == "Technical Elective":
             Tech_width += checklistProgressInterval_TE
-        elif technical_elective.serial == "ENGR 27600":     # ENGR 27600: Engineering Economics can count as a Technical Elective/Eco 10400 does not count since it's 1000 level. 
+        elif technical_elective.serial == "ENGR 27600":     # ENGR 27600: Engineering Economics can count as a Technical Elective/Eco 10400 does not count since it's 1000 level.
             Tech_width += checklistProgressInterval_TE
     Tech_width_num = Tech_width/100 * 2
 
@@ -765,7 +767,7 @@ def checklist():
     for course in free_courses:
         FE_width += checklistProgressInterval_FE
     FE_width_num = FE_width/100 * 2
-    
+
 
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
@@ -826,7 +828,6 @@ def get_semester(date):
 @login_required
 def EditWorkflow():
     return render_template("EditWorkflow.html", title="Edit Workflow")
-
 
 
 
@@ -1071,7 +1072,7 @@ def Advisement():
 def View_Transcript():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
-    
+
     return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
 
 
@@ -1156,9 +1157,10 @@ def Faculty_View_Transcript(student_id):
                            transcript=transcript)
 
 
-#@app.route('/faculty/Advisement/Display/', methods=['GET', 'POST'])
-#@login_required
-#def list_students():
+"""
+@app.route('/faculty/Advisement/Display/', methods=['GET', 'POST'])
+@login_required
+def list_students():
 
-#    students = Student.query.filter_by(needs_advising=True)
-
+    students = Student.query.filter_by(needs_advising=True)
+"""
