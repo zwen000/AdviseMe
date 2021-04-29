@@ -1,11 +1,240 @@
 {% extends "layout.html" %}
 {% block content %}
+<center>
+  <div class='row'>
+    <div class='column'>
 <div class="content-section">
-    <div class="media">
       <img class="rounded-circle account-img" src="{{ profile_image }}">
-      <div class="media-body">
-        <h2 class="account-heading">{{ current_user.FacultyOwner.firstname }}</h2>
-        <p class="text-secondary">{{ current_user.email }}</p>
-      </div>
+        <h2 class="account-heading"></h2>
+    <p class="p-custom">School: CUNY - CCNY</p>
+    <p class="p-custom">Role: {{current_user.FacultyOwner.staff_role }}</p>
+    <p class="p-custom">Name: {{ current_user.FacultyOwner.firstname}} {{ current_user.FacultyOwner.lastname }}</p>
+    <p class="p-custom">EMPLID: {{ current_user.FacultyOwner.EMPLID }}</p>
+  </div>
 </div>
+
+<div class='double-column'>
+  <div class="c_viewport rounded">
+    <div class="push" style="height:1px;"></div>
+    <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
+    <hr>
+    <section class="checklist">
+      {% if current_user.FacultyOwner.staff_role == 'Academic Advisor'%}
+        {% for note in notes %}
+          {%if note.Owner.credit_earned <= 45 and note.be_advised ==False %}
+      <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
+      </button>
+      <div class="content">
+        <a class="f_link" href="#">Link to student profile</a>
+        <br>
+        <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
+      </div>
+      {%endif%}
+      {% endfor %}
+    {%endif%}
+    </section>
+
+    <section class="checklist">
+      {% if current_user.FacultyOwner.staff_role == 'Faculty Advisor'%}
+      {% for note in notes %}
+        {%if note.Owner.credit_earned > 45 and note.be_advised ==False %}
+      <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
+      </button>
+      <div class="content">
+        <a class="f_link" href="#">Link to student profile</a>
+        <br>
+        <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
+      </div>
+      {%endif%}
+      {% endfor %}
+    {%endif%}
+    </section>
+    <br>
+</div>
+</div>
+
+<style>
+  
+    /* Style the button that is used to open and close the collapsible content */
+    .collapsible {
+  background-color: #d4e2ee;
+  color: #233B7E;
+  cursor: pointer;
+  padding: 2%;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: #233B7E;
+  font-size: 15px;
+}
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.collapsible:hover, .active {
+    background-color: #233B7E;
+    color: white;
+}
+
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 3%;
+  display: none;
+  overflow: hidden;
+  background-color: #ececec;
+}
+.f_link{
+  color: #233B7E;
+
+}
+
+  .column {
+  float: left;
+  width: 33%;
+  padding: 2%;
+}
+.double-column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 2;
+}
+
+.c_viewport{
+  padding: 4%;
+  color: rgb(27,30,36);
+  margin: 20px 0;
+  height: 700px;
+  overflow: auto;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+}
+legend{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 32px;
+
+color: #233B7E;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.content-section{
+  width: 90%;
+  padding: 5%;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+border-radius: 5px;
+}
+
+.custom-button-profile-edit {
+    background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+    color: hsl(0, 0%, 100%);
+    padding: 10px;
+    border: none;
+    width: 40%;
+    cursor: pointer;
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+    }
+.custom-button-profile-edit:hover{
+      background-color: #3772D7;
+}
+
+
+h1{
+font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 22px;
+line-height: 33px;
+text-decoration-line: underline;
+
+color: #233B7E;
+}
+p:hover{
+  color: #3772D7;
+  font-size: large;
+}
+
+.checklist-header{
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 42px;
+    line-height: 33px;
+    text-decoration-line: underline;
+    
+    color: #233B7E;   
+}
+.p-custom{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 24px;
+
+color: #000000;
+}
+.p-custom-2{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 24px;
+
+color: #233B7E;
+}
+.important-info{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 10px;
+line-height: 24px;   
+display: inline; 
+}
+a{
+  color: white;
+}
+@media only screen and (max-width: 800px) {
+  .p-custom, .p-custom-2{
+    font-size: 100%;
+    color: #000000;
+  }
+  .column {
+  width: 100%;
+  padding: 4%;
+}
+.content-section{
+  width: 95%;
+  padding: 4%;
+}
+
+}
+
+</style>
+<script>
+  /*Makes the course section toggle*/
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+  
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  }
+  </script>
 {% endblock content %}

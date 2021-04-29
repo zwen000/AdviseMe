@@ -57,7 +57,7 @@
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                             {% else %}
                                 <!-- Navbar for Faculty-->
-                                {%if current_user.FacultyOwner.staff_role == 'Academic Advisor' %}
+                                {% if current_user.FacultyOwner.staff_role == 'Academic Advisor' %}
                                 <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement |</a>
                                 <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Archieve |</a>
                                 <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form |</a>

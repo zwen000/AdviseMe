@@ -71,9 +71,9 @@ class Enrollement(db.Model):
     grade = db.Column(db.String(15), default='')
     GPA_point = db.Column(db.Integer)
     QPA_point = db.Column(db.Integer)
+    component = db.Column(db.Boolean, nullable=True)
     attempt = db.Column(db.Boolean, unique=False, nullable=False, default=False)
     passed = db.Column(db.Boolean, unique=False, nullable=False, default=False)
-
     student = db.relationship('Student', back_populates='courses', lazy=True)
     course = db.relationship('Course', back_populates='students', lazy=True)
 
@@ -101,13 +101,13 @@ class Student(db.Model):
 
 
 class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)                            # Auto-increment Primary Key
-    serial = db.Column(db.String(15), unique=True, nullable=False)          # "CSC 103", "CSC 104", "CSC 212"
-    name = db.Column(db.String(255), nullable=False)                        # Intro to CS, Discrete Math, Data Structures
-    dept = db.Column(db.String(30), nullable=False)                         # Course type: MATH, CSC, HIST, JWST, etc 
-    description = db.Column(db.String(255), nullable=False)                 # C++, Learn Discrete math, etc ... 
+    id = db.Column(db.Integer, primary_key=True)                                    # Auto-increment Primary Key
+    serial = db.Column(db.String(15), unique=True, nullable=False)                  # "CSC 103", "CSC 104", "CSC 212"
+    name = db.Column(db.String(255), nullable=False)                                # Intro to CS, Discrete Math, Data Structures
+    dept = db.Column(db.String(30), nullable=False)                                 # Course type: MATH, CSC, HIST, JWST, etc 
+    description = db.Column(db.String(255), nullable=False)                         # C++, Learn Discrete math, etc ... 
     semester = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    designation = db.Column(db.String(255), unique=False, nullable=False)   # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement", etc
+    designation = db.Column(db.String(255), unique=False, nullable=False)           # Course Designation: "Liberal Art", "A/B/C Group - Technical Elective", "Core Requirement", etc
     credits = db.Column(db.Integer, nullable=False, default=0)
     
     students = db.relationship('Enrollement', back_populates='course', lazy=True)
@@ -119,3 +119,4 @@ class Course(db.Model):
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     value = db.Column(db.String(15))
+
