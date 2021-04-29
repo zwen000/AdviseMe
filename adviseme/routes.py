@@ -97,6 +97,7 @@ def save_picture(form_picture):
     #-----------------------------------------------
 
     image_compressed.save(picture_path)                                             # Save the compressed picture to the: 'static/Profile_Pics/'
+    # Add the cloudinary API here for deployment 
 
     return picture_fn
 

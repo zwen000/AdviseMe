@@ -311,7 +311,7 @@ db.session.commit()     # One single commit is much more efficient!
 #     $ python clean_up.py
 #------------------------------------
 
-# This will re-create the DB file. And initialize the Databse with some starting data! 
+# This will re-create the DB file. And initialize the Database with some starting data! 
 # Make sure to run this every time any changes are made
 # To models.py, before you plan to execute run.py 
 
