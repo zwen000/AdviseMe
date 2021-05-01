@@ -90,10 +90,17 @@ class FacultyInfoForm(FlaskForm):
 
 
 class AcademicReviewForm(FlaskForm):
-    academic_note = StringField('academic_note', validators=[DataRequired()])
-    additional = StringField('additional', validators=[DataRequired()])
+    course = QuerySelectMultipleField(
+        'Course',
+        query_factory=lambda: Course.query,
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
+    )
+
+    academic_note = TextAreaField('academic_note', validators=[DataRequired()])
+    additional = TextAreaField('additional')
     approval = BooleanField('Approved')
-    submit = SubmitField('submit')
+    submit = SubmitField('Viewed')
 
 class UpdateStudentAccountForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
@@ -194,7 +201,7 @@ class AdvisementForm(FlaskForm):
 
     submit = SubmitField('Submit to Advisor')
 
-class ReviewForm(FlaskForm):
+class FacultyReviewForm(FlaskForm):
     course = QuerySelectMultipleField(
         'Course',
         query_factory=lambda: Course.query,

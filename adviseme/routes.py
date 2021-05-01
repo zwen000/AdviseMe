@@ -839,7 +839,7 @@ def advisingNotesHome():
     return render_template('advisingNotesHome.html', notes=notes)
 
 
-# can view the direct note by clicking on the note if below 45 credits only see academic notes
+#student can view the direct note by clicking on the note if below 45 credits only see academic notes
 @app.route('/advisingNotes/<int:note_id>')
 @login_required
 def advisingNotes(note_id):
@@ -862,7 +862,7 @@ def AdvisingHome():
 @app.route('/noteReviewHome')
 @login_required
 def noteReviewHome():
-    notes=Notes.query.filter_by(be_advised=True).all()
+    notes = Notes.query.filter_by(be_advised=True).all()
     return render_template('noteReviewHome.html',notes=notes)
 
 
@@ -872,6 +872,36 @@ def noteReviewHome():
 def noteReview(note_id):
     notes=Notes.query.get_or_404(note_id)
     form = AcademicReviewForm()
+    student_id = notes.Owner.EMPLID
+
+    student = Student.query.filter_by(EMPLID=student_id).first()
+
+    temp = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id).all()
+    course = {i[0]:i[1] for i in temp}
+    for i in Course.query.all():
+        if i not in course:
+            course[i] = None
+
+    electives = dict()
+    tech_elec = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, Course.designation=="Technical Elective").all()
+    CE = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")).all()
+    US = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[US](1000)")|(Course.designation=="[US](2000)")).all()
+    IS = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation == "[IS](1000)")|(Course.designation == "[IS](2000)")).all()
+    WCGI = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id == Course.id) \
+        .filter(Enrollement.student_id == student_id,
+                (Course.designation == "[WCGI](1000)")|(Course.designation == "[WCGI](2000)")).all()
+    electives["Technical Elective"] = tech_elec
+    electives["CE"] = CE
+    electives["US"] = US
+    electives["IS"] = IS
+    electives["WCGI"] = WCGI
+
+
     if form.validate_on_submit():
         notes.academic_note=form.academic_note.data
         notes.additional=form.additional.data
@@ -883,7 +913,7 @@ def noteReview(note_id):
         form.academic_note.data=notes.academic_note
         form.additional.data=notes.additional
         form.approval.data=notes.approval
-    return render_template('noteReview.html', title='noteReview',notes=notes,form=form)
+    return render_template('AcademicAdvisorReview.html', title='Academic Advisor Note Review', form=form, course=course, electives=electives, student=student, notes=notes)
 
 
 
@@ -1082,12 +1112,10 @@ def faculty_review(note_id):
     notes = Notes.query.get_or_404(note_id)
 
     student_id = notes.Owner.EMPLID
-    # student_id = 233967
-    # notes = Notes.query.filter(Student.EMPLID == student_id).first()
 
     student = Student.query.filter_by(EMPLID=student_id).first()
 
-    form = ReviewForm()
+    form = FacultyReviewForm()
     temp = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
         .filter(Enrollement.student_id==student_id).all()
     course = {i[0]:i[1] for i in temp}
@@ -1143,7 +1171,7 @@ def faculty_review(note_id):
         form.followup.data=notes.followup
         form.approve.data=notes.be_advised
 
-    return render_template('AdvisementReview.html', form=form, course=course, electives=electives, student=student, notes=notes)
+    return render_template('FacultyAdvisorReview.html', form=form, course=course, electives=electives, student=student, notes=notes)
 
 
 @app.route('/faculty/review/transcript/<int:student_id>', methods=['GET', 'POST'])
@@ -1162,3 +1190,14 @@ def Faculty_View_Transcript(student_id):
 
 #    students = Student.query.filter_by(needs_advising=True)
 
+# faculty can go editing the direct advising note in this route
+# @app.route('/academic/review/<int:note_id>', methods=['GET', 'POST'])
+# @app.route('/academic_advisor/review/', methods=['GET', 'POST'])
+# @login_required
+# # def academic_review(note_id):
+# def academic_review():
+#     form = AcademicReviewForm()
+#     student_id = 233967
+#     notes = Notes.query.filter(Student.EMPLID == student_id).first()
+#     student = Student.query.filter_by(EMPLID=student_id).first()
+#     return render_template('FacultyAdvisorReview.html', form=form, notes=notes, student=student)
