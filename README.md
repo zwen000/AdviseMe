@@ -54,3 +54,5 @@ The application will be running on **localhost** on **port 5000** with the follo
  * Debugger PIN: 244-552-545
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
+
+![Adviseme](https://user-images.githubusercontent.com/31382327/116583612-873f1400-a8e4-11eb-9f68-c15a1c9b73b4.png)
