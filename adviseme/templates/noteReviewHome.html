@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-
+{{ notes }}
 {% for note in notes %}
   {% if note.approval ==False %}
   <article class="media content-section">
