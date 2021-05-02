@@ -224,3 +224,16 @@ class FacultyReviewForm(FlaskForm):
     approve = BooleanField('Approval toggle')
     submit = SubmitField('Viewed')
 
+
+class EditworkflowForm(FlaskForm):
+    under_advisement = BooleanField('Submit Advisement Form')
+    under_faculty = BooleanField('Faculty Advisor Approval')
+    under_academic = BooleanField('Academic Advisor Approval')
+    under_enrollment = BooleanField('Eligible for Enrollment')
+
+    above_advisement = BooleanField('Submit Advisement Form')
+    above_faculty = BooleanField('Faculty Advisor Approval')
+    above_academic = BooleanField('Academic Advisor Approval')
+    above_enrollment = BooleanField('Eligible for Enrollment')
+    submit = SubmitField('Update')
+

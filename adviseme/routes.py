@@ -805,7 +805,8 @@ def checklist():
 def faculty():
     year = str(date.year)
     semester = get_semester(date.today())
-    notes = Notes.query.filter_by(semester=semester).all()
+    notes = Notes.query.filter(Notes.semester==semester,
+                                (Notes.be_advised == None)|(Notes.be_advised == False)).all()
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester = semester, year = year)
 
@@ -824,11 +825,36 @@ def get_semester(date):
     return semester
 
 #Faculty can edit workflow:
-@app.route('/EditWorkflow/')
+@app.route('/EditWorkflow/', methods=['GET', 'POST'])
 @login_required
 def EditWorkflow():
-    return render_template("EditWorkflow.html", title="Edit Workflow")
+    form = EditworkflowForm()
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    if form.validate_on_submit():
+        editworkflow.under_advisement=form.under_advisement.data
+        editworkflow.under_faculty=form.under_faculty.data
+        editworkflow.under_academic=form.under_academic.data
+        editworkflow.under_enrollment=form.under_enrollment.data
 
+        editworkflow.above_advisement=form.above_advisement.data
+        editworkflow.above_academic=form.above_academic.data
+        editworkflow.above_faculty=form.above_faculty.data
+        editworkflow.above_enrollment=form.above_enrollment.data
+        db.session.commit()
+
+    elif request.method == 'GET':
+        form.under_advisement.data=editworkflow.under_advisement
+        form.under_faculty.data=editworkflow.under_faculty
+        form.under_academic.data=editworkflow.under_academic
+        form.under_enrollment.data=editworkflow.under_enrollment
+
+        form.above_advisement.data=editworkflow.above_advisement
+        form.above_academic.data=editworkflow.above_academic
+        form.above_faculty.data=editworkflow.above_faculty
+        form.above_enrollment.data=editworkflow.above_enrollment
+
+
+    return render_template("EditWorkflow.html", title="Edit Workflow",form=form,editworkflow=editworkflow)
 
 
 # Student can view all notes in this advisingNotesHome route
@@ -863,7 +889,11 @@ def AdvisingHome():
 @app.route('/noteReviewHome')
 @login_required
 def noteReviewHome():
-    notes = Notes.query.filter_by(be_advised=True).all()
+
+    semester = get_semester(date.today())
+    notes = Notes.query.filter_by(be_advised=True,
+                                    approval=False,
+                                    semester = semester).all()
 
     return render_template('noteReviewHome.html',notes=notes)
 
@@ -929,7 +959,8 @@ def workflow():
                                 EMPLID=current_user.EMPLID,
                                 semester = semester,
                                 year =todaydate.year ).first()
-    return render_template('workflow.html', title="workflow",notes=notes)
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    return render_template('workflow.html', title="workflow",notes=notes,editworkflow=editworkflow)
 
 @app.route('/workflow2/')
 @login_required
@@ -1187,11 +1218,21 @@ def Faculty_View_Transcript(student_id):
                            transcript=transcript)
 
 
-"""
-@app.route('/faculty/Advisement/Display/', methods=['GET', 'POST'])
+@app.route('/faculty/archiveHome', methods=['GET', 'POST'])
 @login_required
-def list_students():
+def archiveHome():
+    academic_notes = Notes.query.filter_by(be_advised=True,
+                                            approval=True).all()
+    
+    return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
 
-    students = Student.query.filter_by(needs_advising=True)
-"""
+
+@app.route('/academic/archiveHome', methods=['GET', 'POST'])
+@login_required
+def archiveHome():
+    academic_notes = Notes.query.filter_by(be_advised=True,
+                                            approval=True).all()
+    
+    return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
+
 

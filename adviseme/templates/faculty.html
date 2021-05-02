@@ -30,7 +30,7 @@
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Academic Advisor'%}
         {% for note in notes %}
-          {%if note.Owner.credit_earned <= 45 and note.be_advised == False %}
+          {%if note.Owner.credit_earned <= 45 %}
         
       <button type="button" class="collapsible subtitle">Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
       </button>
@@ -45,7 +45,7 @@
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Faculty Advisor'%}
       {% for note in notes %}
-        {%if note.Owner.credit_earned > 45 and note.be_advised == False %}
+        {%if note.Owner.credit_earned > 45  %}
       <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
       </button>
       <div class="content">

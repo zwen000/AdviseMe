@@ -298,6 +298,14 @@ db.session.add(grade_13)
 db.session.add(grade_14) 
 
 
+# -- EditWorkflow options:
+
+editworkflow = Editworkflow()
+db.session.add(editworkflow) 
+
+
+
+
 db.session.commit()     # One single commit is much more efficient! 
 
 
