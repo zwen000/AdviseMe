@@ -14,6 +14,7 @@
             <p class="text">Student's Name: {{ student.firstname }} {{ student.lastname }}</p>
             <p class="text" style="float: right; display: inline;">QPA: {{ student.QPA }}</p>
             <p class="text">GPA: {{ student.GPA }}</p>
+            <p class="text">Student's Completed Credits: {{ student.credit_earned }}</p>
 
         <div class="c_viewport rounded">
             <table class="table table-striped table-hover bg-light text-center">
@@ -842,6 +843,7 @@
                           <div class="answer px-3">
                             <p>{{ form.additional }}</p>
                           </div>
+                            {{ form.approval(**{'data-toggle':'toggle', 'data-on':'Yes', 'data-off':'No', 'data-offstyle':"danger", 'data-style':"ios"}) }}
                         </div>
                         <hr>
 
