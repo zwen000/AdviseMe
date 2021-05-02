@@ -4,34 +4,61 @@
 <div class="c_viewport rounded">
     <div class="push" style="height:1px;"></div>
 <center><legend class="border-bottom mb-4 title">Edit Workflow</legend></center>
-<h6 class="sub-title">For students under 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="#">|| Preview Workflow ||</a></h6>
-<input checked class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Submit Advisement Form</label>
-<br>
-<input checked class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Academic Advisor Approval</label>
-<br>
-<input class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Faculty Advisor Approval</label>
-<br>
-<input checked class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Eligible for Enrollment</label>
+<form method="POST" action="" enctype="multipart/form-data">
 
+<h6 class="sub-title">For students under 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="#">|| Preview Workflow ||</a></h6>
+<div class="form-check">
+    {{ form.under_advisement(class="form-check-input") }}
+    {{ form.under_advisement.label(class="info") }}
+<br>
+</div>
+<div class="form-check">
+    {{ form.under_faculty(class="form-check-input") }}
+    {{ form.under_faculty.label(class="info") }}
+<br>
+</div>
+<div class="form-check">
+    {{ form.under_academic(class="form-check-input") }}
+    {{ form.under_academic.label(class="info") }}
+<br>
+</div>
+<div class="form-check">
+    {{ form.under_enrollment(class="form-check-input") }}
+    {{ form.under_enrollment.label(class="info") }}
+</div>
 <hr>
 
 <h6 class="sub-title">For students above 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="#">|| Preview Workflow ||</a></h6>
-<input checked class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Submit Advisement Form</label>
+<div class="form-check">
+    {{ form.above_advisement(class="form-check-input") }}
+    {{ form.above_advisement.label(class="info") }}
 <br>
-<input  checked class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Academic Advisor Approval</label>
+</div>
+<div class="form-check">
+    {{ form.above_faculty(class="form-check-input") }}
+    {{ form.above_faculty.label(class="info") }}
 <br>
-<input checked class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Faculty Advisor Approval</label>
+</div>
+<div class="form-check">
+    {{ form.above_academic(class="form-check-input") }}
+    {{ form.above_academic.label(class="info") }}
 <br>
-<input checked class="sub-title" type="checkbox" />
-<label class="info" for="course_serial">Eligible for Enrollment</label>
+</div>
+<div class="form-check">
+    {{ form.above_enrollment(class="form-check-input") }}
+    {{ form.above_enrollment.label(class="info") }}
 <hr>
+</div>
+<div class="form-group">
+    {{ form.csrf_token }}
+    {{ form.submit(class="btn custom-button-submit") }}
+    <ul>
+    {% for error in form.submit.errors %}
+        <li style="color:red;">{{ error }}</li>
+    {% endfor %}
+    </ul>
+</div>
+</form>
 </div>
 
 <style>

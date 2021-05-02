@@ -120,3 +120,14 @@ class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)                        # Auto-increment Primary Key
     value = db.Column(db.String(15))
 
+class Editworkflow(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    under_advisement = db.Column(db.Boolean, nullable=False, default=True)
+    under_faculty = db.Column(db.Boolean, nullable=False, default=False)
+    under_academic = db.Column(db.Boolean, nullable=False, default=True)
+    under_enrollment = db.Column(db.Boolean, nullable=False, default=True)
+
+    above_advisement = db.Column(db.Boolean, nullable=False, default=True)
+    above_faculty = db.Column(db.Boolean, nullable=False, default=True)
+    above_academic = db.Column(db.Boolean, nullable=False, default=True)
+    above_enrollment = db.Column(db.Boolean, nullable=False, default=True)

@@ -824,11 +824,36 @@ def get_semester(date):
     return semester
 
 #Faculty can edit workflow:
-@app.route('/EditWorkflow/')
+@app.route('/EditWorkflow/', methods=['GET', 'POST'])
 @login_required
 def EditWorkflow():
-    return render_template("EditWorkflow.html", title="Edit Workflow")
+    form = EditworkflowForm()
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    if form.validate_on_submit():
+        editworkflow.under_advisement=form.under_advisement.data
+        editworkflow.under_faculty=form.under_faculty.data
+        editworkflow.under_academic=form.under_academic.data
+        editworkflow.under_enrollment=form.under_enrollment.data
 
+        editworkflow.above_advisement=form.above_advisement.data
+        editworkflow.above_academic=form.above_academic.data
+        editworkflow.above_faculty=form.above_faculty.data
+        editworkflow.above_enrollment=form.above_enrollment.data
+        db.session.commit()
+
+    elif request.method == 'GET':
+        form.under_advisement.data=editworkflow.under_advisement
+        form.under_faculty.data=editworkflow.under_faculty
+        form.under_academic.data=editworkflow.under_academic
+        form.under_enrollment.data=editworkflow.under_enrollment
+
+        form.above_advisement.data=editworkflow.above_advisement
+        form.above_academic.data=editworkflow.above_academic
+        form.above_faculty.data=editworkflow.above_faculty
+        form.above_enrollment.data=editworkflow.above_enrollment
+
+
+    return render_template("EditWorkflow.html", title="Edit Workflow",form=form,editworkflow=editworkflow)
 
 
 # Student can view all notes in this advisingNotesHome route
@@ -927,7 +952,8 @@ def workflow():
                                 EMPLID=current_user.EMPLID,
                                 semester = semester,
                                 year =todaydate.year ).first()
-    return render_template('workflow.html', title="workflow",notes=notes)
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    return render_template('workflow.html', title="workflow",notes=notes,editworkflow=editworkflow)
 
 @app.route('/workflow2/')
 @login_required
