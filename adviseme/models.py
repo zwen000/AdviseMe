@@ -41,7 +41,7 @@ class Notes(db.Model):
     academic_comment = db.Column(db.Text, nullable=False, default='')       # comment for academic from advising notes
     next_semester_comment = db.Column(db.Text, nullable=False, default='')  # comment for next semester
     q3 = db.Column(db.Boolean, nullable=False, default=False)
-    be_advised = db.Column(db.Boolean, nullable=False, default=False)       # boolean check for notes if it's done
+    be_advised = db.Column(db.Boolean, default=None)       # boolean check for notes if it's done
     
     # no.4 question boolean check
     tutorial = db.Column(db.Boolean, nullable=False, default=False)         # tutorial services
@@ -54,7 +54,7 @@ class Notes(db.Model):
     # academic advisor data stored
     academic_note = db.Column(db.Text, nullable=False, default='')          # after notes are done by faculty then send to academic advisor
     additional = db.Column(db.Text, nullable=False, default='')             # additional suggest/comment from academic advisor
-    approval = db.Column(db.Boolean, nullable=False, default=False)         # check if it's done by advisor
+    approval = db.Column(db.Boolean, default=None)         # check if it's done by advisor
     EMPLID = db.Column(db.Integer, db.ForeignKey('student.EMPLID'), nullable=False)
 
     FacultyEMPLID = db.Column(db.Integer,db.ForeignKey('faculty.EMPLID'), nullable=True)    # separate student and faculty ID!!!

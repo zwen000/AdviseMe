@@ -805,7 +805,8 @@ def checklist():
 def faculty():
     year = str(date.year)
     semester = get_semester(date.today())
-    notes = Notes.query.filter_by(semester=semester).all()
+    notes = Notes.query.filter(Notes.semester==semester,
+                                (Notes.be_advised == None)|(Notes.be_advised == False)).all()
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester = semester, year = year)
 
@@ -888,7 +889,10 @@ def AdvisingHome():
 @app.route('/noteReviewHome')
 @login_required
 def noteReviewHome():
-    notes = Notes.query.filter_by(be_advised=True).all()
+    semester = get_semester(date.today())
+    notes = Notes.query.filter_by(be_advised=True,
+                                    approval=False,
+                                    semester = semester).all()
     return render_template('noteReviewHome.html',notes=notes)
 
 
@@ -1211,11 +1215,21 @@ def Faculty_View_Transcript(student_id):
                            transcript=transcript)
 
 
-"""
-@app.route('/faculty/Advisement/Display/', methods=['GET', 'POST'])
+@app.route('/faculty/archiveHome', methods=['GET', 'POST'])
 @login_required
-def list_students():
+def archiveHome():
+    academic_notes = Notes.query.filter_by(be_advised=True,
+                                            approval=True).all()
+    
+    return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
 
-    students = Student.query.filter_by(needs_advising=True)
-"""
+
+@app.route('/academic/archiveHome', methods=['GET', 'POST'])
+@login_required
+def archiveHome():
+    academic_notes = Notes.query.filter_by(be_advised=True,
+                                            approval=True).all()
+    
+    return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
+
 
