@@ -864,6 +864,7 @@ def AdvisingHome():
 @login_required
 def noteReviewHome():
     notes = Notes.query.filter_by(be_advised=True).all()
+
     return render_template('noteReviewHome.html',notes=notes)
 
 
@@ -914,6 +915,7 @@ def noteReview(note_id):
         form.academic_note.data=notes.academic_note
         form.additional.data=notes.additional
         form.approval.data=notes.approval
+
     return render_template('AcademicAdvisorReview.html', title='Academic Advisor Note Review', form=form, course=course, electives=electives, student=student, notes=notes)
 
 
