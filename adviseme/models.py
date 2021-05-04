@@ -42,7 +42,7 @@ class Notes(db.Model):
     next_semester_comment = db.Column(db.Text, nullable=False, default='')  # comment for next semester
     q3 = db.Column(db.Boolean, nullable=False, default=False)
     be_advised = db.Column(db.Boolean, default=None)       # boolean check for notes if it's done
-    
+
     # no.4 question boolean check
     tutorial = db.Column(db.Boolean, nullable=False, default=False)         # tutorial services
     counseling = db.Column(db.Boolean, nullable=False, default=False)       # counseling
@@ -61,7 +61,7 @@ class Notes(db.Model):
     Student = db.relationship('Student', backref='advisingnote', lazy=True)
 
     def __repr__(self):
-        return f"Notes('{self.EMPLID}','{self.academic_comment}','{self.next_semester_comment}','{self.be_advised}')"
+        return f"Notes('{self.EMPLID}','{self.academic_comment}','{self.next_semester_comment}','{self.be_advised}', '{self.semester}', '{self.year}')"
 
 
 

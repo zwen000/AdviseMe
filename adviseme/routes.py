@@ -8,6 +8,7 @@ from adviseme import app, bcrypt, db
 from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
+from sqlalchemy import func
 
 @app.route('/')
 def landing():
@@ -1220,19 +1221,98 @@ def Faculty_View_Transcript(student_id):
 
 @app.route('/faculty/archiveHome', methods=['GET', 'POST'])
 @login_required
-def archiveHome():
-    academic_notes = Notes.query.filter_by(be_advised=True,
-                                            approval=True).all()
+def FacultyArchiveHome():
+    notes = Notes.query.filter_by(FacultyEMPLID=current_user.FacultyOwner.EMPLID, be_advised=True, approval=True).order_by(Notes.date).all()
+    test =Notes.query.filter_by(be_advised=True, approval=True).order_by(Notes.date).all()
+    c = db.session.query(Notes).group_by(Notes.year, Notes.semester).all()
+
     
-    return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
+    return render_template('archiveHome.html', tittle="Faculty Advisor Archive", notes=test,c=c)
 
 
 @app.route('/academic/archiveHome', methods=['GET', 'POST'])
 @login_required
-def archiveHome():
+def AcademicArchiveHome():
     academic_notes = Notes.query.filter_by(be_advised=True,
                                             approval=True).all()
-    
-    return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
+
+    return render_template('archiveHome.html', tittle="Academic Advisor Archive",notes=academic_notes)
 
 
+@app.route('/faculty/archiveHome/<int:note_id>', methods=['GET', 'POST'])
+@login_required
+def FacultyArchive(note_id):
+    notes = Notes.query.get_or_404(note_id)
+
+    student_id = notes.Owner.EMPLID
+    student = Student.query.filter_by(EMPLID=student_id).first()
+
+    form = FacultyReviewForm()
+    temp = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id).all()
+    course = {i[0]:i[1] for i in temp}
+    for i in Course.query.all():
+        if i not in course:
+            course[i] = None
+
+    electives = dict()
+    tech_elec = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, Course.designation=="Technical Elective").all()
+    CE = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")).all()
+    US = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[US](1000)")|(Course.designation=="[US](2000)")).all()
+    IS = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation == "[IS](1000)")|(Course.designation == "[IS](2000)")).all()
+    WCGI = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id == Course.id) \
+        .filter(Enrollement.student_id == student_id,
+                (Course.designation == "[WCGI](1000)")|(Course.designation == "[WCGI](2000)")).all()
+    electives["Technical Elective"] = tech_elec
+    electives["CE"] = CE
+    electives["US"] = US
+    electives["IS"] = IS
+    electives["WCGI"] = WCGI
+    return render_template('FacultyArchive.html', tittle="Faculty Advisor Archive", form=form, student=student, notes=notes, course=course, electives=electives)
+
+
+@app.route('/academic/archiveHome/<int:note_id>', methods=['GET', 'POST'])
+@login_required
+def AcademicArchive(note_id):
+    notes = Notes.query.get_or_404(note_id)
+
+    student_id = notes.Owner.EMPLID
+
+    student = Student.query.filter_by(EMPLID=student_id).first()
+
+    form = AcademicReviewForm()
+    temp = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id).all()
+    course = {i[0]:i[1] for i in temp}
+    for i in Course.query.all():
+        if i not in course:
+            course[i] = None
+
+    electives = dict()
+    tech_elec = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, Course.designation=="Technical Elective").all()
+    CE = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")).all()
+    US = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation=="[US](1000)")|(Course.designation=="[US](2000)")).all()
+    IS = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id==Course.id)\
+        .filter(Enrollement.student_id==student_id, (Course.designation == "[IS](1000)")|(Course.designation == "[IS](2000)")).all()
+    WCGI = db.session.query(Course, Enrollement).outerjoin(Enrollement, Enrollement.course_id == Course.id) \
+        .filter(Enrollement.student_id == student_id,
+                (Course.designation == "[WCGI](1000)")|(Course.designation == "[WCGI](2000)")).all()
+    electives["Technical Elective"] = tech_elec
+    electives["CE"] = CE
+    electives["US"] = US
+    electives["IS"] = IS
+    electives["WCGI"] = WCGI
+
+    if student.credit_earned >= 45:
+        return render_template('AcademicArchive.html', tittle="Faculty Advisor Archive", form=form, student=student, notes=notes, course=course, electives=electives)
+    else:
+        form = form = FacultyReviewForm()
+        return render_template('AcademicArchive2.html', tittle="Faculty Advisor Archive", form=form, student=student,
+                               notes=notes, course=course, electives=electives)

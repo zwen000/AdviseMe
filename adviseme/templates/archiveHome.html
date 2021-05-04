@@ -1,5 +1,242 @@
 {% extends "layout.html"%}
 {% block content %}
+<h1>Faculty Archive Home</h1>
+{{ notes }}
+<div class='double-column'>
+  <div class="c_viewport rounded">
+    <div class="push" style="height:1px;"></div>
+    <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
 
+         <div class="jumbotron bg-cover text-white" style="background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.6) 100%), url('../static/Images/adNoteBg.svg'); padding-bottom: 55%;" >
+        <div class="row align-items-end gutter-2">
+          <div class="col-lg-8" style="font-family:Roboto;">
+            <h2>Notes from Your Adivisor</h2>
+          </div>
+          <div class="col-lg-4 text-lg-right">
+
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+
+          <div class="col">
+            <div class="accordion accordion-minimal" id="accordion-2">
+
+
+             {% for note in notes %}
+               <div class="card">
+                <div class="card-header" id="heading-2-2">
+                  <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target={{ "#c" ~ note.id }} aria-expanded="false" aria-controls={{ "c" ~ note.id}}>
+                      {{note.semester}} {{ note.year }}
+                    </button>
+                  </h2>
+                </div>
+
+                <div id= {{ 'c' ~ note.id }} class="collapse" aria-labelledby="heading-2-2" data-parent="#accordion-2">
+                  <div class="card-body">
+                      <div class="list-group">
+                        <a href= "{{ url_for('advisingNotes', note_id=note.id) }}"  class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                              <h6 class="mb-1 col-8">{{ note.date }} Advising Note</h6>
+                            </div>
+                        </a>
+
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+             {% endfor %}
+
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+</div>
+</div>
+
+
+
+<style>
+  * {box-sizing: border-box;}
+  input[type=text] {
+  padding: 10px;
+  border-color: #3772D7;
+  box-shadow: none;
+  width: 100%;
+  font:  15px  Open Sans Condensed, sans-serif;
+}
+    /* Style the button that is used to open and close the collapsible content */
+    .collapsible {
+  background-color: #d4e2ee;
+  color: #233B7E;
+  cursor: pointer;
+  padding: 2%;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: #233B7E;
+  font-size: 15px;
+}
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.collapsible:hover, .active {
+    background-color: #233B7E;
+    color: white;
+}
+
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 3%;
+  display: none;
+  overflow: hidden;
+  background-color: #ececec;
+}
+.f_link{
+  color: #233B7E;
+
+}
+
+  .column {
+  float: left;
+  width: 33%;
+  padding: 2%;
+}
+.double-column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 2;
+}
+
+.c_viewport{
+  padding: 4%;
+  color: rgb(27,30,36);
+  margin: 20px 0;
+  height: 700px;
+  overflow: auto;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+}
+legend{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 32px;
+
+color: #233B7E;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.content-section{
+  width: 90%;
+  padding: 5%;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+border-radius: 5px;
+}
+
+.custom-button-profile-edit {
+    background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+    color: hsl(0, 0%, 100%);
+    padding: 10px;
+    border: none;
+    width: 40%;
+    cursor: pointer;
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+    }
+.custom-button-profile-edit:hover{
+      background-color: #3772D7;
+}
+
+
+h1{
+font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 22px;
+line-height: 33px;
+text-decoration-line: underline;
+
+color: #233B7E;
+}
+p:hover{
+  color: #3772D7;
+  font-size: large;
+}
+
+.checklist-header{
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 42px;
+    line-height: 33px;
+    text-decoration-line: underline;
+
+    color: #233B7E;
+}
+.p-custom{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 24px;
+
+color: #000000;
+}
+.p-custom-2{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 16px;
+line-height: 24px;
+
+color: #233B7E;
+}
+.important-info{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 10px;
+line-height: 24px;
+display: inline;
+}
+a{
+  color: white;
+}
+@media only screen and (max-width: 800px) {
+  .p-custom, .p-custom-2{
+    font-size: 100%;
+    color: #000000;
+  }
+  .column {
+  width: 100%;
+  padding: 4%;
+}
+.content-section{
+  width: 95%;
+  padding: 4%;
+}
+
+}
+
+</style>
 
 {% endblock content %} 

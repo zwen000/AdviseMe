@@ -27,14 +27,12 @@
             <div class="card-header" id="heading-2-2">
               <h2 class="mb-0">
                 <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target={{ "#c" ~ note.id }} aria-expanded="false" aria-controls={{ "c" ~ note.id}}>
-
                   {{note.semester}} {{ note.year }}
-
                 </button>
               </h2>
             </div>
 
-            <div id={{ "c" ~ note.id }} class="collapse" aria-labelledby="heading-2-2" data-parent="#accordion-2">
+            <div id= {{ "c" ~ note.id }} class="collapse" aria-labelledby="heading-2-2" data-parent="#accordion-2">
               <div class="card-body">
                   <div class="list-group">
                     <a href= "{{ url_for('advisingNotes', note_id=note.id) }}"  class="list-group-item list-group-item-action">
@@ -48,9 +46,6 @@
               </div>
             </div>
           </div>
-
-
-
          {% endfor %}
 
 
