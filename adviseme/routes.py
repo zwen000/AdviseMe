@@ -1225,14 +1225,4 @@ def archiveHome():
                                             approval=True).all()
     
     return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
-
-
-@app.route('/academic/archiveHome', methods=['GET', 'POST'])
-@login_required
-def archiveHome():
-    academic_notes = Notes.query.filter_by(be_advised=True,
-                                            approval=True).all()
     
-    return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
-
-
