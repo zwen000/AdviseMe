@@ -1230,4 +1230,3 @@ def archiveHome():
                                             approval=True).all()
     
     return render_template('archiveHome.html', tittle="archiveHome",notes=notes)
-    
