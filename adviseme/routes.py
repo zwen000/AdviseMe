@@ -157,7 +157,7 @@ def student_course_info():
             course.designation = form.courses[int(course.id - 1)].designation.data
             course.credits = form.courses[int(course.id - 1)].credits.data
         
-        db.session.commit()
+        db.session.commit()         # Update courses! 
         
         print("Changes Saved!")
         return redirect(url_for('student_course_info'))
