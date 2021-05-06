@@ -5,13 +5,25 @@
     <!-- start of Table -->
     <section>
         <div class="container-fluid">       <!-- Container Grid -->
-            <div class="row mb-5">          <!-- Row -->
+            <div class="row mt-auto mb-5">          <!-- Row -->
                 <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
-                    <div class="row">       <!-- Inner Grid -->
-                        <div class="col-12 mb-4">
-                            <h3 class="text-dark text-center mb-3">Course Creation Form (CCNY)</h3>
-                        </div>
 
+                    <div class="col-12 mb-4">
+                        <h3 class="text-dark text-center mb-3">Cirriculum Information [Computer Science] </h3>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="content-section text-center">
+                            <h2 class="mb-4">Legend:</h2>
+                            <legend>CE[1000]/[2000] = Creative Expression (1000 level)/(2000 level)</legend>
+                            <legend>IS[1000]/[2000] = Individual & Society (1000 level)/(2000 level)</legend>
+                            <legend>WCGI[1000]/[2000] = World Cultures and Global Issues (1000 level)/(2000 level)</legend>
+                            <legend>US[1000]/[2000] = U.S. Experince in its Diversity (1000 level)/(2000 level)</legend>
+                        </div>
+                    </div>
+
+                    <div class="row">       <!-- Inner Grid -->
                         <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
@@ -22,82 +34,72 @@
                                     <th>Course Description:</th>
                                     <th>Designation:</th>
                                     <th>Credits Earned: </th>
-                                    <th>Grade: </th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <form method="POST" action="" enctype="multipart/form-data">
-                                    <tr>
+                                    <fieldset class="form-group">
                                         {{ form.csrf_token }}
-                                        <td></td>
-                                        <td>{{ form.serial(class="form-control form-control-lg") }}</td>
-                                        <div class="invalid-feedback">
-                                            {% for error in form.serial.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        <td>{{ form.name(class="form-control form-control-lg") }}</td>
-                                        <div class="invalid-feedback">
-                                            {% for error in form.name.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        <td>{{ form.dept(class="form-control form-control-lg") }}</td>
-                                        <div class="invalid-feedback">
-                                            {% for error in form.dept.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        <td>{{ form.description(class="form-control form-control-lg") }}</td>
-                                        <div class="invalid-feedback">
-                                            {% for error in form.description.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        <td>{{ form.designation(class="form-control form-control-lg") }}</td>
-                                        <div class="invalid-feedback">
-                                            {% for error in form.designation.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                        <td>{{ form.credits(class="form-control form-control-lg") }}</td>
-                                        <div class="invalid-feedback">
-                                            {% for error in form.credits.errors %}
-                                                <span>{{ error }}</span>
-                                            {% endfor %}
-                                        </div>
-                                    </tr>
-                                    <div class="form-group">
-                                        {{ form.submit(class="btn custom-button-profile-update") }}
-                                    </div>
+
+                                        {% for field in form.courses %}
+                                            <tr>
+                                                <td>{{ field.id }}</td>
+                                                <td>{{ field.serial }}</td>
+                                                <td>{{ field.course_name }}</td>
+                                                <td>{{ field.dept }}</td>    
+                                                <td>{{ field.course_description }}</td>
+                                                <td>{{ field.designation }}</td>
+                                                <td>{{ field.credits }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        
+                                    </fieldset>
                                 </form>
                             </tbody>
-                            <tbody>
-                                {% for course in courses %}
-                                    <tr>
-                                        <td>{{ course.id }}</td>
-                                        <td>{{ course.serial }}</td>
-                                        <td>{{ course.name }}</td>
-                                        <td>{{ course.dept }}</td>
-                                        <td>{{ course.description }}</td>
-                                        <td>{{ course.designation}}</td>
-                                        <td>{{ course.credits }}</td>
-                                        {% for student in student_info %}
-                                            {% if course.id == student.course_id %}
-                                                <td>{{ student.grade }}</td>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </tr>
-                                {% endfor %}
-                            </tbody>   
                         </table>
                     </div>
+
+                    <div class="row">
+                        {{ form.submit(class="btn custom-button-submit") }}
+                    </div>
+
                 </div>
             </div>
         </div>
     </section>
     <!-- End of Table -->
 </div>
+
+<style>
+
+.custom-button-submit {
+    background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+    color: hsl(0, 0%, 100%);
+    padding: 10px;
+    border: none;
+    width: 30%;
+    cursor: pointer;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.custom-button-submit:hover{
+    transition: ease-in;
+    background: #233B7E;
+    color: white;
+}
+
+.content-section{
+    width: 90%;
+    padding: 5%;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+}
+</style>
 
 {% endblock content %} 
