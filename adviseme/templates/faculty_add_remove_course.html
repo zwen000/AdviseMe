@@ -1,0 +1,51 @@
+{% extends "layout.html"%}
+{% block content %}
+
+    <div>
+        <br>
+        <a href="{{ url_for('student_course_info') }}">Edit an existing Course in the Cirriculum?</a>
+    </div>
+
+    <table class="table table-striped bg-light text-center">
+        <thead>
+            <tr class="text-muted">
+                <th>Course ID:</th>
+                <th>Course Serial:</th>
+                <th>Course Name:</th>
+                <th>Course Department:</th>
+                <th>Course Description:</th>
+                <th>Designation:</th>
+                <th>Credits Earned: </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <form method="POST" action="" enctype="multipart/form-data">
+                <tr>
+                    <td> # </td>
+                    <td>{{ form.serial }}</td>
+                    <td>{{ form.course_name }}</td>
+                    <td>{{ form.dept }}</td>
+                    <td>{{ form.course_description }}</td>
+                    <td>{{ form.designation }}</td>
+                    <td>{{ form.credits }}</td>
+                </tr>
+                {{ form.submit }}
+            </form>
+            {%for course in courses %}
+                <tr class="text-center">
+                    <td> {{ course.id }}</td>
+                    <td>{{ course.serial }}</td>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.dept }}</td>
+                    <td>{{ course.description }}</td>
+                    <td>{{ course.designation }}</td>
+                    <td>{{ course.credits }}</td>
+                    <td><a href="{{ url_for('delete_course',course_id=course.id) }}"> delete {{ course.id }}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+{% endblock %}

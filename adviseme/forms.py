@@ -65,11 +65,19 @@ class CourseForm(FlaskForm):
     course_description = TextAreaField('Course Description: (Optional)')
     designation = StringField('Designation:', validators=[DataRequired()])
     credits = IntegerField('Course Credits:', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
+course_count = db.session.query(Course.id).count()     # This is a more OPTIMAL method of doing this!!! 
+# Refer to --->  https://stackoverflow.com/questions/14754994/why-is-sqlalchemy-count-much-slower-than-the-raw-query 
+# As to why this is more optimal for anyone curious enough to read this -- Ray
+
+# print(course_count) # <--- There is a weird known front-end bug, where if I delete a course, this variable will not update in time. 
+# and as a result we will have more course forms than what is actually needed! Very odd, printing the variable out to debug, seems to fix 
+# The issue as it (I guess) refreshes the variable. It could be a caching issue ... huh very odd behaviour. 
 
 class Cirriculum_Form(FlaskForm):
-    courses = FieldList(FormField(CourseForm), min_entries=126)  # 126 is the number of courses in the entire Database!
-    submit = SubmitField('Submit')
+    courses = FieldList(FormField(CourseForm), min_entries=course_count, max_entries=None)  # course_count is the number of courses in the entire Database!
+    submit = SubmitField('Update Course Info')
 
 class ElectiveForm(FlaskForm):
     elective = SelectField('Elective: ', choices=[])

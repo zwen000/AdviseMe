@@ -43,7 +43,7 @@
                                         {{ form.csrf_token }}
 
                                         {% for field in form.courses %}
-                                            <tr>
+                                            <tr class="text-center">
                                                 <td>{{ field.id }}</td>
                                                 <td>{{ field.serial }}</td>
                                                 <td>{{ field.course_name }}</td>
@@ -54,7 +54,6 @@
                                             </tr>
                                         {% endfor %}
                                         
-                                        
                                         {{ form.submit(class="btn custom-button-submit") }}
 
                                     </fieldset>
@@ -63,6 +62,12 @@
 
                         </table>
                     </div>
+
+                    <div class="row mt-4">
+                        <br>
+                        <a href="{{ url_for('add_remove_course') }}">Add new Course to Cirriculum?</a>
+                    </div>
+
                 </div>
             </div>
         </div>

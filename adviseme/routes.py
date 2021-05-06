@@ -175,6 +175,42 @@ def student_course_info():
     return render_template('student_course_info.html', courses=courses, form=form)
 
 
+@app.route('/faculty/cirriculum/edit', methods=['GET', 'POST'])
+def add_remove_course():
+    form = CourseForm()
+    # form2 = Cirriculum_Form()  
+    courses = Course.query.all()
+
+    if request.method == 'POST':
+        course = Course(    serial=form.serial.data,
+                            name=form.course_name.data,
+                            dept=form.dept.data,
+                            description=form.course_description.data,
+                            designation=form.designation.data,
+                            credits=form.credits.data)
+        db.session.add(course)
+        db.session.commit()
+        flash('Your course has been created!', 'success')
+        return redirect(url_for('add_remove_course'))
+
+    return render_template('faculty_add_remove_course.html', courses=courses, form=form)
+
+
+@app.route('/cirriculum/course/delete/<int:course_id>', methods=['GET', 'POST'])
+def delete_course(course_id):
+    
+    if current_user.role == 'Student':
+        abort(403)
+
+    course = Course.query.get_or_404(course_id)
+
+    db.session.delete(course)
+    db.session.commit()
+    flash('The course has been successfully deleted!', 'success')
+    
+    return redirect(url_for('add_remove_course'))
+
+
 all_grade=[]
 def stored_grade(alist):
     all_grade.append(alist)
