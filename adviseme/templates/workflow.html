@@ -15,6 +15,7 @@
       <span class="align-middle" >Filled out Advisement Form</span>
     </div>
     {% endif %}
+
     {% if editworkflow.under_faculty == True %}
       {%if notes.be_advised == True%}
       {% if editworkflow.under_advisement == True %}
@@ -51,7 +52,7 @@
 
     {% if editworkflow.under_academic == True %}
       {%if notes.approval == True %}
-      {% if editworkflow.under_faculty == True %}
+      {% if editworkflow.under_faculty == True or editworkflow.under_advisement == True %}
       <span class="progress" >
         <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
       </span>
@@ -66,7 +67,7 @@
         <span>Academic Advisor Revision</span>
       </div>
       {%elif notes.be_advised == True%}
-      {% if editworkflow.under_faculty == True %}
+      {%  if editworkflow.under_faculty == True or editworkflow.under_advisement == True  %}
       <span class="progress" >
         <div class="progress-bar w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
       </span>
@@ -81,7 +82,7 @@
         <span>Academic Advisor Revision</span>
       </div>
       {%else%}
-      {% if editworkflow.under_faculty == True %}
+      {% if editworkflow.under_faculty == True or editworkflow.under_advisement == True  %}
       <span class="progress" >
         <div class="progress-bar" role="progressbar"  aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
       </span>
@@ -100,7 +101,7 @@
 
   {% if editworkflow.under_enrollment == True %}
     {% if notes.be_advised == True and notes.approval == True %}
-    {% if editworkflow.under_academic == True %}
+    {% if editworkflow.under_academic == True or editworkflow.under_faculty == True or editworkflow.under_advisement == True  %}
       <span class="progress" >
         <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
       </span>
@@ -115,7 +116,7 @@
         <span>Enrollment Approved</span>
       </div>
       {%else%}
-      {% if editworkflow.under_academic == True %}
+      {% if editworkflow.under_academic == True or editworkflow.under_faculty == True or editworkflow.under_advisement == True  %}
       <span class="progress" >
         <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
       </span>
@@ -185,7 +186,7 @@
 
   {% if editworkflow.above_academic == True %}
     {%if notes.approval == True %}
-    {% if editworkflow.above_faculty == True %}
+    {%  if editworkflow.above_faculty == True or editworkflow.above_advisement == True  %}
     <span class="progress" >
       <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
     </span>
@@ -200,7 +201,7 @@
       <span>Academic Advisor Revision</span>
     </div>
     {%elif notes.be_advised == True%}
-    {% if editworkflow.above_faculty == True %}
+    {%  if editworkflow.above_faculty == True or editworkflow.above_advisement == True  %}
     <span class="progress" >
       <div class="progress-bar w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
     </span>
@@ -215,7 +216,7 @@
       <span>Academic Advisor Revision</span>
     </div>
     {%else%}
-    {% if editworkflow.above_faculty == True %}
+    {% if editworkflow.above_faculty == True or editworkflow.above_advisement == True %}
     <span class="progress" >
       <div class="progress-bar" role="progressbar"  aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
     </span>
@@ -234,7 +235,7 @@
 
 {% if editworkflow.above_enrollment == True %}
   {% if notes.be_advised == True and notes.approval == True %}
-  {% if editworkflow.above_academic == True %}
+  {% if editworkflow.under_academic == True or editworkflow.under_faculty == True or editworkflow.under_advisement == True  %}
     <span class="progress" >
       <div class="progress-bar" role="progressbar" style="width:100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
     </span>
@@ -249,7 +250,7 @@
       <span>Enrollment Approved</span>
     </div>
     {%else%}
-    {% if editworkflow.above_academic == True %}
+    {% if editworkflow.under_academic == True or editworkflow.under_faculty == True or editworkflow.under_advisement == True  %}
     <span class="progress" >
       <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
     </span>
