@@ -1225,7 +1225,7 @@ def Faculty_View_Transcript(student_id):
 def FacultyArchiveHome():
     notes = Notes.query.filter_by(FacultyEMPLID=current_user.FacultyOwner.EMPLID, be_advised=True, approval=True).all()
 
-    notes = Notes.query.filter_by(be_advised=True, approval=True).all()
+    notes = Notes.query.filter_by(be_advised=True).all()
     students_with_notes = list(itertools.groupby(notes, lambda note: note.Student))
     students = list(map(lambda x: (x[0], len(x[0].advisingnote)), students_with_notes))
 

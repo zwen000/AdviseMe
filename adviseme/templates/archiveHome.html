@@ -27,13 +27,14 @@
                     <div class="card-header" id="heading-2-2">
                       <h2 class="mb-0">
                         <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target={{ "#c" ~ student[0].EMPLID }} aria-expanded="false" aria-controls={{ "c" ~ student[0].EMPLID }}>
-                          {{ student[0].lastname }} {{ student[0].firstname}}
+                          <h6>{{ student[0].lastname }}, {{ student[0].firstname}} <i class="fa fa-angle-down"></i></h6>
+
                         </button>
                       </h2>
                     </div>
 
                     <div id= {{ 'c' ~ student[0].EMPLID }} class="collapse" aria-labelledby="heading-2-2" data-parent="#accordion-2">
-                        <div class="card-body">
+                        <div class="card-body t-p">
                             <div class="list-group">
                                 {% for note in student[0].advisingnote %}
                                     <a href= "{{ url_for('FacultyArchive', note_id=note.id) }}"  class="list-group-item list-group-item-action">
@@ -63,6 +64,90 @@
 
 
 <style>
+
+.accordion{
+  margin: 40px 0;
+}
+.accordion .card {
+    border: none;
+    margin-bottom: 40px;
+    background: none;
+    font-family:Roboto;
+}
+
+.accordion .card .card-body{
+    border: none;
+    background: rgba(56, 114, 215, 0.1);
+    padding: 30px ;
+}
+
+
+.t-p {
+  color: rgb(193 206 216);
+  padding: 40px 30px 0px 30px;
+}
+
+.accordion .card .card-header h2 button.btn.btn-link {
+    background: rgba(56, 114, 215, 0.2);
+    border-radius: 0px;
+    font-weight: 500;
+    line-height: 2.5;
+}
+
+
+
+.accordion .card .card-header h2 button.btn.btn-link h6 {
+
+    font-size: 26px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.accordion .card .card-header {
+    border-bottom: none;
+    background: transparent;
+    padding: 0px;
+    margin: 2px;
+}
+
+.accordion .card .card-header h2 button {
+    color: white;
+    font-size: 20px;
+    padding: 15px;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.accordion .card .card-header h2 i {
+    float: right;
+    font-size: 35px;
+    color: #eca300;;
+    background-color: transparent;
+    width: 60px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+
+button.btn.btn-link.collapsed i {
+    transform: rotate(0deg);
+}
+
+button.btn.btn-link i {
+    transform: rotate(180deg);
+    transition: 0.5s;
+}
+
+
+
+
+
+
+
   * {box-sizing: border-box;}
   input[type=text] {
   padding: 10px;
@@ -160,6 +245,7 @@ border-radius: 5px;
 font-style: normal;
 font-weight: bold;
     }
+
 .custom-button-profile-edit:hover{
       background-color: #3772D7;
 }
