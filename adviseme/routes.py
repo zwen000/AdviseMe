@@ -9,6 +9,7 @@ from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
+import itertools
 
 @app.route('/')
 def landing():
@@ -1222,12 +1223,14 @@ def Faculty_View_Transcript(student_id):
 @app.route('/faculty/archiveHome', methods=['GET', 'POST'])
 @login_required
 def FacultyArchiveHome():
-    notes = Notes.query.filter_by(FacultyEMPLID=current_user.FacultyOwner.EMPLID, be_advised=True, approval=True).order_by(Notes.date).all()
-    test =Notes.query.filter_by(be_advised=True, approval=True).order_by(Notes.date).all()
-    c = db.session.query(Notes).group_by(Notes.year, Notes.semester).all()
+    notes = Notes.query.filter_by(FacultyEMPLID=current_user.FacultyOwner.EMPLID, be_advised=True, approval=True).all()
+
+    notes = Notes.query.filter_by(be_advised=True, approval=True).all()
+    students_with_notes = list(itertools.groupby(notes, lambda note: note.Student))
+    students = list(map(lambda x: (x[0], len(x[0].advisingnote)), students_with_notes))
 
     
-    return render_template('archiveHome.html', tittle="Faculty Advisor Archive", notes=test,c=c)
+    return render_template('archiveHome.html', tittle="Faculty Advisor Archive", students=students)
 
 
 @app.route('/academic/archiveHome', methods=['GET', 'POST'])
@@ -1316,3 +1319,6 @@ def AcademicArchive(note_id):
         form = form = FacultyReviewForm()
         return render_template('AcademicArchive2.html', tittle="Faculty Advisor Archive", form=form, student=student,
                                notes=notes, course=course, electives=electives)
+
+
+

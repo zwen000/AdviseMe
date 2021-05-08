@@ -1,16 +1,15 @@
 {% extends "layout.html"%}
 {% block content %}
-<h1>Faculty Archive Home</h1>
-{{ notes }}
+
 <div class='double-column'>
   <div class="c_viewport rounded">
     <div class="push" style="height:1px;"></div>
-    <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
+    <legend class="border-bottom mb-4">Archive</legend>
 
          <div class="jumbotron bg-cover text-white" style="background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.6) 100%), url('../static/Images/adNoteBg.svg'); padding-bottom: 55%;" >
         <div class="row align-items-end gutter-2">
           <div class="col-lg-8" style="font-family:Roboto;">
-            <h2>Notes from Your Adivisor</h2>
+            <h2>Your Student's Advisement Record </h2>
           </div>
           <div class="col-lg-4 text-lg-right">
 
@@ -23,45 +22,44 @@
 
           <div class="col">
             <div class="accordion accordion-minimal" id="accordion-2">
+                {% for student in students if student[1] > 0 %}
+                <div class="card">
+                    <div class="card-header" id="heading-2-2">
+                      <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target={{ "#c" ~ student[0].EMPLID }} aria-expanded="false" aria-controls={{ "c" ~ student[0].EMPLID }}>
+                          {{ student[0].lastname }} {{ student[0].firstname}}
+                        </button>
+                      </h2>
+                    </div>
 
+                    <div id= {{ 'c' ~ student[0].EMPLID }} class="collapse" aria-labelledby="heading-2-2" data-parent="#accordion-2">
+                        <div class="card-body">
+                            <div class="list-group">
+                                {% for note in student[0].advisingnote %}
+                                    <a href= "{{ url_for('FacultyArchive', note_id=note.id) }}"  class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                          <h6 class="mb-1 col-8"> {{note.semester}} {{ note.year }}</h6> <h6>{{ note.date }}</h6>
+                                        </div>
+                                    </a>
 
-             {% for note in notes %}
-               <div class="card">
-                <div class="card-header" id="heading-2-2">
-                  <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target={{ "#c" ~ note.id }} aria-expanded="false" aria-controls={{ "c" ~ note.id}}>
-                      {{note.semester}} {{ note.year }}
-                    </button>
-                  </h2>
-                </div>
-
-                <div id= {{ 'c' ~ note.id }} class="collapse" aria-labelledby="heading-2-2" data-parent="#accordion-2">
-                  <div class="card-body">
-                      <div class="list-group">
-                        <a href= "{{ url_for('advisingNotes', note_id=note.id) }}"  class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                              <h6 class="mb-1 col-8">{{ note.date }} Advising Note</h6>
+                                {% endfor %}
                             </div>
-                        </a>
+                        </div>
 
-                      </div>
+                    </div>
 
-                  </div>
                 </div>
-              </div>
-             {% endfor %}
+                {% endfor %}
+            </div><!--accordion -->
 
-
-            </div>
-
-          </div>
+            </div><!--col -->
+          </div><!--row -->
 
         </div>
       </div>
 
 </div>
 </div>
-
 
 
 <style>
