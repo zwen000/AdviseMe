@@ -691,72 +691,115 @@
                     <div class="form-group card-body px-4">
                       <!-- Tab panes -->
                       <div class="tab-content text-center">
-        <!--                <p><span class="category2">Adviser Name: </span>   </p>-->
-                        <p class="category">1. I have reviewed the student's transcript and discussed academic performance.</p>
+                    <p><span class="category2">Adviser Name: </span> {{ notes.Reviewer.firstname }} {{ notes.Reviewer.lastname }}</p>
+                    <p class="category">1. I have reviewed the student's transcript and discussed academic performance.</p>
+                      <div class="answer px-3">
+                        <p><span class="category2">Comments:</span><br>{{ notes.academic_comment }}</p>
+                      </div>
+
+                      <hr>
+
+                      <p class="category">2. I have reviewed the student's intended course schedule for next semester.</p>
+                      <div class="answer px-3">
+                        <p><span class="category2">Recommended changes/comments:</span><br>{{ notes.next_semester_comment }}</p>
+                      </div>
+                      <hr>
+
+                      <p class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</p>
                           <div class="answer px-3">
-                            <p><span class="category2">Comments:</span><br>{{ form.q1 }}</p>
-                          </div>
-                          <ul>
-                            {% for error in form.q1.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                          </ul>
-                          <hr>
-
-                          <p class="category">2. I have reviewed the student's intended course schedule for next semester.</p>
-                          <div class="answer px-3">
-                            <p><span class="category2">Recommended changes/comments:</span><br>{{ form.q2 }}</p>
-                          </div>
-                          <ul>
-                            {% for error in form.q2.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                          </ul>
-                          <hr>
-
-                          <p class="category">3. The student has been advised that the course schedule for the upcoming semester is based on his/her statisfactory completion of course:</p>
-                              <div class="answer px-3">
-                                {{ form.q3(**{'data-toggle':'toggle', 'data-on':'Yes', 'data-off':'No', 'data-offstyle':"danger", 'data-style':"ios"}) }}
-                              </div>
-
-                          <ul>
-                            {% for error in form.q3.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                          </ul>
-                            <hr>
-
-                          <p class="category">4. I have reviewed the student's intended course schedule for next semester.</p>
-                          <div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                     {{ form.tutorial.label }} {{ form.tutorial(class="checkbox") }}
-                                </li>
-                                <li class="list-group-item">
-                                    {{ form.counseling.label }} {{ form.counseling(class="checkbox") }}
-                                </li>
-                                <li class="list-group-item">
-                                    {{ form.consultation.label }} {{ form.consultation(class="checkbox") }}
-                                </li>
-                                <li class="list-group-item">
-                                    {{ form.career.label }} {{ form.career(class="checkbox") }}
-                                </li>
-                                <li class="list-group-item">
-                                    {{ form.scholarships.label }} {{ form.scholarships(class="checkbox") }}
-                                </li>
-                                <li class="list-group-item">
-                                    {{ form.internship.label }} {{ form.internship(class="checkbox") }}
-
-                                </li>
-                                <li class="list-group-item">
-                                    {{ form.followup.label }} {{ form.followup(class="checkbox") }}
-
-                                </li>
-                            </ul>
-                              {{ form.approve(**{'data-toggle':'toggle', 'data-on':'Approve', 'data-off':'Decline', 'data-offstyle':"danger", 'data-style':"ios"}) }}
+                            {% if notes.q3 %}
+                              <input type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="Yes" data-off="No" data-style="ios" data-offstyle="danger" disabled>
+                              {% else %}
+                              <input type="checkbox"  data-toggle="toggle" data-style="ios" data-on="Yes" data-off="No" data-style="ios" data-offstyle="danger" disabled>
+                            {% endif %}
                           </div>
 
-                        </div>
+                        <hr>
+
+                      <p class="category">4. I have reviewed the student's intended course schedule for next semester.</p>
+                      <div>
+
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                Tutorial Services <label class="checkbox">
+                                              {% if notes.tutorial %}
+                                                <input type="checkbox" checked="checked2" disabled/>
+                                              {% else %}
+                                                <input type="checkbox" disabled/>
+                                              {% endif %}
+                                                <span class="default"></span>
+                                            </label>
+                            </li>
+                            <li class="list-group-item">
+                                Counseling (Psychological, Financial, Personal, etc) <label class="checkbox">
+                                              {% if notes.counseling %}
+                                                <input type="checkbox" checked="checked2" disabled/>
+                                              {% else %}
+                                                <input type="checkbox" disabled/>
+                                              {% endif %}
+                                                <span class="primary"></span>
+                                            </label>
+                            </li>
+                            <li class="list-group-item">
+                                Faculty Consultation(Office Hours) <label class="checkbox">
+                                              {% if notes.consultation %}
+                                                <input type="checkbox" checked="checked2" disabled/>
+                                              {% else %}
+                                                <input type="checkbox" disabled/>
+                                              {% endif %}
+                                                <span class="primary"></span>
+                                            </label>
+                            </li>
+                            <li class="list-group-item">
+                                Career Advisement <label class="checkbox">
+                                              {% if notes.career %}
+                                                <input type="checkbox" checked="checked2" disabled/>
+                                              {% else %}
+                                                <input type="checkbox" disabled/>
+                                              {% endif %}
+                                                <span class="primary"></span>
+                                            </label>
+                            </li>
+                            <li class="list-group-item">
+                                Scholarships <label class="checkbox">
+                                              {% if notes.scholarships %}
+                                                <input type="checkbox" checked="checked2" disabled/>
+                                              {% else %}
+                                                <input type="checkbox" disabled/>
+                                              {% endif %}
+                                                <span class="primary"></span>
+                                            </label>
+                            </li>
+                            <li class="list-group-item">
+                                Internship Opportunities <label class="checkbox">
+                                              {% if notes.internship %}
+                                                <input type="checkbox" checked="checked2" disabled/>
+                                              {% else %}
+                                                <input type="checkbox" disabled/>
+                                              {% endif %}
+                                                <span class="primary"></span>
+                                            </label>
+                            </li>
+                            <li class="list-group-item">
+                                Follow-up Advisement Sessions <label class="checkbox">
+                                              {% if notes.followup %}
+                                                <input type="checkbox" checked="checked2" disabled/>
+                                              {% else %}
+                                                <input type="checkbox" disabled/>
+                                              {% endif %}
+                                                <span class="primary"></span>
+                                            </label>
+                            </li>
+                        </ul>
+                        <hr>
+                        {% if notes.be_advised %}
+                          <input type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="Approved" data-off="Declined" data-style="ios" data-offstyle="danger" disabled>
+                        {% else %}
+                          <input type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="Approved" data-off="Declined" data-style="ios" data-offstyle="danger" disabled>
+                        {% endif %}
+                      </div>
+                    </div>
 
 
 

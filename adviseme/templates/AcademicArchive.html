@@ -835,15 +835,20 @@
                         <div class="tab-pane active" id="p1" role="tabpanel">
                           <p class="category">Advising Notes:</p>
                           <div class="answer px-3">
-                            <p>{{ form.academic_note(style="") }}</p>
+                            <p>{{ notes.academic_note }}</p>
                           </div>
                           <hr>
 
                           <p class="category">Additional:</p>
                           <div class="answer px-3">
-                            <p>{{ form.additional }}</p>
+                            <p>{{ notes.additional }}</p>
                           </div>
-                            {{ form.approval(**{'data-toggle':'toggle', 'data-on':'Approve', 'data-off':'Decline', 'data-offstyle':"danger", 'data-style':"ios"}) }}
+                            <hr>
+                            {% if notes.approval %}
+                              <input type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="Approved" data-off="Declined" data-style="ios" data-offstyle="danger" disabled>
+                            {% else %}
+                              <input type="checkbox" checked data-toggle="toggle" data-style="ios" data-on="Approved" data-off="Declined" data-style="ios" data-offstyle="danger" disabled>
+                            {% endif %}
                         </div>
                         <hr>
 
