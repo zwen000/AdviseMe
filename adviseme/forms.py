@@ -67,6 +67,14 @@ class CourseForm(FlaskForm):
     credits = IntegerField('Course Credits:', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+    # This function checks for duplicate Course Serial's ... there should not be any duplicates. 
+    def validate_Serial(self, serial):               
+        course = Course.query.filter_by(serial=serial.data).first()
+        if course:
+            raise ValidationError('A course by that name already exists!')
+
+
+
 course_count = db.session.query(Course.id).count()     # This is a more OPTIMAL method of doing this!!! 
 # Refer to --->  https://stackoverflow.com/questions/14754994/why-is-sqlalchemy-count-much-slower-than-the-raw-query 
 # As to why this is more optimal for anyone curious enough to read this -- Ray
