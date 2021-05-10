@@ -19,45 +19,47 @@
     <div class="push" style="height:1px;"></div>
     <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
 
-    <!-- Ray will add search bar later 
+    <!-- Ray will add search bar later -->  
     <div class="search-container">
-      <form action="/action_page.php">
-        <input type="text" placeholder="Search.. " name="search">
+      <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.EMPLID }}
+        {{ form.filters }}
+        {{ form.submit }}
       </form>
     </div>
     <hr>
--->
+
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Academic Advisor'%}
         {% for note in notes %}
-          {%if note.Owner.credit_earned <= 45 %}
-        
-      <button type="button" class="collapsible subtitle">Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
-      </button>
-      <div class="content">
-        <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Live Advisement Form - {{note.semester}} {{note.year}} </a>
-      </div>
-    </section>
-    <br>
-    {%endif%}
-    {% endfor %}
-  {%endif%}
+          {%if note.Owner.credit_earned <= 45 %}        
+            <button type="button" class="collapsible subtitle">Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
+            </button>
+            <div class="content">
+              <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Live Advisement Form - {{note.semester}} {{note.year}} </a>
+            </div>
+          </section>
+          <br>
+          {%endif%}
+        {% endfor %}
+      {%endif%}
+
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Faculty Advisor'%}
-      {% for note in notes %}
-        {%if note.Owner.credit_earned > 45  %}
-      <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
-      </button>
-      <div class="content">
-        <a class="f_link" href="#">Link to student profile</a>
-        <br>
-        <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
-      </div>
-    </section>
-    <br>
-    {%endif%}
-    {% endfor %}
-  {%endif%}
+        {% for note in notes %}
+          {%if note.Owner.credit_earned > 45  %}
+              <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
+              </button>
+              <div class="content">
+                <a class="f_link" href="#">Link to student profile</a>
+                <br>
+                <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
+              </div>
+            </section>
+            <br>
+          {%endif%}
+        {% endfor %}
+      {%endif%}
 </div>
 </div>
 

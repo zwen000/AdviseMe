@@ -161,7 +161,7 @@ def student_course_info():
         
         db.session.commit()         # Update courses! 
         
-        print("Changes Saved!")
+        flash("Changes Saved!", "success")
         return redirect(url_for('student_course_info'))
     elif request.method == 'GET':
         for course in courses:
@@ -172,8 +172,6 @@ def student_course_info():
            form.courses[int(course.id - 1)].designation.data = course.designation
            form.courses[int(course.id - 1)].credits.data = course.credits
         
-        
-
     return render_template('student_course_info.html', courses=courses, form=form)
 
 
@@ -847,15 +845,39 @@ def checklist():
                             FE_width = FE_width,
                             Lib_Art_width = Lib_Art_width)
 
-@app.route('/faculty/')
+@app.route('/faculty/', methods=['GET', 'POST'])
 @login_required
 def faculty():
+    form = FacultySearchStudentForm()
+    form.filters.choices = ['EMPLID', 'First Name', 'Last Name']
+
+    if form.validate_on_submit():
+        for choice in form.filters.choices:
+            if choice == "EMPLID":
+                notes = Notes.query.filter_by(EMPLID == form.EMPLID)
+                return search_student(form.EMPLID)
+            elif choice == "First Name":
+                notes = Notes.query.filter_by(noteOwner.firstname == form.firstname)
+                return search_student(form.firstname)
+            elif choice == "Last Name":
+                notes = Notes.query.filter_by(noteOwner.lastname == form.lastname)
+                return search_student(form.lastname)
+
+
     year = str(date.year)
     semester = get_semester(date.today())
     notes = Notes.query.filter(Notes.semester==semester,
                                 (Notes.be_advised == None)|(Notes.be_advised == False)).all()
+
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
-    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester = semester, year = year)
+    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form)
+
+@app.route('/faculty/search/<int:EMPLID>|<string:First_Name>|<string:Last_Name>')
+@login_required
+def search_student(EMPLID, First_Name, Last_Name):
+
+    return f'<h1> Student EMPLID: { EMPLID } </h1>'
+
 
 # function to get current semester
 def get_semester(date):
@@ -1071,6 +1093,7 @@ def Advisement():
             transcript_file = save_transcript(form.transcript.data, form.semester.data, form.year.data,
                                               current_user.EMPLID)  # Save the transcript!
             student.transcript = transcript_file  # Update the current user transcript in the database!
+            student.needs_advising = True         # Set this to true upon the form being submitted for approval 
             db.session.commit()  # Commit changes to the DB
             print("Execution Complete!")
 
@@ -1171,6 +1194,7 @@ def Advisement():
         note = Notes(EMPLID=current_user.EMPLID,year=form.year.data,semester=form.semester.data)
         db.session.add(note)
         db.session.commit()
+        flash("Advisement Form Submitted!", "success")
         return redirect(url_for('student_profile'))
 
     return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student,
@@ -1236,6 +1260,7 @@ def faculty_review(note_id):
         notes.be_advised=form.approve.data
         if notes.Owner.credit_earned <= 45 and form.approve.data == True:
             notes.approval = True
+        student.needs_advising = False          # Set this to False upon approval
         db.session.commit()
         flash('Notes saved!', 'success')
         return redirect(url_for('AdvisingHome'))

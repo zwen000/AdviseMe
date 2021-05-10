@@ -48,7 +48,15 @@ class StudentInfoForm(FlaskForm):
 
 # Although you would think, that just hardcoding the grade values in the choices array would be good enough, this 
 # needs to be query'd and connected to a grade table so a user can pick a grade choice ... 
- 
+
+
+class FacultySearchStudentForm(FlaskForm):
+    EMPLID = IntegerField('EMPLID')
+    firstname = StringField('First Name')
+    lastname = StringField('Last Name')
+    filters = SelectField('Filter', choices=[])
+    submit = SubmitField('Search')
+
 
 class SubmitForm(FlaskForm):
     submit = SubmitField('Submit')
@@ -59,11 +67,23 @@ class CourseInfoForm(FlaskForm):
 
 
 class CourseForm(FlaskForm):
+
+    choices = ['Core Requirement', 'Group A Elective', 'Group B Elective', 
+                'Group C Elective', 'Science Elective', 'Required Liberal Art', 
+                '[CE](1000)', '[WCGI](1000)', '[IS](1000)', '[US](1000)', 
+                '[CE](2000)', '[WCGI](2000)', '[IS](2000)', '[US](2000)', 
+                'Technical Elective']
+
+    dept_options = ['CSC', 'MATH','BIO', 'CHEM', 'PHY', 'ENGL', 'THEATRE/SPEECH', 
+                    'ECO', 'ENGR', 'ART', 'MUS', 'JWST', 'ANTH', 'ASIA', 'BLST',
+                    'HIST', 'LIB', 'PSY', 'SOC', 'WS', 'PSC', 'USSO', 'PHIL', 
+                    'AES', 'URB', 'FREN', 'SPAN', 'EDCE', 'EAS', 'Arbitrary']
+
     serial = StringField('Course Serial:', validators=[DataRequired()])
     course_name = StringField('Course Name:', validators=[DataRequired()])
-    dept = StringField('Department:', validators=[DataRequired()])
+    dept = SelectField('Department:', choices=dept_options)
     course_description = TextAreaField('Course Description: (Optional)')
-    designation = StringField('Designation:', validators=[DataRequired()])
+    designation = SelectField('Designation:', choices=choices)
     credits = IntegerField('Course Credits:', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
@@ -76,12 +96,17 @@ class CourseForm(FlaskForm):
 
 
 course_count = db.session.query(Course.id).count()     # This is a more OPTIMAL method of doing this!!! 
+db.session.close()     # If I don't close the session here, running clean_up.py will run into a [win32] Permission Error!
+
+# Thought process: Store course count, from the readinf the DB, then close the DB session to prevent any process collision exceptions from occuring
+# Use the stored value to show exactly the right amount of courses
+
 # Refer to --->  https://stackoverflow.com/questions/14754994/why-is-sqlalchemy-count-much-slower-than-the-raw-query 
 # As to why this is more optimal for anyone curious enough to read this -- Ray
 
 # print(course_count) # <--- There is a weird known front-end bug, where if I delete a course, this variable will not update in time. 
 # and as a result we will have more course forms than what is actually needed! Very odd, printing the variable out to debug, seems to fix 
-# The issue as it (I guess) refreshes the variable. It could be a caching issue ... huh very odd behaviour. 
+# The issue as it (I guess) refreshes the variable. It could be a caching issue ... huh very odd behaviour.  
 
 class Cirriculum_Form(FlaskForm):
     courses = FieldList(FormField(CourseForm), min_entries=course_count, max_entries=None)  # course_count is the number of courses in the entire Database!
@@ -91,7 +116,6 @@ class ElectiveForm(FlaskForm):
     elective = SelectField('Elective: ', choices=[])
     grade = SelectField('grade: ', choices=[])
     submit = SubmitField('Submit')
-
 
 
 class FacultyInfoForm(FlaskForm):
@@ -116,6 +140,7 @@ class AcademicReviewForm(FlaskForm):
     additional = TextAreaField('additional')
     approval = BooleanField('Approved')
     submit = SubmitField('Viewed')
+
 
 class UpdateStudentAccountForm(FlaskForm):
     EMPLID =IntegerField('EMPLID', validators=[DataRequired()])
