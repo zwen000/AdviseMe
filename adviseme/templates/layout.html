@@ -39,7 +39,7 @@
                     <div class="navbar-nav mr-auto">
                         {% if current_user.is_authenticated %}
                             {% if '@citymail.cuny.edu' in current_user.email %}
-                               <a class="nav-item nav-link" href="{{ url_for('student_profile') }}">My Profile</a>
+                               <a class="nav-item nav-link" href="{{ url_for('student_profile', EMPLID=current_user.EMPLID) }}">My Profile</a>
                                <a class="nav-item nav-link" href="{{ url_for('checklist') }}">Checklist</a>
                             {% endif %}
                         {% else %}

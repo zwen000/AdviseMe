@@ -27,6 +27,10 @@
     </div>
     <hr>
 -->
+
+
+
+
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Academic Advisor'%}
         {% for note in notes %}
@@ -49,7 +53,7 @@
       <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
       </button>
       <div class="content">
-        <a class="f_link" href="#">Link to student profile</a>
+        <a class="f_link" href="{{  url_for('student_profile', EMPLID=note.Owner.EMPLID)  }}">Link to student profile</a>
         <br>
         <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
       </div>

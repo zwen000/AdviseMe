@@ -3,7 +3,7 @@ import math
 import secrets
 from datetime import date
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from adviseme import app, bcrypt, db
 from adviseme.forms import *
 from adviseme.models import *
@@ -73,7 +73,7 @@ def login():
             elif current_user.role == 'Student':
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
-                return redirect(next_page) if next_page else redirect(url_for('student_profile'))
+                return redirect(next_page) if next_page else redirect(url_for('student_profile', EMPLID=current_user.EMPLID))
             elif current_user.role == 'Faculty':
                 next_page = request.args.get('next')
                 flash('Login Successful. Welcome to AdviseMe', 'success')
@@ -667,9 +667,12 @@ def student_profile_edit():
     return render_template("student_profile_edit.html", title="Student Profile Edit", profile_image=profile_image, form=form)
 
 
-@app.route('/student/profile', methods=['GET', 'POST'])
+@app.route('/student/profile/<int:EMPLID>', methods=['GET', 'POST'])
 @login_required
-def student_profile():
+def student_profile(EMPLID):
+    if current_user.role == "Student" and current_user.EMPLID != EMPLID:
+        abort(403)
+
     GPA_QPA()
     form = UpdateStudentAccountForm()
     remove_list()
@@ -683,13 +686,15 @@ def student_profile():
         current_user.email = form.email.data
         db.session.commit()  # commit changes to the database!
         flash('Your account info has been updated successfully!', 'success')
-        return redirect(url_for('student_profile'))
+        return redirect(url_for('student_profile', EMPLID=current_user.EMPLID))
     elif request.method == 'GET':
         form.EMPLID.data = current_user.EMPLID
         form.email.data = current_user.email
 
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template("student_profile.html", title="Student Profile", profile_image=profile_image, form=form)
+
+
 
 def get_Free_Electives():
     free_electives  = [ (course_option) for course_option in Course.query.filter_by(designation="[CE](1000)") ]
@@ -703,6 +708,7 @@ def get_Free_Electives():
     # print(free_electives[0].id, free_electives[0].serial, free_electives[0].credits)
 
     return free_electives
+
 
 
 @app.route('/checklist')
@@ -854,8 +860,12 @@ def faculty():
     semester = get_semester(date.today())
     notes = Notes.query.filter(Notes.semester==semester,
                                 (Notes.be_advised == None)|(Notes.be_advised == False)).all()
+
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
-    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester = semester, year = year)
+
+    students = Student.query.filter_by(needs_advising=True)
+
+    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, students=students, notes=notes, semester=semester, year=year)
 
 # function to get current semester
 def get_semester(date):
@@ -1071,6 +1081,7 @@ def Advisement():
             transcript_file = save_transcript(form.transcript.data, form.semester.data, form.year.data,
                                               current_user.EMPLID)  # Save the transcript!
             student.transcript = transcript_file  # Update the current user transcript in the database!
+            student.needs_advising = True         # Set this to True, and then when the advisor approves, set it back to false for the next semester! 
             db.session.commit()  # Commit changes to the DB
             print("Execution Complete!")
 
@@ -1171,6 +1182,7 @@ def Advisement():
         note = Notes(EMPLID=current_user.EMPLID,year=form.year.data,semester=form.semester.data)
         db.session.add(note)
         db.session.commit()
+        flash("Advisement Form Submited!", "success")
         return redirect(url_for('student_profile'))
 
     return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student,
@@ -1236,6 +1248,7 @@ def faculty_review(note_id):
         notes.be_advised=form.approve.data
         if notes.Owner.credit_earned <= 45 and form.approve.data == True:
             notes.approval = True
+        student.needs_advising = False # Upon approval set this to False, so that the student can apply for advising next semester! 
         db.session.commit()
         flash('Notes saved!', 'success')
         return redirect(url_for('AdvisingHome'))
