@@ -6,7 +6,7 @@
 <center><legend class="border-bottom mb-4 title">Edit Workflow</legend></center>
 <form method="POST" action="" enctype="multipart/form-data">
 
-<h6 class="sub-title">For students under 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="#">|| Preview Workflow ||</a></h6>
+<h6 class="sub-title">For students under 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="{{ url_for('preview_workflow') }}">|| Preview Workflow ||</a></h6>
 <div class="form-check">
     {{ form.under_advisement(class="form-check-input") }}
     {{ form.under_advisement.label(class="info") }}
@@ -28,7 +28,7 @@
 </div>
 <hr>
 
-<h6 class="sub-title">For students above 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="#">|| Preview Workflow ||</a></h6>
+<h6 class="sub-title">For students above 45 credits:<a style="float: right; display: inline; text-decoration: none;" href="{{ url_for('preview_workflow2') }}">|| Preview Workflow ||</a></h6>
 <div class="form-check">
     {{ form.above_advisement(class="form-check-input") }}
     {{ form.above_advisement.label(class="info") }}
