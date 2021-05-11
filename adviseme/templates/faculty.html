@@ -2,7 +2,7 @@
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <center>
-  <div class='row'>
+<div class='row'>
     <div class='column'>
 <div class="content-section">
       <img class="rounded-circle account-img" src="{{ profile_image }}">
@@ -17,7 +17,7 @@
 <div class='double-column'>
   <div class="c_viewport rounded">
     <div class="push" style="height:1px;"></div>
-    <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
+    <legend class="border-bottom mb-4">Students in Need of Advisement:</legend>
 
     <!-- Ray will add search bar later 
     <div class="search-container">
@@ -57,6 +57,29 @@
     <br>
     {%endif%}
     {% endfor %}
+    {% else %} <!-- Case when there are no students in need of advisement -->
+    <div class="container d-flex justify-content-center py-5">
+      <div class="card shaodw-lg card-1">
+          <div class="card-header pt-3 py-3 ml-auto border-0 ">
+
+          </div>
+          <div class="card-body d-flex pt-0">
+              <div class="row no-gutters mx-auto justify-content-start flex-sm-row flex-column">
+                  <div class="col-md-4 text-center"><img class="irc_mi img-fluid mr-0" src="https://cdn4.iconfinder.com/data/icons/logistics-delivery-2-5/64/137-512.png" width="150" height="150"></div>
+                  <div class="col-md-8 ">
+                      <div class="card border-0 ">
+                          <div class="card-body">
+                              <h5 class="card-title"><b>Notice:</b></h5>
+                              <p class="card-text ">
+                                  <p>No students currently in need of advisement. View your past advisement notes.</p>
+                              </p> <a href="{{ url_for('noteReviewHome') }}"><button type="button" class="btn btn-primary btn-round-lg btn-lg">Archive</button></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
   {%endif%}
 </div>
 </div>
@@ -117,7 +140,7 @@
   padding: 4%;
   color: rgb(27,30,36);
   margin: 20px 0;
-  height: 700px;
+  height: 100%;
   overflow: auto;
   background: #FFFFFF;
 box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
@@ -174,7 +197,7 @@ text-decoration-line: underline;
 
 color: #233B7E;
 }
-p:hover{
+.p-custom:hover{
   color: #3772D7;
   font-size: large;
 }
@@ -230,6 +253,14 @@ a{
 .content-section{
   width: 95%;
   padding: 4%;
+}
+legend{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 24px;
+
+color: #233B7E;
 }
 
 }
