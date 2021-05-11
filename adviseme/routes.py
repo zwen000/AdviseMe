@@ -848,36 +848,28 @@ def checklist():
 @app.route('/faculty/', methods=['GET', 'POST'])
 @login_required
 def faculty():
-    form = FacultySearchStudentForm()
-    form.filters.choices = ['EMPLID', 'First Name', 'Last Name']
-
-    if form.validate_on_submit():
-        for choice in form.filters.choices:
-            if choice == "EMPLID":
-                notes = Notes.query.filter_by(EMPLID == form.EMPLID)
-                return search_student(form.EMPLID)
-            elif choice == "First Name":
-                notes = Notes.query.filter_by(noteOwner.firstname == form.firstname)
-                return search_student(form.firstname)
-            elif choice == "Last Name":
-                notes = Notes.query.filter_by(noteOwner.lastname == form.lastname)
-                return search_student(form.lastname)
-
+    form = SearchForm()
 
     year = str(date.year)
     semester = get_semester(date.today())
     notes = Notes.query.filter(Notes.semester==semester,
                                 (Notes.be_advised == None)|(Notes.be_advised == False)).all()
-
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
+
+    if request.method == "POST":
+        return redirect(url_for('search', query=form.search.data))
+
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form)
 
-@app.route('/faculty/search/<int:EMPLID>|<string:First_Name>|<string:Last_Name>')
+
+@app.route('/search/<query>', methods=['GET', 'POST'])
 @login_required
-def search_student(EMPLID, First_Name, Last_Name):
+def search(query):
 
-    return f'<h1> Student EMPLID: { EMPLID } </h1>'
+    student = Student.query.filter_by(firstname=query).first()
+    print(student)
 
+    return f'<h1>{student}</h1>'
 
 # function to get current semester
 def get_semester(date):

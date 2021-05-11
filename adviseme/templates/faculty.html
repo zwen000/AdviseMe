@@ -22,8 +22,7 @@
     <!-- Ray will add search bar later -->  
     <div class="search-container">
       <form method="POST" action="" enctype="multipart/form-data">
-        {{ form.EMPLID }}
-        {{ form.filters }}
+        {{ form.search }}
         {{ form.submit }}
       </form>
     </div>
@@ -64,6 +63,8 @@
 </div>
 
 <style>
+
+
   * {box-sizing: border-box;}
   input[type=text] {
   padding: 10px;

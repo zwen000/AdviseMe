@@ -50,12 +50,9 @@ class StudentInfoForm(FlaskForm):
 # needs to be query'd and connected to a grade table so a user can pick a grade choice ... 
 
 
-class FacultySearchStudentForm(FlaskForm):
-    EMPLID = IntegerField('EMPLID')
-    firstname = StringField('First Name')
-    lastname = StringField('Last Name')
-    filters = SelectField('Filter', choices=[])
-    submit = SubmitField('Search')
+class SearchForm(FlaskForm):
+    search = StringField('', render_kw={"placeholder": "Search for student"}, validators=[DataRequired()])
+    submit = SubmitField('Search', render_kw={'class': 'btn btn-success btn-block'})
 
 
 class SubmitForm(FlaskForm):
@@ -98,8 +95,8 @@ class CourseForm(FlaskForm):
 course_count = db.session.query(Course.id).count()     # This is a more OPTIMAL method of doing this!!! 
 db.session.close()     # If I don't close the session here, running clean_up.py will run into a [win32] Permission Error!
 
-# Thought process: Store course count, from the readinf the DB, then close the DB session to prevent any process collision exceptions from occuring
-# Use the stored value to show exactly the right amount of courses
+# Thought process: Store course count, from the reading the DB, then close the DB session to prevent any process collision exceptions from occuring
+# Use the stored value to show exactly the right amount of courses in min_entires.
 
 # Refer to --->  https://stackoverflow.com/questions/14754994/why-is-sqlalchemy-count-much-slower-than-the-raw-query 
 # As to why this is more optimal for anyone curious enough to read this -- Ray
@@ -111,6 +108,7 @@ db.session.close()     # If I don't close the session here, running clean_up.py 
 class Cirriculum_Form(FlaskForm):
     courses = FieldList(FormField(CourseForm), min_entries=course_count, max_entries=None)  # course_count is the number of courses in the entire Database!
     submit = SubmitField('Update Course Info')
+
 
 class ElectiveForm(FlaskForm):
     elective = SelectField('Elective: ', choices=[])
