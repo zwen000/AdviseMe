@@ -1,6 +1,5 @@
 {% extends "layout.html"%}
 {% block content %}
-
     <div>
         <br>
         <a href="{{ url_for('student_course_info') }}">Edit an existing Course in the Cirriculum?</a>
@@ -23,14 +22,14 @@
             <form method="POST" action="" enctype="multipart/form-data">
                 <tr>
                     <td> # </td>
-                    <td>{{ form.serial }}</td>
-                    <td>{{ form.course_name }}</td>
-                    <td>{{ form.dept }}</td>
-                    <td>{{ form.course_description }}</td>
-                    <td>{{ form.designation }}</td>
-                    <td>{{ form.credits }}</td>
+                    <td>{{ form.serial(class="form-control") }}</td>
+                    <td>{{ form.course_name(class="form-control") }}</td>
+                    <td>{{ form.dept(class="form-control") }}</td>
+                    <td>{{ form.course_description(class="form-control") }}</td>
+                    <td>{{ form.designation(class="form-control") }}</td>
+                    <td>{{ form.credits(class="form-control") }}</td>
                 </tr>
-                {{ form.submit }}
+                {{ form.submit(class="btn custom-button-submit") }}
             </form>
             {%for course in courses %}
                 <tr class="text-center">
@@ -45,7 +44,77 @@
                 </tr>
             {% endfor %}
         </tbody>
-
     </table>
 
 {% endblock %}
+<style>
+ .form-control{
+    border-radius: 50px;
+    font:  15px  Open Sans Condensed, sans-serif;
+    color: #3772D7;
+    text-align: center;
+   }
+   .form-control:focus{
+    border-color: #3772D7;
+    box-shadow: none;
+    -webkit-box-shadow: none;}
+
+legend{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 12px;
+}
+.c_viewport{
+  padding: 4%;
+  color: rgb(27,30,36);
+  margin: 20px 0;
+  height: 655px;
+  overflow: auto;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+}
+
+.custom-button-submit {
+    background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+    color: hsl(0, 0%, 100%);
+    padding: 10px;
+    border: none;
+    width: 30%;
+    cursor: pointer;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.custom-button-submit:hover{
+    transition: ease-in;
+    background: #233B7E;
+    color: white;
+}
+
+.content-section{
+    width: 50%;
+    padding: 1%;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+}
+h2{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 15px;
+color: #233B7E;   
+}
+h3{
+    font-family: Poppins;
+font-style: normal;
+font-weight: bold;
+font-size: 35px;
+
+color: #233B7E;
+}
+</style>

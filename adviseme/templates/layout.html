@@ -60,7 +60,13 @@
 
                                 {% if current_user.FacultyOwner.staff_role == 'Academic Advisor' %}
                                 <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement |</a>
-                                <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Archieve |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Archive |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout |</a>
+                                {% elif current_user.FacultyOwner.staff_role == 'Faculty Advisor' %}
+                                <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement |</a>
+                                <a class="nav-item nav-link" href="{{ url_for('noteReviewHome') }}">Archive |</a>
                                 <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form |</a>
                                 <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow |</a>
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout |</a>
@@ -68,7 +74,6 @@
                                 <a class="nav-item nav-link" href="{{ url_for('faculty') }}">Advisement</a>
                                 <a class="nav-item nav-link" href="{{ url_for('student_course_info') }}">Edit Form</a>
                                 <a class="nav-item nav-link" href="{{ url_for('EditWorkflow') }}">Edit Workflow</a> 
-
                                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                                 {% endif %}
                             {% endif %}

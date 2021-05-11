@@ -1023,6 +1023,30 @@ def workflow():
     editworkflow = Editworkflow.query.filter_by(id=1).first()
     return render_template('workflow.html', title="workflow",notes=notes,editworkflow=editworkflow)
 
+@app.route('/Preview/Under/Workflow/')
+@login_required
+def preview_workflow():
+    todaydate = date.today()
+    semester = get_semester(todaydate)
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    return render_template('PreviewWorkflow.html', title="preview workflow",notes=notes,editworkflow=editworkflow)
+
+@app.route('/Preview/Above/Workflow/')
+@login_required
+def preview_workflow2():
+    todaydate = date.today()
+    semester = get_semester(todaydate)
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    return render_template('WorkflowPreview2.html', title="preview workflow",notes=notes,editworkflow=editworkflow)
+
 @app.route('/workflow2/')
 @login_required
 def workflow2():
