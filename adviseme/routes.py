@@ -899,7 +899,7 @@ def noteReviewHome():
 
     semester = get_semester(date.today())
     notes = Notes.query.filter_by(be_advised=True,
-                                    approval=False,
+                                    approval=None,
                                     semester = semester).all()
 
     return render_template('noteReviewHome.html',notes=notes)
@@ -1282,6 +1282,8 @@ def FacultyArchive(note_id):
     electives["US"] = US
     electives["IS"] = IS
     electives["WCGI"] = WCGI
+
+
     return render_template('FacultyArchive.html', tittle="Faculty Advisor Archive", form=form, student=student, notes=notes, course=course, electives=electives)
 
 
@@ -1319,6 +1321,7 @@ def AcademicArchive(note_id):
     electives["US"] = US
     electives["IS"] = IS
     electives["WCGI"] = WCGI
+
 
     if student.credit_earned >= 45:
         return render_template('AcademicArchive.html', tittle="Faculty Advisor Archive", form=form, student=student, notes=notes, course=course, electives=electives)
