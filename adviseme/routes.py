@@ -1330,3 +1330,151 @@ def AcademicArchive(note_id):
         return render_template('AcademicArchive2.html', tittle="Faculty Advisor Archive", form=form, student=student,
                                notes=notes, course=course, electives=electives)
 
+
+
+@app.route('/Advisement/update/<int:note_id>', methods=['GET', 'POST'])
+@login_required
+def Update_Advisement(note_id):
+    notes = Notes.query.get_or_404(note_id)
+    form = AdvisementForm()
+    GPA_QPA()
+    student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
+    transcript = url_for('static', filename='Transcript/' + student.transcript)
+
+    enrolled = {i.course_id: i.grade for i in current_user.studentOwner.courses}
+    course_obj = {i[0]: i[1] for i in form.course.iter_choices()}  # checkbox_field_id: course_object
+
+    electives = []
+    tech_elec = Course.query.join(Enrollement, Enrollement.course_id == Course.id).add_columns(Enrollement.grade) \
+        .filter(Enrollement.student_id == current_user.studentOwner.EMPLID,
+                Course.designation == "Technical Elective").all()
+    if len(tech_elec) >= 2:
+        electives.extend(tech_elec[0:2])
+    elif len(tech_elec) == 1:
+        electives.extend(tech_elec)  # 0
+        electives.append(None)  # 1
+    else:
+        electives.append(None)  # 0
+        electives.append(None)  # 1
+
+    ce = Course.query.join(Enrollement, Enrollement.course_id == Course.id).add_columns(Enrollement.grade) \
+        .filter((Course.designation == "[CE](1000)") | (Course.designation == "[CE](2000)"),
+                Enrollement.student_id == current_user.studentOwner.EMPLID).first()
+    use = Course.query.join(Enrollement, Enrollement.course_id == Course.id).add_columns(Enrollement.grade) \
+        .filter((Course.designation == "[US](1000)") | (Course.designation == "[US](2000)"),
+                Enrollement.student_id == current_user.studentOwner.EMPLID).first()
+    is_ = Course.query.join(Enrollement, Enrollement.course_id == Course.id).add_columns(Enrollement.grade) \
+        .filter((Course.designation == "[IS](1000)") | (Course.designation == "[IS](2000)"),
+                Enrollement.student_id == current_user.studentOwner.EMPLID).first()
+    wcgi = Course.query.join(Enrollement, Enrollement.course_id == Course.id).add_columns(Enrollement.grade) \
+        .filter((Course.designation == "[WCGI](1000)") | (Course.designation == "[WCGI](2000)"),
+                Enrollement.student_id == current_user.studentOwner.EMPLID).first()
+    electives.append(ce)  # 2
+    electives.append(use)  # 3
+    electives.append(is_)  # 4
+    electives.append(wcgi)  # 5
+
+    if form.validate_on_submit():
+        # return "{}".format(form.tech_elec_check2.data) #for test
+        for course in form.course.data:
+            enrollement = Enrollement.query.filter_by(
+                student_id=current_user.EMPLID,
+                course_id=course.id).first()
+            if not enrollement:
+                enrollement = Enrollement(student_id=current_user.EMPLID,
+                                          course_id=course.id,
+                                          attempt=True)
+                db.session.add(enrollement)
+            else:
+                enrollement.grade = ''
+                enrollement.attempt = True
+
+        if form.tech_elec_check1.data == True:
+            for course in form.tech_elec1.data:
+                enrollement = Enrollement.query.filter_by(
+                    student_id=current_user.EMPLID,
+                    course_id=course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                              course_id=course.id,
+                                              attempt=True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+        if form.tech_elec_check2.data == True:
+            for course in form.tech_elec2.data:
+                enrollement = Enrollement.query.filter_by(
+                    student_id=current_user.EMPLID,
+                    course_id=course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                              course_id=course.id,
+                                              attempt=True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+        if form.CE_check.data == True:
+            for course in form.CE.data:
+                enrollement = Enrollement.query.filter_by(
+                    student_id=current_user.EMPLID,
+                    course_id=course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                              course_id=course.id,
+                                              attempt=True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+
+        if form.USE_check.data == True:
+            for course in form.USE.data:
+                enrollement = Enrollement.query.filter_by(
+                    student_id=current_user.EMPLID,
+                    course_id=course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                              course_id=course.id,
+                                              attempt=True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+
+        if form.IS_check.data == True:
+            for course in form.IS.data:
+                enrollement = Enrollement.query.filter_by(
+                    student_id=current_user.EMPLID,
+                    course_id=course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                              course_id=course.id,
+                                              attempt=True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+        if form.WCGI_check.data == True:
+            for course in form.WCGI.data:
+                enrollement = Enrollement.query.filter_by(
+                    student_id=current_user.EMPLID,
+                    course_id=course.id).first()
+                if not enrollement:
+                    enrollement = Enrollement(student_id=current_user.EMPLID,
+                                              course_id=course.id,
+                                              attempt=True)
+                    db.session.add(enrollement)
+                else:
+                    enrollement.grade = ''
+                    enrollement.attempt = True
+
+        # note = Notes(EMPLID=current_user.EMPLID,year=form.year.data,semester=form.semester.data)
+        # db.session.add(note)
+        db.session.commit()
+        return redirect(url_for('workflow'))
+
+    return render_template('UpdateAdvisementForm.html', title="Live Advisement Form", form=form,
+                           enrolled=enrolled, course_obj=course_obj, transcript=transcript, electives=electives, notes=notes)
+

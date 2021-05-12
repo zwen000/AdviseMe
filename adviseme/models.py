@@ -61,7 +61,7 @@ class Notes(db.Model):
     Student = db.relationship('Student', backref='advisingnote', lazy=True)
 
     def __repr__(self):
-        return f"Notes('{self.EMPLID}','{self.academic_comment}','{self.next_semester_comment}','{self.be_advised}', '{self.semester}', '{self.year}','{self.be_advised}','{self.approval}' )"
+        return f"Notes('{self.EMPLID}','{self.academic_comment}','{self.next_semester_comment}','{self.be_advised}', '{self.semester}', '{self.year}','{self.credits}','{self.credits}' )"
 
 
 

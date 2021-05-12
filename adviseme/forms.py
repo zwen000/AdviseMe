@@ -124,8 +124,6 @@ class UpdateStudentAccountForm(FlaskForm):
                 raise ValidationError('The email is already in use!')
 
 
-
-
 class AdvisementForm(FlaskForm):
     semester = SelectField("semester", choices=[("SPRING", "Spring"), ("FALL", "Fall")])
     date =date.today()
@@ -235,4 +233,3 @@ class EditworkflowForm(FlaskForm):
     above_academic = BooleanField('Academic Advisor Approval')
     above_enrollment = BooleanField('Eligible for Enrollment')
     submit = SubmitField('Update')
-
