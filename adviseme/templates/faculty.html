@@ -23,7 +23,7 @@
     <div class="search-container">
       <form method="POST" action="" enctype="multipart/form-data">
         {{ form.search }}
-        {{ form.submit }}
+        {{ form.submit(style="background-color:#233B7E") }}
       </form>
     </div>
     <hr>
@@ -73,7 +73,7 @@
                               <h5 class="card-title"><b>Notice:</b></h5>
                               <p class="card-text ">
                                   <p>No students currently in need of advisement. View your past advisement notes.</p>
-                              </p> <a href="{{ url_for('noteReviewHome') }}"><button type="button" class="btn btn-primary btn-round-lg btn-lg">Archive</button></a>
+                              </p> <a href="{{ url_for('noteReviewHome') }}"><button type="button" class="btn btn-round-lg btn-lg" style="background-color:#233B7E; color:white">Archive</button></a>
                           </div>
                       </div>
                   </div>
