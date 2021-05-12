@@ -502,15 +502,10 @@ def Technical_Electives():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     courses = Course.query.all()
 
-    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="Group A Elective")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group B Elective")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group C Elective")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(serial='ENGR 27600')]      # Engineering Economics counts as a Tech elective, Eco 10400 doesn't
+    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(serial='ENGR 27600')]      # Engineering Economics counts as a Tech elective, Eco 10400 doesn't
     form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Technical Elective")]
 
-    # REMINDER: A Technical Elective by definition can be any CS class (like a course in group A,B,C) [exxluding core requirements]
-    # And any Science Elective, in Chemistry, Physics, Mathematics,  any course in EAS (Earth and Enviornmental System Sciences) & in Engineering.
-    # NOTE: 1000 level courses are not allowed ...
+    # NOTE: CS courses will not be displayed if they are selected using this route. [X] - Priority: LOW
 
     form.grade.choices = [(grade_option.value) for grade_option in Grade.query.all()]
 
@@ -736,40 +731,41 @@ def checklist():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
-    # course_count = db.session.query(Course.id).filter_by(dept == "CSC").filter_by(designation == "Core Requirement").count()
-    # print(course_count)
-    # print(course_count)
-
     #progress bar for Computer Science
-    checklistProgressInterval_CS = 100 / 18   # <--- (Instead of 18 you set a variable like CS_count then query and count them)
+    cs_count = Course.query.filter_by(dept="CSC", designation="Core Requirement").count()
+    checklistProgressInterval_CS = 100 / cs_count   # <--- (Instead of 18 you set a variable like CS_count then query and count them)
     CS_width = 0
     for cs_course in cs_courses:
         for score in scores:
             if score.grade and cs_course.id == score.course_id:
-                if cs_course.dept == "CSC" and cs_course.id <=18:
+                if cs_course.dept == "CSC" and cs_course.designation == "Core Requirement":
                         CS_width += checklistProgressInterval_CS
-    CS_width_num = CS_width/100 * 18
+    CS_width_num = CS_width/100 * cs_count
 
     #progress bar for Computer Science Electives
-    checklistProgressInterval_CSE = 100 / 4
+
+    checklistProgressInterval_CSE = 100 / 4     # Leaving this as four since this is not counting all courses but instead a 4 out of many courses.
     CSE_width = 0
     for cs_elective in courses_array:
         if cs_elective.dept == "CSC" and cs_elective.id > 18:
             CSE_width += checklistProgressInterval_CSE
     CSE_width_num = CSE_width/100 * 4
 
+    math_count = Course.query.filter_by(dept="MATH", designation="Core Requirement").count()
 
     #progress bar for Math
-    checklistProgressInterval_Math = 100 / 4
+    checklistProgressInterval_Math = 100 / math_count
     Math_width = 0
     for math_course in courses_array:
         for score in scores:
             if score.grade and math_course.id == score.course_id:
                 if math_course.dept == "MATH" and math_course.designation == "Core Requirement":
                     Math_width += checklistProgressInterval_Math
-    Math_width_num = Math_width/100 * 4
+    Math_width_num = Math_width/100 * math_count
 
     #progress bar for Science
+    science_count = Course.query.filter_by(designation="Science Elective").count()
+    print(science_count)
     checklistProgressInterval_Science = 100 / 3
     Science_width = 0
     for science_elective in science_courses:
@@ -828,6 +824,8 @@ def checklist():
                             pathway_courses=pathway_courses,
                             free_courses=free_courses,
                             math_courses=math_courses,
+                            math_count=math_count, 
+                            cs_count=cs_count, 
                             CS_width_num =  int(CS_width_num),
                             CSE_width_num =  int(CSE_width_num),
                             Math_width_num =  int(Math_width_num),
@@ -872,11 +870,6 @@ def faculty():
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form)
 
-@app.route('/faculty/search/<int:EMPLID>|<string:First_Name>|<string:Last_Name>')
-@login_required
-def search_student(EMPLID, First_Name, Last_Name):
-
-    return f'<h1> Student EMPLID: { EMPLID } </h1>'
 
 
 # function to get current semester
