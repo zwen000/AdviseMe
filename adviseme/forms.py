@@ -57,20 +57,19 @@ class CourseInfoForm(FlaskForm):
     grade = SelectField('grade: ', choices=[])
     submit = SubmitField('Submit')
 
-class CourseCreationForm(FlaskForm):
+
+class CourseForm(FlaskForm):
     serial = StringField('Course Serial:', validators=[DataRequired()])
-    name = StringField('Course Name:', validators=[DataRequired()])
+    course_name = StringField('Course Name:', validators=[DataRequired()])
     dept = StringField('Department:', validators=[DataRequired()])
-    description = TextAreaField('Course Description: (Optional)')
+    course_description = TextAreaField('Course Description: (Optional)')
     designation = StringField('Designation:', validators=[DataRequired()])
-    credits = IntegerField('Course id:', validators=[DataRequired()])
+    credits = IntegerField('Course Credits:', validators=[DataRequired()])
+
+
+class Cirriculum_Form(FlaskForm):
+    courses = FieldList(FormField(CourseForm), min_entries=126)  # 126 is the number of courses in the entire Database!
     submit = SubmitField('Submit')
-
-    def validate_Course_ID(self, id):              # checks for duplicate Course id's 
-        course = Course.query.filter_by(id=id.data).first()
-        if course:
-            raise ValidationError('That Course ID is already in use!')
-
 
 class ElectiveForm(FlaskForm):
     elective = SelectField('Elective: ', choices=[])

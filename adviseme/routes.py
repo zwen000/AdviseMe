@@ -146,30 +146,35 @@ def studentinfo_fill():
 
 @app.route('/student/course/info', methods=['GET', 'POST'])
 def student_course_info():
-    form = CourseCreationForm()
-    student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
+    # form2 = CourseForm()
+    form = Cirriculum_Form()  
+    courses = Course.query.all()
 
-    courses = []
-    for courseObj in student_info:
-        # print(courseObj.grade)
-        courses += Course.query.filter_by(id=courseObj.course_id)
-
-    for i in courses:
-        print(i)
-
-    if form.validate_on_submit():
-        course = Course(    serial=form.serial.data,
-                            name=form.name.data,
-                            dept=form.dept.data,
-                            description=form.description.data,
-                            designation=form.designation.data,
-                            credits=form.credits.data)
-        db.session.add(course)
-        flash('Your course has been created!', 'success')
-        db.session.commit()
+    if request.method == 'POST':
+        for course in courses:
+            course.serial = form.courses[int(course.id - 1)].serial.data
+            course.name = form.courses[int(course.id - 1)].course_name.data
+            course.dept = form.courses[int(course.id - 1)].dept.data
+            course.description = form.courses[int(course.id - 1)].course_description.data
+            course.designation = form.courses[int(course.id - 1)].designation.data
+            course.credits = form.courses[int(course.id - 1)].credits.data
+        
+        db.session.commit()         # Update courses! 
+        
+        print("Changes Saved!")
         return redirect(url_for('student_course_info'))
+    elif request.method == 'GET':
+        for course in courses:
+           form.courses[int(course.id - 1)].serial.data = course.serial
+           form.courses[int(course.id - 1)].course_name.data = course.name
+           form.courses[int(course.id - 1)].dept.data = course.dept
+           form.courses[int(course.id - 1)].course_description.data = course.description
+           form.courses[int(course.id - 1)].designation.data = course.designation
+           form.courses[int(course.id - 1)].credits.data = course.credits
+        
+        
 
-    return render_template('student_course_info.html', student_info=student_info, courses=courses, form=form)
+    return render_template('student_course_info.html', courses=courses, form=form)
 
 
 all_grade=[]
@@ -463,9 +468,9 @@ def Technical_Electives():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     courses = Course.query.all()
 
-    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="Group A")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group B")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group C")]
+    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="Group A Elective")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group B Elective")]
+    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group C Elective")]
     form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(serial='ENGR 27600')]      # Engineering Economics counts as a Tech elective, Eco 10400 doesn't
     form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Technical Elective")]
 
@@ -894,7 +899,7 @@ def noteReviewHome():
 
     semester = get_semester(date.today())
     notes = Notes.query.filter_by(be_advised=True,
-                                    approval=False,
+                                    approval=None,
                                     semester = semester).all()
 
     return render_template('noteReviewHome.html',notes=notes)
@@ -1277,6 +1282,8 @@ def FacultyArchive(note_id):
     electives["US"] = US
     electives["IS"] = IS
     electives["WCGI"] = WCGI
+
+
     return render_template('FacultyArchive.html', tittle="Faculty Advisor Archive", form=form, student=student, notes=notes, course=course, electives=electives)
 
 
@@ -1315,12 +1322,14 @@ def AcademicArchive(note_id):
     electives["IS"] = IS
     electives["WCGI"] = WCGI
 
+
     if student.credit_earned >= 45:
         return render_template('AcademicArchive.html', tittle="Faculty Advisor Archive", form=form, student=student, notes=notes, course=course, electives=electives)
     else:
         form = form = FacultyReviewForm()
         return render_template('AcademicArchive2.html', tittle="Faculty Advisor Archive", form=form, student=student,
                                notes=notes, course=course, electives=electives)
+
 
 
 @app.route('/Advisement/update/<int:note_id>', methods=['GET', 'POST'])
@@ -1468,5 +1477,4 @@ def Update_Advisement(note_id):
 
     return render_template('UpdateAdvisementForm.html', title="Live Advisement Form", form=form,
                            enrolled=enrolled, course_obj=course_obj, transcript=transcript, electives=electives, notes=notes)
-
 
