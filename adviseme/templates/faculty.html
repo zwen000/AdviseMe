@@ -39,7 +39,7 @@
             </div>
           </section>
           <br>
-          {%endif%}
+          {%endif%}       
         {% endfor %}
       {%endif%}
 
@@ -58,7 +58,9 @@
     <br>
     {%endif%}
     {% endfor %}
-    {% else %} <!-- Case when there are no students in need of advisement -->
+    {%endif%}
+
+    {% if not notes %} <!-- Case when there are no students in need of advisement -->
     <div class="container d-flex justify-content-center py-5">
       <div class="card shaodw-lg card-1">
           <div class="card-header pt-3 py-3 ml-auto border-0 ">
@@ -82,7 +84,7 @@
       </div>
   </div>
   {%endif%}
-</div>
+  </div>
 </div>
 
 <style>
