@@ -24,7 +24,7 @@
 
  <div class="c_viewport rounded">
      <div class="push" style="height:1px;"></div>
-    <table class="table table-striped bg-light text-center">
+    <table class="table table-striped table-hover bg-light text-center">
  <!-- Math-->
         <thead>
             <tr class="thead-dark">
@@ -779,7 +779,6 @@ th .sub_category {
     width: 30%
 }
 
-
 thead th{
   top:0;
   position:sticky;
@@ -796,12 +795,34 @@ thead>tr:nth-child(2) th {
 }
 
 tbody {
-    background-color: rgb(63,72,83);
+    background-color: rgb(242,242,242);
+<!--    background-color: rgb(63,72,83);-->
+
     color:white;
+}
+
+.intend {
+    background-color: rgb(47, 105, 206);
 }
 
 
 
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #608edf;
+  color:white;
+}
+
+.table .thead-dark th {
+  color: white;
+  background-color: #3872d7;
+  border-color: #dee2e6;
+}
+
+.table .table-secondary th {
+  color: white;
+  background-color: #4285f4;
+  border-color: #dee2e6;
+}
 
 </style>
 
