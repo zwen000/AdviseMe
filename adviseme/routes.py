@@ -9,6 +9,7 @@ from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
+from sqlalchemy.sql.operators import Operators
 import itertools
 
 @app.route('/')
@@ -852,12 +853,16 @@ def faculty():
 
     year = str(date.year)
     semester = get_semester(date.today())
+
     notes = Notes.query.filter(Notes.semester==semester,
                                 (Notes.be_advised == None)|(Notes.be_advised == False)).all()
+
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
 
     if request.method == "POST":
-        return redirect(url_for('search', query=form.search.data))
+        search = "%{}%".format(form.search.data)
+        notes = Notes.query.filter(Notes.EMPLID.like(search),Notes.semester==semester,
+                                (Notes.be_advised == None)|(Notes.be_advised == False)).all()
 
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form)
 
