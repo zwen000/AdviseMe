@@ -2,7 +2,7 @@
 {% block content %}
 {{ notes }}
 {% for note in notes %}
-  {% if note.approval ==False %}
+  {% if note.approval != True %}
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">

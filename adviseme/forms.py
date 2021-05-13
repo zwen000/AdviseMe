@@ -163,8 +163,6 @@ class UpdateStudentAccountForm(FlaskForm):
                 raise ValidationError('The email is already in use!')
 
 
-
-
 class AdvisementForm(FlaskForm):
     semester = SelectField("semester", choices=[("SPRING", "Spring"), ("FALL", "Fall")])
     date =date.today()
@@ -275,3 +273,71 @@ class EditworkflowForm(FlaskForm):
     above_enrollment = BooleanField('Eligible for Enrollment')
     submit = SubmitField('Update')
 
+
+class UpdateAdvisementForm(FlaskForm):
+    course = QuerySelectMultipleField(
+        'Course',
+        query_factory=lambda: Course.query,
+        widget=widgets.ListWidget(prefix_label=False),
+        option_widget=widgets.CheckboxInput()
+    )
+
+    tech_elec1 = QuerySelectMultipleField(
+        'Technical Elective 1',
+        query_factory=lambda: Course.query.filter_by(designation="Technical Elective"),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    tech_elec_check1 = BooleanField('Technical Elective 1')
+
+    tech_elec2 = QuerySelectMultipleField(
+        'Technical Elective 2',
+        query_factory=lambda: Course.query.filter_by(designation="Technical Elective"),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    tech_elec_check2 = BooleanField('Technical Elective 2')
+
+    CE = QuerySelectMultipleField(
+        'Creative Expression',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation=="[CE](1000)")|(Course.designation=="[CE](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    CE_check = BooleanField('Creative Expression')
+
+    USE = QuerySelectMultipleField(
+        'US Experience in its Diversity',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[US](1000)") | (Course.designation == "[US](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    USE_check = BooleanField('US Experience in its Diversity')
+
+    IS = QuerySelectMultipleField(
+        'Individual and Society',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[IS](1000)") | (Course.designation == "[IS](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    IS_check = BooleanField('Individual and Society')
+
+    WCGI = QuerySelectMultipleField(
+        'World Cultures and Global Issues',
+        query_factory=lambda: Course.query.filter(
+            (Course.designation == "[WCGI](1000)") | (Course.designation == "[WCGI](2000)")),
+        allow_blank=True,
+        widget=widgets.Select(multiple=False),
+        get_label='serial'
+    )
+    WCGI_check = BooleanField('World Cultures and Global Issues')
+
+    submit = SubmitField('Submit to Advisor')
