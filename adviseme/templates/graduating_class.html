@@ -27,14 +27,16 @@
         </tbody>
     </table>
 
-    {% if graduates == None %}
-        <h3>Nothing to export!</h3>
-    {% else %}
-        <!-- CSV file when downloaded works perfectly fine! but the deafault save name in file explorer is messed up. Why is the browser doing this??? And is this windows specific? -->
-        <!-- What behaviour I am referring to: https://github.com/jupyterlab/jupyterlab/issues/8019 -->
-        <a class="btn mt-3 mb-3 btn-info" href="{{ url_for('static', filename='export/CCNY_graduates.csv')}}" type="application/csv"  download="CCNY_graduates.csv" style="color: white;">Export Data as CSV file</a>
-        <br>
-        <a class="btn mt-3 mb-3 btn-success" href="{{ url_for('static', filename='export/CCNY_graduates.xlsx')}}" type="application/xlsx" download="CCNY_graduates.xlsx" style="color: white;">Export Data as Excel Sheet</a>
-    {% endif %}
+    {% for graduate in graduates %}
+        {% if graduate %}
+            <!-- CSV file when downloaded works perfectly fine! but the deafault save name in file explorer is messed up. Why is the browser doing this??? And is this windows specific? -->
+            <!-- What behaviour I am referring to: https://github.com/jupyterlab/jupyterlab/issues/8019 -->
+            <a class="btn mt-3 mb-3 btn-info" href="{{ url_for('static', filename='export/CCNY_graduates.csv')}}" type="application/csv"  download="CCNY_graduates.csv" style="color: white;">Export Data as CSV file</a>
+            <br>
+            <a class="btn mt-3 mb-3 btn-success" href="{{ url_for('static', filename='export/CCNY_graduates.xlsx')}}" type="application/xlsx" download="CCNY_graduates.xlsx" style="color: white;">Export Data as Excel Sheet</a>    
+        {% else %}
+            <h3>Nothing to export!</h3>
+        {% endif %}
+    {% endfor %}
 
 {% endblock content %}

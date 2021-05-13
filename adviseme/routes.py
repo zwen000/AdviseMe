@@ -945,6 +945,9 @@ def graduating_class():
 @app.route('/graduating/class/export')
 @login_required
 def export_csv():
+    if current_user.role == "Student":
+        abort(403)
+
     f = open('./adviseme/static/export/CCNY_graduates.csv', 'w')
     out = csv.writer(f)
     out.writerow(['EMPLID', 'First Name', 'Last Name' ])
@@ -961,7 +964,6 @@ def export_csv():
     f_excel.to_excel('./adviseme/static/export/CCNY_graduates.xlsx')
 
     return f 
-
 
 
 # function to get current semester
