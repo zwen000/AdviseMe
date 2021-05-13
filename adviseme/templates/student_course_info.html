@@ -1,6 +1,7 @@
 {% extends "layout.html"%}
 {% block content %}
-
+<div class="c_viewport rounded">
+    <div class="push" style="height:1px;"></div>
 <div>
     <!-- start of Table -->
     <section>
@@ -8,32 +9,21 @@
             <div class="row mt-auto mb-5">          <!-- Row -->
                 <div class="col-xl-12 col-lg-10 col-md-8 panel-body">       <!-- Column -->
 
-                    <div class="col-12 mb-4">
-                        <h3 class="text-dark text-center mb-3">Cirriculum Information [Computer Science] </h3>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="content-section text-center">
-                            <h2 class="mb-4">Legend:</h2>
-                            <legend>CE[1000]/[2000] = Creative Expression (1000 level)/(2000 level)</legend>
-                            <legend>IS[1000]/[2000] = Individual & Society (1000 level)/(2000 level)</legend>
-                            <legend>WCGI[1000]/[2000] = World Cultures and Global Issues (1000 level)/(2000 level)</legend>
-                            <legend>US[1000]/[2000] = U.S. Experince in its Diversity (1000 level)/(2000 level)</legend>
-                        </div>
-                    </div>
+                    <center><legend class=" title">Edit Computer Science Cirriculum</legend></center>
+                    <hr>
+                    <center><a href="{{ url_for('add_remove_course') }}">Add new Course to Cirriculum?</a></center> 
+                    <hr>
 
                     <div class="row">       <!-- Inner Grid -->
                         <table class="table table-striped bg-light text-center">
                             <thead>
                                 <tr class="text-muted">
-                                    <th>Course ID:</th>
                                     <th>Course Serial:</th>
                                     <th>Course Name:</th>
                                     <th>Course Department:</th>
-                                    <th>Course Description:</th>
+                                    <th>Credits: </th>
                                     <th>Designation:</th>
-                                    <th>Credits Earned: </th>
+                                    <th>Course Description:</th>
                                 </tr>
                             </thead>
 
@@ -43,43 +33,59 @@
                                         {{ form.csrf_token }}
 
                                         {% for field in form.courses %}
-                                            <tr>
-                                                <td>{{ field.id }}</td>
-                                                <td>{{ field.serial }}</td>
-                                                <td>{{ field.course_name }}</td>
-                                                <td>{{ field.dept }}</td>    
-                                                <td>{{ field.course_description }}</td>
-                                                <td>{{ field.designation }}</td>
-                                                <td>{{ field.credits }}</td>
+                                            <tr class="text-center">
+                                                <td>{{ field.serial(class="form-control") }}</td>
+                                                <td>{{ field.course_name(class="form-control")  }}</td>
+                                                <td style="width:10%">{{ field.dept(class="form-control")  }}</td>   
+                                                <td style="width:10%">{{ field.credits(class="form-control")  }}</td> 
+                                                <td>{{ field.designation(class="form-control")  }}</td>
+                                                <td>{{ field.course_description(class="form-control")  }}</td>
                                             </tr>
                                         {% endfor %}
-                                        
-                                        
-                                        {{ form.submit(class="btn custom-button-submit") }}
-
+                                        {{ form.submit(class="btn custom-button-submit ") }}
                                     </fieldset>
                                 </form>
                             </tbody>
 
                         </table>
                     </div>
+
                 </div>
             </div>
         </div>
     </section>
     <!-- End of Table -->
 </div>
-
+</div>
 <style>
-
+     .title{
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 32px;
+    color: #233B7E;
+    }
+    .title:hover{
+    color: #3772D7;
+    }
+    .form-control{
+    border-radius: 50px;
+    font:  15px  Open Sans Condensed, sans-serif;
+    color: #3772D7;
+    text-align: center;
+   }
+   .form-control:focus{
+    border-color: #3772D7;
+    box-shadow: none;
+    -webkit-box-shadow: none;}
 .custom-button-submit {
     background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
     box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
-    border-radius: 50px;
+    border-radius: 0px;
     color: hsl(0, 0%, 100%);
     padding: 10px;
     border: none;
-    width: 30%;
+    width: 18%;
     cursor: pointer;
     font-family: Poppins;
     font-style: normal;
@@ -98,6 +104,15 @@
     background: #FFFFFF;
     box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
+}
+.c_viewport{
+  padding: 1%;
+  color: rgb(27,30,36);
+  margin: 20px 0;
+  height: 660px;
+  overflow: auto;
+  background: #FFFFFF;
+box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
 }
 </style>
 

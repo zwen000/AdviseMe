@@ -111,13 +111,13 @@
                                         <th> </th>
                                     </tr>
                                     {% for course in courses %}
-                                        {% if course.id <= 18 %}
+                                        {% if course.designation == "Core Requirement" and course.dept == "CSC" %}
                                             <tr>
                                                 <td>{{ course.serial }}</td>
                                                 <td><a href="{{ url_for('courseinfo_edit',course_id=course.id) }}">{{ course.name }}</a></td>
                                                 <td>{{ course.credits }}</td>
                                                {% for id, grade, EMPLID in all_grade %}
-                                                    {% if course.id == id and EMPLID ==current_user.EMPLID %}
+                                                    {% if course.id == id and EMPLID == current_user.EMPLID %}
                                                         <td>{{ grade }}</td>
                                                     {% endif %}
                                                 {% endfor %}

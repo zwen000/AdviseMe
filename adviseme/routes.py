@@ -9,6 +9,7 @@ from adviseme.forms import *
 from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
+from sqlalchemy.sql.operators import Operators
 import itertools
 
 @app.route('/')
@@ -161,7 +162,7 @@ def student_course_info():
         
         db.session.commit()         # Update courses! 
         
-        print("Changes Saved!")
+        flash("Changes Saved!", "success")
         return redirect(url_for('student_course_info'))
     elif request.method == 'GET':
         for course in courses:
@@ -172,9 +173,43 @@ def student_course_info():
            form.courses[int(course.id - 1)].designation.data = course.designation
            form.courses[int(course.id - 1)].credits.data = course.credits
         
-        
-
     return render_template('student_course_info.html', courses=courses, form=form)
+
+
+@app.route('/faculty/cirriculum/edit', methods=['GET', 'POST'])
+def add_remove_course():
+    form = CourseForm()
+    # form2 = Cirriculum_Form()  
+    courses = Course.query.all()
+
+    if request.method == 'POST':
+        course = Course(    serial=form.serial.data,
+                            name=form.course_name.data,
+                            dept=form.dept.data,
+                            description=form.course_description.data,
+                            designation=form.designation.data,
+                            credits=form.credits.data)
+        db.session.add(course)
+        db.session.commit()
+        flash('Your course has been created!', 'success')
+        return redirect(url_for('add_remove_course'))
+
+    return render_template('faculty_add_remove_course.html', courses=courses, form=form)
+
+
+@app.route('/cirriculum/course/delete/<int:course_id>', methods=['GET', 'POST'])
+def delete_course(course_id):
+    
+    if current_user.role == 'Student':
+        abort(403)
+
+    course = Course.query.get_or_404(course_id)
+
+    db.session.delete(course)
+    db.session.commit()
+    flash('The course has been successfully deleted!', 'success')
+    
+    return redirect(url_for('add_remove_course'))
 
 
 all_grade=[]
@@ -702,6 +737,10 @@ def checklist():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
+    # course_count = db.session.query(Course.id).filter_by(dept == "CSC").filter_by(designation == "Core Requirement").count()
+    # print(course_count)
+    # print(course_count)
+
     #progress bar for Computer Science
     checklistProgressInterval_CS = 100 / 18   # <--- (Instead of 18 you set a variable like CS_count then query and count them)
     CS_width = 0
@@ -807,15 +846,35 @@ def checklist():
                             FE_width = FE_width,
                             Lib_Art_width = Lib_Art_width)
 
-@app.route('/faculty/')
+@app.route('/faculty/', methods=['GET', 'POST'])
 @login_required
 def faculty():
+    form = SearchForm()
+
     year = str(date.year)
     semester = get_semester(date.today())
+
     notes = Notes.query.filter(Notes.semester==semester,
                                 (Notes.be_advised == None)|(Notes.be_advised == False)).all()
+
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
-    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester = semester, year = year)
+
+    if request.method == "POST":
+        search = "%{}%".format(form.search.data)
+        notes = Notes.query.filter(Notes.EMPLID.like(search),Notes.semester==semester,
+                                (Notes.be_advised == None)|(Notes.be_advised == False)).all()
+
+    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form)
+
+
+@app.route('/search/<query>', methods=['GET', 'POST'])
+@login_required
+def search(query):
+
+    student = Student.query.filter_by(firstname=query).first()
+    print(student)
+
+    return f'<h1>{student}</h1>'
 
 # function to get current semester
 def get_semester(date):
@@ -979,6 +1038,30 @@ def workflow():
 
     return render_template('workflow.html', title="workflow",notes=notes,editworkflow=editworkflow,form=form)
 
+@app.route('/Preview/Under/Workflow/')
+@login_required
+def preview_workflow():
+    todaydate = date.today()
+    semester = get_semester(todaydate)
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    return render_template('PreviewWorkflow.html', title="preview workflow",notes=notes,editworkflow=editworkflow)
+
+@app.route('/Preview/Above/Workflow/')
+@login_required
+def preview_workflow2():
+    todaydate = date.today()
+    semester = get_semester(todaydate)
+    notes = Notes.query.filter_by(
+                                EMPLID=current_user.EMPLID,
+                                semester = semester,
+                                year =todaydate.year ).first()
+    editworkflow = Editworkflow.query.filter_by(id=1).first()
+    return render_template('WorkflowPreview2.html', title="preview workflow",notes=notes,editworkflow=editworkflow)
+
 @app.route('/workflow2/')
 @login_required
 def workflow2():
@@ -1041,6 +1124,7 @@ def Advisement():
             transcript_file = save_transcript(form.transcript.data, form.semester.data, form.year.data,
                                               current_user.EMPLID)  # Save the transcript!
             student.transcript = transcript_file  # Update the current user transcript in the database!
+            student.needs_advising = True         # Set this to true upon the form being submitted for approval 
             db.session.commit()  # Commit changes to the DB
             print("Execution Complete!")
 
@@ -1141,6 +1225,7 @@ def Advisement():
         note = Notes(EMPLID=current_user.EMPLID,year=form.year.data,semester=form.semester.data)
         db.session.add(note)
         db.session.commit()
+        flash("Advisement Form Submitted!", "success")
         return redirect(url_for('student_profile'))
 
     return render_template('AdvisementForm.html', title="Live Advisement Form", form=form, student=student,
@@ -1206,6 +1291,7 @@ def faculty_review(note_id):
         notes.be_advised=form.approve.data
         if notes.Owner.credit_earned <= 45 and form.approve.data == True:
             notes.approval = True
+        student.needs_advising = False          # Set this to False upon approval
         db.session.commit()
         flash('Notes saved!', 'success')
         return redirect(url_for('AdvisingHome'))

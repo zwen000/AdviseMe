@@ -81,7 +81,7 @@ class Enrollement(db.Model):
         return f"Enrollment('{self.student_id}, {self.course_id}, {self.grade}')"
 
 class Student(db.Model):
-    EMPLID =db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
+    EMPLID = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
     firstname = db.Column(db.String(30), nullable=False)
     lastname = db.Column(db.String(30), nullable=False)
     credit_earned=db.Column(db.Integer, unique=False, nullable=False, default=0)
@@ -98,6 +98,7 @@ class Student(db.Model):
 
     def __repr__(self):
         return f"Student('{self.EMPLID}, {self.firstname}, {self.lastname}, {self.credit_earned}, {self.credit_taken}, {self.graduating}')"
+
 
 
 class Course(db.Model):
