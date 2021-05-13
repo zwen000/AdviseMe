@@ -10,12 +10,12 @@
           <section class="checklist">
             <button type="button" class="collapsible subtitle">Computer Science
               <div class="progress">
-                <div class="progress-inner4"><p id="progress_count4">{{ CS_width_num }}/18</p></div>
+                <div class="progress-inner4"><p id="progress_count4">{{ CS_width_num }}/{{ cs_count }}</p></div>
               </div>
             </button>
             <div class="content">
               {% for cs_course in courses %}
-              {% if cs_course.dept == "CSC" and cs_course.id <= 18 %}
+              {% if cs_course.dept == "CSC" and cs_course.designation == "Core Requirement" %}
               {% if cs_course is in courses_array%} <!-- Core Requirement CS courses -->
                     <input checked class="CSCheckBox" type="checkbox" disabled/>
                     <label class="checkbox collapsible2" for="course_serial">{{cs_course.serial}}</label>
@@ -202,7 +202,7 @@
     <section class="checklist">
       <button type="button" class="collapsible subtitle">Math
         <div class="progress">
-          <div class="progress-inner"><p id="progress_count">{{ Math_width_num }}/4</p></div>
+          <div class="progress-inner"><p id="progress_count">{{ Math_width_num }}/{{ math_count }}</p></div>
         </div>
       </button>
       <div class="content">
@@ -292,7 +292,7 @@
                 <section class="checklist">
                   <button type="button" class="collapsible subtitle">Liberal Arts
                     <div class="progress">
-                      <div class="progress-inner9"><p id="progress_count9">{{ Lib_Art_width_num }}/4</p></div>
+                      <div class="progress-inner9"><p id="progress_count9">{{ Lib_Art_width_num }}/{{ req_lib_count }}</p></div>
                     </div>
                   </button>
                   <div class="content">

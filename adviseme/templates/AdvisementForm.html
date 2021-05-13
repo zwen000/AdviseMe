@@ -7,11 +7,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <a style="text-align:left; text-decoration: none;" href="{{ url_for('student_profile') }}">Back to profile?</a>
+                    <a class="btn btn-info m-3" style="text-align:left; text-decoration: none;" href="{{ url_for('student_profile') }}">Back to profile?</a>
                 </div>
                 <div class="col">
-                    <a style="float: right; display: inline; text-decoration: none;" href="{{ url_for('View_Transcript') }}">| View Previous Transcript/Cirriculum?</a>
-                    <a style="float: right; display: inline; text-decoration: none;" href="{{ url_for('courseinfo_fill') }}">Update Grades | </a>
+                    <a class="btn btn-warning m-3" style="float: right; display: inline; text-decoration: none;" href="{{ url_for('View_Transcript') }}">| View Previous Transcript/Cirriculum?</a>
+                    <a class="btn btn-info m-3" style="float: right; display: inline; text-decoration: none;" href="{{ url_for('courseinfo_fill') }}">Update Grades | </a>
                 </div>
             </div>
         </div>
@@ -716,13 +716,9 @@
 </form>
 
 
-<br>
-<br>
-<br>
-<p><b>File Location:</b> {{ transcript }} </p>
-<br>
-<br>
-<br>
+
+<p class="mt-5 mb-5"><b>File Location:</b> {{ transcript }} </p>
+
 
 
 <style>

@@ -24,6 +24,10 @@ database.db
 *adviseme\static\Transcripts
 *adviseme/static/Transcripts
 
+# Ignore the export Directory for the Exported .csv and excel files ... 
+*adviseme\static\export
+*adviseme/static/export
+
 *.db
 adviseme/database.db
 *.pyc

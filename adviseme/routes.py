@@ -3,7 +3,7 @@ import math
 import secrets
 from datetime import date
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from adviseme import app, bcrypt, db
 from adviseme.forms import *
 from adviseme.models import *
@@ -11,6 +11,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
 from sqlalchemy.sql.operators import Operators
 import itertools
+import csv 
+import pandas as pd
 
 @app.route('/')
 def landing():
@@ -122,6 +124,9 @@ def save_transcript(form_transcript, semester, year, student_id):
 @app.route('/studentinfo_fill', methods=['GET', 'POST'])
 @login_required
 def studentinfo_fill():
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = StudentInfoForm()
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
 
@@ -146,10 +151,19 @@ def studentinfo_fill():
 
 
 @app.route('/student/course/info', methods=['GET', 'POST'])
+@login_required
 def student_course_info():
-    # form2 = CourseForm()
+    if current_user.role == "Student":
+        abort(403)
+
     form = Cirriculum_Form()  
     courses = Course.query.all()
+    course_count = db.session.query(Course.id).count()
+    print(course_count)
+
+    # NOTE: This Not the most optimal but this prevents the overflow issue from arising! 
+    for i in range(course_count):   
+        form.courses.append_entry()
 
     if request.method == 'POST':
         for course in courses:
@@ -166,20 +180,23 @@ def student_course_info():
         return redirect(url_for('student_course_info'))
     elif request.method == 'GET':
         for course in courses:
-           form.courses[int(course.id - 1)].serial.data = course.serial
-           form.courses[int(course.id - 1)].course_name.data = course.name
-           form.courses[int(course.id - 1)].dept.data = course.dept
-           form.courses[int(course.id - 1)].course_description.data = course.description
-           form.courses[int(course.id - 1)].designation.data = course.designation
-           form.courses[int(course.id - 1)].credits.data = course.credits
+            form.courses[int(course.id - 1)].serial.data = course.serial
+            form.courses[int(course.id - 1)].course_name.data = course.name
+            form.courses[int(course.id - 1)].dept.data = course.dept
+            form.courses[int(course.id - 1)].course_description.data = course.description
+            form.courses[int(course.id - 1)].designation.data = course.designation
+            form.courses[int(course.id - 1)].credits.data = course.credits
         
     return render_template('student_course_info.html', courses=courses, form=form)
 
 
 @app.route('/faculty/cirriculum/edit', methods=['GET', 'POST'])
+@login_required
 def add_remove_course():
-    form = CourseForm()
-    # form2 = Cirriculum_Form()  
+    if current_user.role == "Student":
+        abort(403)
+
+    form = CourseForm()  
     courses = Course.query.all()
 
     if request.method == 'POST':
@@ -198,8 +215,8 @@ def add_remove_course():
 
 
 @app.route('/cirriculum/course/delete/<int:course_id>', methods=['GET', 'POST'])
-def delete_course(course_id):
-    
+@login_required
+def delete_course(course_id):    
     if current_user.role == 'Student':
         abort(403)
 
@@ -285,6 +302,9 @@ def GPA_QPA():
 @app.route('/course/info', methods=['GET', 'POST'])
 @login_required
 def courseinfo_fill():
+    if current_user.role == "Faculty":
+        return redirect(url_for('faculty'))
+
     form = SubmitForm()
     course_form = ElectiveForm()
     courses = Course.query.all()
@@ -377,6 +397,9 @@ def courseinfo_fill():
 @app.route('/course/info/elective/1000', methods=['GET', 'POST'])
 @login_required
 def Liberal_Art_1000():
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
@@ -415,6 +438,9 @@ def Liberal_Art_1000():
 @app.route('/course/info/elective/2000', methods=['GET', 'POST'])
 @login_required
 def Liberal_Art_2000():
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
@@ -454,6 +480,9 @@ def Liberal_Art_2000():
 @app.route('/course/info/elective/generic', methods=['GET', 'POST'])
 @login_required
 def Free_Electives():
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     student_info = Enrollement.query.filter_by(student_id=current_user.EMPLID)
@@ -499,19 +528,17 @@ def Free_Electives():
 @app.route('/course/info/elective/technical', methods=['GET', 'POST'])
 @login_required
 def Technical_Electives():
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = ElectiveForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     courses = Course.query.all()
 
-    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(designation="Group A Elective")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group B Elective")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Group C Elective")]
-    form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(serial='ENGR 27600')]      # Engineering Economics counts as a Tech elective, Eco 10400 doesn't
+    form.elective.choices = [(course_option.serial) for course_option in Course.query.filter_by(serial='ENGR 27600')]      # Engineering Economics counts as a Tech elective, Eco 10400 doesn't
     form.elective.choices += [(course_option.serial) for course_option in Course.query.filter_by(designation="Technical Elective")]
 
-    # REMINDER: A Technical Elective by definition can be any CS class (like a course in group A,B,C) [exxluding core requirements]
-    # And any Science Elective, in Chemistry, Physics, Mathematics,  any course in EAS (Earth and Enviornmental System Sciences) & in Engineering.
-    # NOTE: 1000 level courses are not allowed ...
+    # NOTE: CS courses will not be displayed if they are selected using this route. [X] - Priority: LOW
 
     form.grade.choices = [(grade_option.value) for grade_option in Grade.query.all()]
 
@@ -584,6 +611,9 @@ def evaluate_GPA(grade):
 @app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
 @login_required
 def courseinfo_edit(course_id):
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = CourseInfoForm()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     course = Course.query.get_or_404(course_id)
@@ -605,6 +635,9 @@ def courseinfo_edit(course_id):
 # Faculty fill out the basic info on the first time once they signed in
 @app.route('/facultyinfo_fill/', methods=['GET', 'POST'])
 def facultyinfo_fill():
+    if current_user.role == "Student":
+        abort(403)
+    
     form = FacultyInfoForm()
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
 
@@ -638,6 +671,9 @@ def logout():
 @app.route('/student/profile/edit', methods=['GET', 'POST'])
 @login_required
 def student_profile_edit():
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = UpdateStudentAccountForm()
     EMPLID=current_user.EMPLID
     student = Student.query.filter_by(EMPLID=EMPLID).first()
@@ -669,6 +705,9 @@ def student_profile_edit():
 @app.route('/student/profile', methods=['GET', 'POST'])
 @login_required
 def student_profile():
+    if current_user.role == "Faculty":
+        abort(403)
+
     GPA_QPA()
     form = UpdateStudentAccountForm()
     remove_list()
@@ -707,6 +746,9 @@ def get_Free_Electives():
 @app.route('/checklist')
 @login_required
 def checklist():
+    if current_user.role == "Faculty":
+        abort(403)
+
     courses = Course.query.all()
     cs_courses = Course.query.filter_by(dept='CSC').all()
     lib_req_courses = Course.query.filter_by(designation ="Required Liberal Art").all()
@@ -737,45 +779,48 @@ def checklist():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     scores = Enrollement.query.filter_by(student_id=current_user.EMPLID).all()
 
-    # course_count = db.session.query(Course.id).filter_by(dept == "CSC").filter_by(designation == "Core Requirement").count()
-    # print(course_count)
-    # print(course_count)
-
     #progress bar for Computer Science
-    checklistProgressInterval_CS = 100 / 18   # <--- (Instead of 18 you set a variable like CS_count then query and count them)
+    cs_count = Course.query.filter_by(dept="CSC", designation="Core Requirement").count()
+    checklistProgressInterval_CS = 100 / cs_count   # Number of required CS courses
     CS_width = 0
     for cs_course in cs_courses:
         for score in scores:
-            if score.grade and cs_course.id == score.course_id:
-                if cs_course.dept == "CSC" and cs_course.id <=18:
+            if score.grade == "IP":
+                pass
+            elif score.grade and cs_course.id == score.course_id:
+                if cs_course.dept == "CSC" and cs_course.designation == "Core Requirement":
                         CS_width += checklistProgressInterval_CS
-    CS_width_num = CS_width/100 * 18
+    CS_width_num = CS_width/100 * cs_count
 
     #progress bar for Computer Science Electives
-    checklistProgressInterval_CSE = 100 / 4
+    checklistProgressInterval_CSE = 100 / 4     # Leaving this as four since this is not counting all courses but instead a 4 out of many courses.
     CSE_width = 0
     for cs_elective in courses_array:
         if cs_elective.dept == "CSC" and cs_elective.id > 18:
             CSE_width += checklistProgressInterval_CSE
     CSE_width_num = CSE_width/100 * 4
 
-
     #progress bar for Math
-    checklistProgressInterval_Math = 100 / 4
+    math_count = Course.query.filter_by(dept="MATH", designation="Core Requirement").count()
+    checklistProgressInterval_Math = 100 / math_count
     Math_width = 0
     for math_course in courses_array:
         for score in scores:
-            if score.grade and math_course.id == score.course_id:
+            if score.grade == "IP":
+                pass
+            elif score.grade and math_course.id == score.course_id:
                 if math_course.dept == "MATH" and math_course.designation == "Core Requirement":
                     Math_width += checklistProgressInterval_Math
-    Math_width_num = Math_width/100 * 4
+    Math_width_num = Math_width/100 * math_count
 
     #progress bar for Science
     checklistProgressInterval_Science = 100 / 3
     Science_width = 0
     for science_elective in science_courses:
         for score in scores:
-            if score.grade and science_elective.id == score.course_id:
+            if score.grade == "IP":
+                pass
+            elif score.grade and science_elective.id == score.course_id:
                 Science_width += checklistProgressInterval_Science
     Science_width_num = Science_width/100 * 3
 
@@ -798,24 +843,25 @@ def checklist():
     Art_width_num = Art_width/100 * 4
 
     #progress bar for Liberal Arts
-    checklistProgressInterval_Lib_Art = 100 / 4
+    req_lib_count = Course.query.filter_by(designation="Required Liberal Art").count()
+    req_lib_count -= 1      # we decrement the count by 1 because a Student can take either ENGR Economics or Eco 104 but not both 
+    checklistProgressInterval_Lib_Art = 100 / req_lib_count
     Lib_Art_width = 0
     for liberal_art_course_req in lib_req_courses:
         for score in scores:
-            if score.grade and liberal_art_course_req.id == score.course_id:
+            if score.grade == "IP":
+                pass
+            elif score.grade and liberal_art_course_req.id == score.course_id:
                 Lib_Art_width += checklistProgressInterval_Lib_Art
-    Lib_Art_width_num = Lib_Art_width/100 * 4
+    Lib_Art_width_num = Lib_Art_width/100 * req_lib_count
 
-
-    #progress bar for free electives
+    #progress bar for free electives    
     checklistProgressInterval_FE = 100 / 2
     FE_width = 0
     for course in free_courses:
         FE_width += checklistProgressInterval_FE
     FE_width_num = FE_width/100 * 2
-
-
-
+    
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('checklist.html', title='Checklist',
                             profile_image=profile_image,
@@ -829,6 +875,9 @@ def checklist():
                             pathway_courses=pathway_courses,
                             free_courses=free_courses,
                             math_courses=math_courses,
+                            math_count=math_count, 
+                            cs_count=cs_count, 
+                            req_lib_count=req_lib_count, 
                             CS_width_num =  int(CS_width_num),
                             CSE_width_num =  int(CSE_width_num),
                             Math_width_num =  int(Math_width_num),
@@ -867,12 +916,45 @@ def faculty():
     return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form)
 
 
-@app.route('/search/<query>', methods=['GET', 'POST'])
+@app.route('/graduating/class', methods=['GET', 'POST'])
 @login_required
-def search(query):
+def graduating_class():
+    if current_user.role == "Student":
+        abort(403)
 
-    student = Student.query.filter_by(firstname=query).first()
-    print(student)
+    year = date.today().strftime("%Y")      # This is using system time, so this can be circumvented!     
+    semester = get_semester(date.today())
+
+    graduates = Student.query.filter_by(graduating=True).all()
+
+    Transcripts = []
+    for i in graduates:
+        Transcripts = i.transcript
+
+    return render_template("graduating_class.html", title=f"Class of {year}", year=year, semester=semester, Transcripts=Transcripts, graduates=graduates)
+
+@app.route('/graduating/class/export')
+@login_required
+def export_csv():
+    if current_user.role == "Student":
+        abort(403)
+
+    f = open('./adviseme/static/export/CCNY_graduates.csv', 'w')
+    out = csv.writer(f)
+    out.writerow(['EMPLID', 'First Name', 'Last Name' ])
+
+    # NOTE: Not optimal given I was passing this query into the function before and it was working fine. Scope can be a pain at times. 
+    graduates = Student.query.filter_by(graduating=True).all()      
+
+    for student in graduates:
+        out.writerow([student.EMPLID, student.firstname, student.lastname])
+
+    f.close()
+
+    f_excel = pd.read_csv ('./adviseme/static/export/CCNY_graduates.csv')
+    f_excel.to_excel('./adviseme/static/export/CCNY_graduates.xlsx')
+
+    return f 
 
     return f'<h1>{student}</h1>'
 
@@ -894,6 +976,9 @@ def get_semester(date):
 @app.route('/EditWorkflow/', methods=['GET', 'POST'])
 @login_required
 def EditWorkflow():
+    if current_user.role == "Student":
+        abort(403)
+
     form = EditworkflowForm()
     editworkflow = Editworkflow.query.filter_by(id=1).first()
     if form.validate_on_submit():
@@ -968,6 +1053,9 @@ def noteReviewHome():
 @app.route('/noteReview/<int:note_id>', methods=['GET', 'POST'])
 @login_required
 def noteReview(note_id):
+    if current_user.role == "Student":
+        abort(403)
+
     notes=Notes.query.get_or_404(note_id)
     form = AcademicReviewForm()
     student_id = notes.Owner.EMPLID
@@ -1080,6 +1168,9 @@ def workflow2():
 @app.route('/Advisement', methods=['GET', 'POST'])
 @login_required
 def Advisement():
+    if current_user.role == "Faculty":
+        abort(403)
+
     form = AdvisementForm()
     GPA_QPA()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
@@ -1235,20 +1326,24 @@ def Advisement():
 @app.route('/Advisement/Transcript', methods=['GET', 'POST'])
 @login_required
 def View_Transcript():
+    if current_user.role == "Faculty":
+        abort(403)
+
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
 
-    return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
+    return render_template('Transcript_Cirriculum.html', title="Cirriculum/Transcript", student=student, transcript=transcript)
 
 
 # faculty can go editing the direct advising note in this route
 @app.route('/faculty/review/<int:note_id>', methods=['GET', 'POST'])
 @login_required
 def faculty_review(note_id):
+    if current_user.role == "Student":
+        abort(403)
+
     notes = Notes.query.get_or_404(note_id)
-
     student_id = notes.Owner.EMPLID
-
     student = Student.query.filter_by(EMPLID=student_id).first()
 
     form = FacultyReviewForm()
@@ -1314,6 +1409,8 @@ def faculty_review(note_id):
 @app.route('/faculty/review/transcript/<int:student_id>', methods=['GET', 'POST'])
 @login_required
 def Faculty_View_Transcript(student_id):
+    if current_user.role == "Student":
+        abort(403)
     student = Student.query.filter_by(EMPLID=student_id).first()
     transcript = url_for('static', filename='Transcript/' + student.transcript)
 
@@ -1324,6 +1421,8 @@ def Faculty_View_Transcript(student_id):
 @app.route('/faculty/archiveHome', methods=['GET', 'POST'])
 @login_required
 def FacultyArchiveHome():
+    if current_user.role == "Student":
+        abort(403)
     notes = Notes.query.filter_by(FacultyEMPLID=current_user.FacultyOwner.EMPLID, be_advised=True).all()
 
     notes = Notes.query.filter_by(be_advised=True).all()
@@ -1337,6 +1436,8 @@ def FacultyArchiveHome():
 @app.route('/academic/archiveHome', methods=['GET', 'POST'])
 @login_required
 def AcademicArchiveHome():
+    if current_user.role == "Student":
+        abort(403)
     notes = Notes.query.filter_by(be_advised=True, approval=True).all()
     students_with_notes = list(itertools.groupby(notes, lambda note: note.Student))
     students = list(map(lambda x: (x[0], len(x[0].advisingnote)), students_with_notes))
@@ -1348,8 +1449,10 @@ def AcademicArchiveHome():
 @app.route('/faculty/archiveHome/<int:note_id>', methods=['GET', 'POST'])
 @login_required
 def FacultyArchive(note_id):
-    notes = Notes.query.get_or_404(note_id)
+    if current_user.role == "Student":
+        abort(403)
 
+    notes = Notes.query.get_or_404(note_id)
     student_id = notes.Owner.EMPLID
     student = Student.query.filter_by(EMPLID=student_id).first()
 
@@ -1386,10 +1489,11 @@ def FacultyArchive(note_id):
 @app.route('/academic/archiveHome/<int:note_id>', methods=['GET', 'POST'])
 @login_required
 def AcademicArchive(note_id):
+    if current_user.role == "Student":
+        abort(403)
+    
     notes = Notes.query.get_or_404(note_id)
-
     student_id = notes.Owner.EMPLID
-
     student = Student.query.filter_by(EMPLID=student_id).first()
 
     form = AcademicReviewForm()

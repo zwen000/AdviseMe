@@ -11,7 +11,7 @@
 
                     <center><legend class=" title">Edit Computer Science Cirriculum</legend></center>
                     <hr>
-                    <center><a href="{{ url_for('add_remove_course') }}">Add new Course to Cirriculum?</a></center> 
+                    <center><a class="btn custom-button-submit" href="{{ url_for('add_remove_course') }}">Add new Course to Cirriculum?</a></center> 
                     <hr>
 
                     <div class="row">       <!-- Inner Grid -->
@@ -42,7 +42,14 @@
                                                 <td>{{ field.course_description(class="form-control")  }}</td>
                                             </tr>
                                         {% endfor %}
-                                        {{ form.submit(class="btn custom-button-submit ") }}
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{ form.submit(class="btn custom-button-submit") }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
                                     </fieldset>
                                 </form>
                             </tbody>
@@ -81,11 +88,11 @@
 .custom-button-submit {
     background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
     box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
-    border-radius: 0px;
+    border-radius: 0.5;
     color: hsl(0, 0%, 100%);
     padding: 10px;
     border: none;
-    width: 18%;
+    width: 100%;
     cursor: pointer;
     font-family: Poppins;
     font-style: normal;
