@@ -1386,7 +1386,6 @@ def Update_Advisement(note_id):
 
 
     if form.validate_on_submit():
-        # return "{}".format(form.tech_elec_check2.data) #for test
         for course in form.course.data:
             enrollement = Enrollement.query.filter_by(
                 student_id=current_user.EMPLID,
@@ -1488,6 +1487,6 @@ def Update_Advisement(note_id):
         db.session.commit()
         return redirect(url_for('workflow'))
 
-    return render_template('UpdateAdvisementForm.html', title="Live Advisement Form", form=form,
+    return render_template('UpdateAdvisementForm.html', title="Revise Advisement Form", form=form,
                            enrolled=enrolled, course_obj=course_obj, transcript=transcript, electives=electives, notes=notes)
 
