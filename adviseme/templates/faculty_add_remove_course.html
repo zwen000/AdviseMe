@@ -3,7 +3,7 @@
 
     <div>
         <br>
-        <a href="{{ url_for('student_course_info') }}">Edit an existing Course in the Cirriculum?</a>
+        <a class="btn mt-3 mb-3 btn-info" href="{{ url_for('student_course_info') }}">Edit an existing Course in the Cirriculum?</a>
     </div>
 
     <table class="table table-striped bg-light text-center">
@@ -30,7 +30,7 @@
                     <td>{{ form.designation }}</td>
                     <td>{{ form.credits }}</td>
                 </tr>
-                {{ form.submit }}
+                {{ form.submit(class="btn mt-3 mb-3 btn-success") }}
             </form>
             {%for course in courses %}
                 <tr class="text-center">
@@ -41,7 +41,7 @@
                     <td>{{ course.description }}</td>
                     <td>{{ course.designation }}</td>
                     <td>{{ course.credits }}</td>
-                    <td><a href="{{ url_for('delete_course',course_id=course.id) }}"> delete {{ course.id }}</a></td>
+                    <td><a class="btn btn-danger" href="{{ url_for('delete_course',course_id=course.id) }}">delete</a></td>
                 </tr>
             {% endfor %}
         </tbody>

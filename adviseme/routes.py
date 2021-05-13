@@ -10,6 +10,8 @@ from adviseme.models import *
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
 import itertools
+import csv 
+import pandas as pd
 
 @app.route('/')
 def landing():
@@ -781,7 +783,9 @@ def checklist():
     CS_width = 0
     for cs_course in cs_courses:
         for score in scores:
-            if score.grade and cs_course.id == score.course_id:
+            if score.grade == "IP":
+                pass
+            elif score.grade and cs_course.id == score.course_id:
                 if cs_course.dept == "CSC" and cs_course.designation == "Core Requirement":
                         CS_width += checklistProgressInterval_CS
     CS_width_num = CS_width/100 * cs_count
@@ -800,7 +804,9 @@ def checklist():
     Math_width = 0
     for math_course in courses_array:
         for score in scores:
-            if score.grade and math_course.id == score.course_id:
+            if score.grade == "IP":
+                pass
+            elif score.grade and math_course.id == score.course_id:
                 if math_course.dept == "MATH" and math_course.designation == "Core Requirement":
                     Math_width += checklistProgressInterval_Math
     Math_width_num = Math_width/100 * math_count
@@ -810,7 +816,9 @@ def checklist():
     Science_width = 0
     for science_elective in science_courses:
         for score in scores:
-            if score.grade and science_elective.id == score.course_id:
+            if score.grade == "IP":
+                pass
+            elif score.grade and science_elective.id == score.course_id:
                 Science_width += checklistProgressInterval_Science
     Science_width_num = Science_width/100 * 3
 
@@ -839,7 +847,9 @@ def checklist():
     Lib_Art_width = 0
     for liberal_art_course_req in lib_req_courses:
         for score in scores:
-            if score.grade and liberal_art_course_req.id == score.course_id:
+            if score.grade == "IP":
+                pass
+            elif score.grade and liberal_art_course_req.id == score.course_id:
                 Lib_Art_width += checklistProgressInterval_Lib_Art
     Lib_Art_width_num = Lib_Art_width/100 * req_lib_count
 
@@ -915,14 +925,43 @@ def faculty():
 
 
 
-@app.route('/class/of/2020', methods=['GET', 'POST'])
+@app.route('/graduating/class', methods=['GET', 'POST'])
 @login_required
 def graduating_class():
     if current_user.role == "Student":
         abort(403)
 
-    print("Cool nice!")
-    return f'<h1>What took you so long?</h1>'
+    year = date.today().strftime("%Y")      # This is using system time, so this can be circumvented!     
+    semester = get_semester(date.today())
+
+    graduates = Student.query.filter_by(graduating=True).all()
+
+    Transcripts = []
+    for i in graduates:
+        Transcripts = i.transcript
+
+    return render_template("graduating_class.html", title=f"Class of {year}", year=year, semester=semester, Transcripts=Transcripts, graduates=graduates)
+
+@app.route('/graduating/class/export')
+@login_required
+def export_csv():
+    f = open('./adviseme/static/export/CCNY_graduates.csv', 'w')
+    out = csv.writer(f)
+    out.writerow(['EMPLID', 'First Name', 'Last Name' ])
+
+    # NOTE: Not optimal given I was passing this query into the function before and it was working fine. Scope can be a pain at times. 
+    graduates = Student.query.filter_by(graduating=True).all()      
+
+    for student in graduates:
+        out.writerow([student.EMPLID, student.firstname, student.lastname])
+
+    f.close()
+
+    f_excel = pd.read_csv ('./adviseme/static/export/CCNY_graduates.csv')
+    f_excel.to_excel('./adviseme/static/export/CCNY_graduates.xlsx')
+
+    return f 
+
 
 
 # function to get current semester
@@ -1265,7 +1304,7 @@ def View_Transcript():
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/'+ student.transcript)
 
-    return render_template('Transcript_Cirriculum.html', tittle="Cirriculum/Transcript", student=student, transcript=transcript)
+    return render_template('Transcript_Cirriculum.html', title="Cirriculum/Transcript", student=student, transcript=transcript)
 
 
 # faculty can go editing the direct advising note in this route

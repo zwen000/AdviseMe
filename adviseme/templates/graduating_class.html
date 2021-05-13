@@ -1,0 +1,40 @@
+{% extends "layout.html"%}
+
+{% block content %}
+    <center><h3 class="center">Graduating Class of {{ year }}</h3></center> 
+    <table class="table table-striped bg-light text-center">
+        <thead>
+            <th>#</th>
+            <th>Student</th>
+            <th>Class Year</th>
+            <th>EMPLID</th>
+            <th>GPA</th>
+            <th>QPA</th>
+            <th>Transcript</th>
+        </thead>
+        <tbody>
+            {% for graduate in graduates %}
+                <tr>
+                    <td> </td>
+                    <td>{{ graduate.firstname }} {{ graduate.lastname }}</td>
+                    <td>{{ year }}</td>
+                    <td>{{ graduate.EMPLID }}</td>
+                    <td>{{ graduate.GPA }}</td>
+                    <td>{{ graduate.QPA }}</td>
+                    <td><a class="btn btn-info" href="{{ url_for('static', filename='Transcripts/')}}{{ graduate.transcript }}" type="application/pdf" download > Download Transcript</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if graduates == None %}
+        <h3>Nothing to export!</h3>
+    {% else %}
+        <!-- CSV file when downloaded works perfectly fine! but the deafault save name in file explorer is messed up. Why is the browser doing this??? And is this windows specific? -->
+        <!-- What behaviour I am referring to: https://github.com/jupyterlab/jupyterlab/issues/8019 -->
+        <a class="btn mt-3 mb-3 btn-info" href="{{ url_for('static', filename='export/CCNY_graduates.csv')}}" type="application/csv"  download="CCNY_graduates.csv" style="color: white;">Export Data as CSV file</a>
+        <br>
+        <a class="btn mt-3 mb-3 btn-success" href="{{ url_for('static', filename='export/CCNY_graduates.xlsx')}}" type="application/xlsx" download="CCNY_graduates.xlsx" style="color: white;">Export Data as Excel Sheet</a>
+    {% endif %}
+
+{% endblock content %}
