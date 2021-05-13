@@ -966,8 +966,18 @@ def workflow():
                                 EMPLID=current_user.EMPLID,
                                 semester = semester,
                                 year =todaydate.year ).first()
+    form=SubmitForm()
     editworkflow = Editworkflow.query.filter_by(id=1).first()
-    return render_template('workflow.html', title="workflow",notes=notes,editworkflow=editworkflow)
+    if form.validate_on_submit():
+        
+        enrollment = Enrollement.query.filter_by( grade='',
+                student_id=current_user.EMPLID).all()
+    
+        for enrollement in enrollment:
+            db.session.delete(enrollement)
+            db.session.commit()
+
+    return render_template('workflow.html', title="workflow",notes=notes,editworkflow=editworkflow,form=form)
 
 @app.route('/workflow2/')
 @login_required
@@ -1336,7 +1346,7 @@ def AcademicArchive(note_id):
 @login_required
 def Update_Advisement(note_id):
     notes = Notes.query.get_or_404(note_id)
-    form = AdvisementForm()
+    form = UpdateAdvisementForm()
     GPA_QPA()
     student = Student.query.filter_by(EMPLID=current_user.EMPLID).first()
     transcript = url_for('static', filename='Transcript/' + student.transcript)
@@ -1373,6 +1383,7 @@ def Update_Advisement(note_id):
     electives.append(use)  # 3
     electives.append(is_)  # 4
     electives.append(wcgi)  # 5
+
 
     if form.validate_on_submit():
         # return "{}".format(form.tech_elec_check2.data) #for test
@@ -1470,8 +1481,10 @@ def Update_Advisement(note_id):
                     enrollement.grade = ''
                     enrollement.attempt = True
 
-        # note = Notes(EMPLID=current_user.EMPLID,year=form.year.data,semester=form.semester.data)
-        # db.session.add(note)
+
+        notes.be_advised = None
+        notes.approval = None
+
         db.session.commit()
         return redirect(url_for('workflow'))
 
