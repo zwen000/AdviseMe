@@ -952,13 +952,13 @@ def export_csv():
 
     f = open('./adviseme/static/export/CCNY_graduates.csv', 'w')
     out = csv.writer(f)
-    out.writerow(['EMPLID', 'First Name', 'Last Name' ])
+    out.writerow(['EMPLID', 'First Name', 'Last Name', 'GPA', 'QPA' ])
 
     # NOTE: Not optimal given I was passing this query into the function before and it was working fine. Scope can be a pain at times. 
     graduates = Student.query.filter_by(graduating=True).all()      
 
     for student in graduates:
-        out.writerow([student.EMPLID, student.firstname, student.lastname])
+        out.writerow([student.EMPLID, student.firstname, student.lastname, student.GPA, student.QPA])
 
     f.close()
 
