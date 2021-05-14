@@ -11,6 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
 import itertools
 import csv 
+import math
 import pandas as pd
 
 @app.route('/')
@@ -779,7 +780,8 @@ def checklist():
 
     #progress bar for Computer Science
     cs_count = Course.query.filter_by(dept="CSC", designation="Core Requirement").count()
-    checklistProgressInterval_CS = 100 / cs_count   # Number of required CS courses
+    checklistProgressInterval_CS = round(100 / cs_count, 2)   # Number of required CS courses
+    print(checklistProgressInterval_CS)
     CS_width = 0
     for cs_course in cs_courses:
         for score in scores:
@@ -787,8 +789,8 @@ def checklist():
                 pass
             elif score.grade and cs_course.id == score.course_id:
                 if cs_course.dept == "CSC" and cs_course.designation == "Core Requirement":
-                        CS_width += checklistProgressInterval_CS
-    CS_width_num = CS_width/100 * cs_count
+                        CS_width = round( CS_width + checklistProgressInterval_CS, 1)
+    CS_width_num = int(CS_width/100 * cs_count) 
 
     #progress bar for Computer Science Electives
     checklistProgressInterval_CSE = 100 / 4     # Leaving this as four since this is not counting all courses but instead a 4 out of many courses.
@@ -820,7 +822,7 @@ def checklist():
                 pass
             elif score.grade and science_elective.id == score.course_id:
                 Science_width += checklistProgressInterval_Science
-    Science_width_num = Science_width/100 * 3
+    Science_width_num = Science_width/99 * 3
 
     #progress bar for Technical Electives
     checklistProgressInterval_TE = 100 / 2
@@ -853,13 +855,37 @@ def checklist():
                 Lib_Art_width += checklistProgressInterval_Lib_Art
     Lib_Art_width_num = Lib_Art_width/100 * req_lib_count
 
+
     #progress bar for free electives    
     checklistProgressInterval_FE = 100 / 2
     FE_width = 0
     for course in free_courses:
         FE_width += checklistProgressInterval_FE
     FE_width_num = FE_width/100 * 2
+
+    """
+    print("******************************")
+    print("          DEBUG LOG           ")
+    print("******************************")
+    print("CS_width:\t\t", CS_width)
+    print("CSE_width:\t\t", CSE_width)
+    print("Math_width:\t\t", Math_width)
+    print("Science_width:\t\t", Science_width)
+    print("Tech Width:\t\t", Tech_width)
+    print("Art Width:\t\t", Art_width)
+    print("Lib Art Width:\t\t", Lib_Art_width)
+    print("FE_Width:\t\t", FE_width)
+    print("******************************")
+    print("******************************")
+    """
     
+
+    if student.credit_earned >= 126: 
+        if int(Math_width) == 100 and int(Science_width) == 100 and int(Tech_width) == 100 and int(CSE_width) == 100 and int(Art_width) == 100 and int(CS_width) == 100 and int(FE_width) == 100 and int(Lib_Art_width) == 100:
+            student.graduating = True
+            db.session.commit()
+
+
     profile_image = url_for('static', filename='Profile_Pics/'+ current_user.profile_image)
     return render_template('checklist.html', title='Checklist',
                             profile_image=profile_image,
@@ -884,14 +910,15 @@ def checklist():
                             Art_width_num = int(Art_width_num),
                             FE_width_num = int(FE_width_num),
                             Lib_Art_width_num = int(Lib_Art_width_num),
-                            CS_width = CS_width,
-                            CSE_width = CSE_width,
-                            Math_width = Math_width,
-                            Science_width = Science_width,
-                            Tech_width = Tech_width,
-                            Art_width = Art_width,
-                            FE_width = FE_width,
-                            Lib_Art_width = Lib_Art_width)
+                            CS_width=int(CS_width),
+                            CSE_width=CSE_width,
+                            Math_width=Math_width,
+                            Science_width=Science_width,
+                            Tech_width=Tech_width,
+                            Art_width=Art_width,
+                            FE_width=FE_width,
+                            Lib_Art_width=Lib_Art_width)
+
 
 @app.route('/faculty/', methods=['GET', 'POST'])
 @login_required
@@ -1013,7 +1040,7 @@ def EditWorkflow():
         form.above_enrollment.data=editworkflow.above_enrollment
 
 
-    return render_template("EditWorkflow.html", title="Edit Workflow",form=form,editworkflow=editworkflow)
+    return render_template("EditWorkflow.html", title="Edit Workflow", form=form ,editworkflow=editworkflow)
 
 
 # Student can view all notes in this advisingNotesHome route
