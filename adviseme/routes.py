@@ -327,6 +327,7 @@ def courseinfo_fill():
                         pass
                     elif grade =='IP':
                         student.credit_taken += course.credits
+                        enrollement.grade = grade
                         enrollement.GPA_point = None
                         enrollement.QPA_point = None
                         enrollement.attempt = True
