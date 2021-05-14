@@ -62,45 +62,70 @@
 </div>
 
 <style>
-    body{
-        padding-top: 1.75% ;
-    }
-
-    .c_viewport{
-        padding-top: 2.9%;
-  padding-right: 4%;
-  padding-left: 4%;
-  color: rgb(27,30,36);
-  margin: 20px 0;
-  height: 585px;
-  overflow: auto;
-  background: #FFFFFF;
-box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+body{
+    padding-top: 1.75% ;
 }
-    .title{
+
+.c_viewport{
+    padding-top: 2.9%;
+    padding-right: 4%;
+    padding-left: 4%;
+    color: rgb(27,30,36);
+    margin: 20px 0;
+    height: 585px;
+    overflow: auto;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
+}
+
+.custom-button-submit {
+    background: linear-gradient(91.29deg, #3772D7 3.02%, #233B7E 100%);
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 0%;
+    color: hsl(0, 0%, 100%);
+    padding: 10px;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.custom-button-submit:hover{
+    transition: ease-in;
+    background: #233B7E;
+    color: white;
+}
+
+.title{
     font-family: Poppins;
     font-style: normal;
     font-weight: bolder;
     font-size: 32px;
     color: #233B7E;
-    }
+}
 
-    .title:hover{
+.title:hover{
     color: #3772D7;
-    }
-    .sub-title{
-        text-decoration-line: underline;
-        font-family: Poppins;
-font-style: normal;
-font-weight: bold;
-font-size: 21px;
+}
 
-    }
+.sub-title{
+    text-decoration-line: underline;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+}
+
 .info{
     font-family: Poppins;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;   
     color: #233B7E;
-    </style>
+}    
+
+</style>
+
 {% endblock content %}
