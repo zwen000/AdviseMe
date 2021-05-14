@@ -287,14 +287,11 @@ def GPA_QPA():
     student.QPA = 0
     for value in scores:
         if value.QPA_point:
-            if value.course_id >= 1:
-                student.QPA += int(value.QPA_point)         # course_id (1-38) in the database are all CS courses!
-            elif value.course_id >= 38:
-                student.QPA += 0
-                print("id 19 and above are not CS courses!")
+            if value.dept == "CSC":     # The department = "CSC" will give you all CS courses, [required, Group A/B/C, and technical]
+                student.QPA += int(value.QPA_point)  
             else:
                 student.QPA += 0
-                print("There cannot be any id's less than 0 or infinity!")
+                print("The course is not a CS course offered by the CSC department!")
 
     print("The QPA should be: ", student.QPA)
     db.session.commit()
