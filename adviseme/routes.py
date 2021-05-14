@@ -944,6 +944,7 @@ def graduating_class():
 
     return render_template("graduating_class.html", title=f"Class of {year}", year=year, semester=semester, Transcripts=Transcripts, graduates=graduates)
 
+
 @app.route('/graduating/class/export')
 @login_required
 def export_csv():
@@ -966,8 +967,6 @@ def export_csv():
     f_excel.to_excel('./adviseme/static/export/CCNY_graduates.xlsx')
 
     return f 
-
-    return f'<h1>{student}</h1>'
 
 # function to get current semester
 def get_semester(date):
