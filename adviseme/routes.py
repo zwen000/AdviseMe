@@ -322,7 +322,7 @@ def courseinfo_fill():
                                         student_id=current_user.EMPLID,
                                         course_id = course_id).first()
 
-                if not enrollement:
+                if not enrollement:         # if enrollement object (course) does not exist!
                     enrollement = Enrollement(student_id=current_user.EMPLID,
                                             course_id = course_id,
                                             grade = grade)
@@ -330,13 +330,15 @@ def courseinfo_fill():
                         pass
                     elif grade =='IP':
                         student.credit_taken += course.credits
+                        enrollement.GPA_point = None
+                        enrollement.QPA_point = None
                         enrollement.attempt = True
                     else:
                         enrollement.GPA_point = int(course.credits*evaluate_GPA(grade))
-                        if course_id < 19 :
+                        if course.dept == "CSC":        # QPA only applies to CS courses! 
                             enrollement.QPA_point = evaluate_QPA(grade)
                         else:
-                            enrollement.QPA_point = 0
+                            enrollement.QPA_point = None
 
                         if grade == "F":
                             student.credit_earned += 0
@@ -351,34 +353,52 @@ def courseinfo_fill():
                     db.session.commit()
                 elif enrollement.grade == grade:                              # Skip the case of course grade remains the same
                     continue
-                else:
+                else:                           # if enrollement object (course) already does exist!
                     if grade == '':
                         pass
-                    elif grade =='IP':
+                    elif enrollement.passed == False and grade == "IP":   # Failed the course the first time, retake currently in progress
+                        student.credit_earned += 0
                         student.credit_taken += course.credits
+                        enrollement.grade = grade
+                        enrollement.GPA_point = None
+                        enrollement.QPA_point = None
+                        enrollement.attempt = True
+                        enrollement.passed = False
+                    elif enrollement.passed == True and grade == "IP":    # Passed the course the first time, retake currently in progress
+                        student.credit_earned -= course.credits           # The first passing grade could have been added by user error! 
+                        student.credit_taken += course.credits
+                        enrollement.grade = grade
+                        enrollement.GPA_point = None
+                        enrollement.QPA_point = None
+                        enrollement.passed = False
                         enrollement.attempt = True
                     else:
                         if enrollement.attempt == True:
                             if enrollement.passed == False and grade == "F":      # Failed the course the first time, retook it and failed again! (FF)
                                 student.credit_earned += 0
-                                enrollement.attempt = False
+                                enrollement.attempt = True
                             elif enrollement.passed == True and grade == "F":     # Passed the course the first time, retook it and got an "F"    (PF)
                                 student.credit_earned -= course.credits           # The first passing grade could have been added by user error!
                                 enrollement.passed = False
-                                enrollement.attempt = False
+                                enrollement.attempt = True
                             elif enrollement.passed == False and grade != "F":    # Failed the course the first time, retook it and passed!       (FP)
                                 student.credit_earned += course.credits
+                                student.credit_taken -= course.credits
                                 enrollement.passed = True
                             elif enrollement.passed == True and grade != "F":     # Passed the course the first time, retook it and passed again! (PP)
                                 student.credit_earned += 0
                             else:
                                 student.credit_earned += 0
+
+                    if grade != "IP":
                         enrollement.grade = grade
-                        enrollement.GPA_point = evaluate_GPA(grade)
-                        if course_id < 19:
+                        evaluation_score = int(course.credits*evaluate_GPA(grade))
+                        enrollement.GPA_point = evaluation_score
+                        if course.dept == "CSC":                  # QPA only applies to CS courses 
                             enrollement.QPA_point = evaluate_QPA(grade)
-                        else:
-                            enrollement.QPA_point = 0
+                    else:
+                        enrollement.GPA_point = None
+                        enrollement.QPA_point = None
                     db.session.commit()
         pathway_check()
         remove_list()
@@ -572,6 +592,7 @@ def evaluate_QPA(grade):
         "B": 1.0,
         "B-": 1.0,
         "C+": 0.0,
+        "IP": 0.0,
         "C": 0.0,
         "C-": 0.0,
         "D+": -1.0,
@@ -583,10 +604,14 @@ def evaluate_QPA(grade):
     # value of passed argument if it is present
     # in dictionary otherwise second argument will
     # be assigned as default value of passed argument
-    return switcher.get(grade, "Not_Taken")
+    return switcher.get(grade, 0)
 
 
 def evaluate_GPA(grade):
+
+    if grade == "IP":
+        return None 
+    
     switcher = {
         "A+": 4.0,
         "A": 4.0,
@@ -606,7 +631,7 @@ def evaluate_GPA(grade):
     # value of passed argument if it is present
     # in dictionary otherwise second argument will
     # be assigned as default value of passed argument
-    return switcher.get(grade, "Not_Taken")
+    return switcher.get(grade, None)
 
 
 @app.route('/course/info/edit/<int:course_id>', methods=['GET', 'POST'])
