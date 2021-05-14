@@ -862,23 +862,7 @@ def checklist():
     for course in free_courses:
         FE_width += checklistProgressInterval_FE
     FE_width_num = FE_width/100 * 2
-
-    """
-    print("******************************")
-    print("          DEBUG LOG           ")
-    print("******************************")
-    print("CS_width:\t\t", CS_width)
-    print("CSE_width:\t\t", CSE_width)
-    print("Math_width:\t\t", Math_width)
-    print("Science_width:\t\t", Science_width)
-    print("Tech Width:\t\t", Tech_width)
-    print("Art Width:\t\t", Art_width)
-    print("Lib Art Width:\t\t", Lib_Art_width)
-    print("FE_Width:\t\t", FE_width)
-    print("******************************")
-    print("******************************")
-    """
-    
+        
 
     if student.credit_earned >= 126: 
         if int(Math_width) == 100 and int(Science_width) == 100 and int(Tech_width) == 100 and int(CSE_width) == 100 and int(Art_width) == 100 and int(CS_width) == 100 and int(FE_width) == 100 and int(Lib_Art_width) == 100:
