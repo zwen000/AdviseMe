@@ -18,7 +18,7 @@ import pandas as pd
 @app.route('/')
 def landing():
     return render_template('index.html', title="Welcome!")
-
+    
 
 @app.route('/home')
 def home():
