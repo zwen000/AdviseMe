@@ -1,4 +1,3 @@
-import os
 import math
 import secrets
 from datetime import date
@@ -18,7 +17,7 @@ import pandas as pd
 @app.route('/')
 def landing():
     return render_template('index.html', title="Welcome!")
-    
+
 
 @app.route('/home')
 def home():
@@ -287,9 +286,9 @@ def GPA_QPA():
     student.QPA = 0
     for value in scores:
         if value.QPA_point:
-            if value.dept == "CSC":     # The department = "CSC" will give you all CS courses, [required, Group A/B/C, and technical]
+            if value.course_id >= 1:     # The department = "CSC" will give you all CS courses, [required, Group A/B/C, and technical]
                 student.QPA += int(value.QPA_point)  
-            else:
+            elif value.course_id <= 38:
                 student.QPA += 0
                 print("The course is not a CS course offered by the CSC department!")
 
