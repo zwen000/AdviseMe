@@ -287,7 +287,7 @@ def GPA_QPA():
     student.QPA = 0
     for value in scores:
         if value.QPA_point:
-            if value.dept == "CSC":     # The department = "CSC" will give you all CS courses, [required, Group A/B/C, and technical]
+            if value.course.dept == "CSC":     # The department = "CSC" will give you all CS courses, [required, Group A/B/C, and technical]
                 student.QPA += int(value.QPA_point)  
             else:
                 student.QPA += 0
