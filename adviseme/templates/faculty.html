@@ -19,14 +19,15 @@
     <div class="push" style="height:1px;"></div>
     <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
 
-    <!-- Ray will add search bar later 
+    <!-- Ray will add search bar later -->  
     <div class="search-container">
-      <form action="/action_page.php">
-        <input type="text" placeholder="Search.. " name="search">
+      <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.search }}
+        {{ form.submit(style="background-color:#233B7E") }}
       </form>
     </div>
     <hr>
--->
+    
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Academic Advisor'%}
         {% for note in notes %}
