@@ -2,7 +2,7 @@
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <center>
-<div class='row'>
+  <div class='row'>
     <div class='column'>
 <div class="content-section">
       <img class="rounded-circle account-img" src="{{ profile_image }}">
@@ -17,32 +17,45 @@
 <div class='double-column'>
   <div class="c_viewport rounded">
     <div class="push" style="height:1px;"></div>
-    <legend class="border-bottom mb-4">Students in Need of Advisement:</legend>
+    <legend class="border-bottom mb-4">Students in Need of Advisement</legend>
 
-    <!-- Ray will add search bar later -->  
+    <!-- Ray will add search bar later 
     <div class="search-container">
-      <form method="POST" action="" enctype="multipart/form-data">
-        {{ form.search }}
-        {{ form.submit(style="background-color:#233B7E") }}
+      <form action="/action_page.php">
+        <input type="text" placeholder="Search.. " name="search">
       </form>
     </div>
     <hr>
-
+-->
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Academic Advisor'%}
         {% for note in notes %}
-          {%if note.Owner.credit_earned <= 45 %}        
-            <button type="button" class="collapsible subtitle">Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
-            </button>
-            <div class="content">
-              <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Live Advisement Form - {{note.semester}} {{note.year}} </a>
-            </div>
-          </section>
-          <br>
-          {%endif%}       
-        {% endfor %}
-      {%endif%}
+          {%if note.Owner.credit_earned <= 45 %}
+        
+      <button type="button" class="collapsible subtitle">Name: {{note.Owner.firstname}} {{note.Owner.lastname}} 
+      </button>
+      <div class="content">
+        <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Live Advisement Form - {{note.semester}} {{note.year}} </a>
+      </div>
+    </section>
+    <br>
+    {%endif%}
+    {% endfor %}
 
+      {% for note in secondnotes %}
+        {%if note.Owner.credit_earned > 45 %}
+
+      <button type="button" class="collapsible subtitle">Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
+      </button>
+      <div class="content">
+        <a class="f_link" href="{{ url_for('noteReview', note_id=note.id) }}">Live Advisement Form - {{note.semester}} {{note.year}} </a>
+      </div>
+      </section>
+      <br>
+    {%endif%}
+    {% endfor %}
+
+  {%endif%}
     <section class="checklist">
       {% if current_user.FacultyOwner.staff_role == 'Faculty Advisor'%}
       {% for note in notes %}
@@ -50,46 +63,17 @@
       <button type="button" class="collapsible subtitle">Student Name: {{note.Owner.firstname}} {{note.Owner.lastname}}
       </button>
       <div class="content">
-        <a class="f_link" href="#">Link to student profile</a>
-        <br>
         <a class="f_link" href="{{ url_for('faculty_review', note_id=note.id) }}">Link to student live advisement form</a>
       </div>
     </section>
     <br>
     {%endif%}
     {% endfor %}
-    {%endif%}
-
-    {% if not notes %} <!-- Case when there are no students in need of advisement -->
-    <div class="container d-flex justify-content-center py-5">
-      <div class="card shaodw-lg card-1">
-          <div class="card-header pt-3 py-3 ml-auto border-0 ">
-
-          </div>
-          <div class="card-body d-flex pt-0">
-              <div class="row no-gutters mx-auto justify-content-start flex-sm-row flex-column">
-                  <div class="col-md-4 text-center"><img class="irc_mi img-fluid mr-0" src="https://cdn4.iconfinder.com/data/icons/logistics-delivery-2-5/64/137-512.png" width="150" height="150"></div>
-                  <div class="col-md-8 ">
-                      <div class="card border-0 ">
-                          <div class="card-body">
-                              <h5 class="card-title"><b>Notice:</b></h5>
-                              <p class="card-text ">
-                                  <p>No students currently in need of advisement. View your past advisement notes.</p>
-                              </p> <a href="{{ url_for('noteReviewHome') }}"><button type="button" class="btn btn-round-lg btn-lg" style="background-color:#233B7E; color:white">Archive</button></a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
   {%endif%}
-  </div>
+</div>
 </div>
 
 <style>
-
-
   * {box-sizing: border-box;}
   input[type=text] {
   padding: 10px;
@@ -145,7 +129,7 @@
   padding: 4%;
   color: rgb(27,30,36);
   margin: 20px 0;
-  height: 100%;
+  height: 700px;
   overflow: auto;
   background: #FFFFFF;
 box-shadow: 0px 4px 25px 10px rgba(0, 0, 0, 0.15);
@@ -202,7 +186,7 @@ text-decoration-line: underline;
 
 color: #233B7E;
 }
-.p-custom:hover{
+p:hover{
   color: #3772D7;
   font-size: large;
 }
@@ -258,14 +242,6 @@ a{
 .content-section{
   width: 95%;
   padding: 4%;
-}
-legend{
-    font-family: Poppins;
-font-style: normal;
-font-weight: bold;
-font-size: 24px;
-
-color: #233B7E;
 }
 
 }

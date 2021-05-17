@@ -273,6 +273,9 @@
 
   <form method="POST" action="" enctype="multipart/form-data">
 
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+
   {%if notes.be_advised == False %}
   <div class="container d-flex justify-content-center py-5 m-5">
     <div class="card shaodw-lg card-1">
@@ -300,7 +303,7 @@
                               <p>Your advisement form has been declined by Faculty advisor, Please revise.</p>
                               {%endif%}
 
-                            </p> <a href="{{ url_for('Update_Advisement',note_id=notes.id) }}"><input type="sumbit" value="Revise Advisement Form" class="btn btn-primary btn-round-lg btn-lg"  ></a>
+                            </p>{{ form.submit(class="btn btn-primary btn-round-lg btn-lg", value="Revise Advisement Form") }}</a>
                         </div>
                     </div>
                 </div>
@@ -332,10 +335,7 @@
                             <h5 class="card-title"><b>Notice:</b></h5>
                             <p class="card-text ">
                                 <p>Your advisement form has been declined by Academic advisor, Please revise.</p>
-                                <div class="nav justify-center">
-                                  {{ form.submit(class="btn custom-button-submit") }}
-                              </div>
-                            </p> <a href="{{ url_for('Update_Advisement',note_id=notes.id) }}"><input type="sumbit" value="Revise Advisement Form" class="btn btn-primary btn-round-lg btn-lg"  ></a>
+                            </p> {{ form.submit(class="btn btn-primary btn-round-lg btn-lg", value="Revise Advisement Form") }}</a>
                         </div>
                     </div>
                 </div>

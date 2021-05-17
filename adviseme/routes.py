@@ -938,6 +938,10 @@ def faculty():
 
     notes = Notes.query.filter(Notes.semester==semester,
                                 (Notes.be_advised == None)|(Notes.be_advised == False)).all()
+    
+    secondnotes = Notes.query.filter_by(be_advised=True,
+                                    approval=None,
+                                    semester = semester).all()
 
     profile_image = url_for('static', filename='Profile_Pics/' + current_user.profile_image)
 
@@ -946,7 +950,7 @@ def faculty():
         notes = Notes.query.filter(Notes.EMPLID.like(search),Notes.semester==semester,
                                 (Notes.be_advised == None)|(Notes.be_advised == False)).all()
 
-    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form)
+    return render_template("faculty.html", title="Faculty Profile", profile_image=profile_image, notes=notes, semester=semester, year=year, form=form, secondnotes=secondnotes)
 
 
 @app.route('/graduating/class', methods=['GET', 'POST'])
@@ -1126,7 +1130,7 @@ def noteReview(note_id):
         notes.approval=form.approval.data
         db.session.commit()
         flash('Confirmed!', 'success')
-        return redirect(url_for('noteReviewHome'))
+        return redirect(url_for('faculty'))
     elif request.method == 'GET':
         form.academic_note.data=notes.academic_note
         form.additional.data=notes.additional
@@ -1136,7 +1140,7 @@ def noteReview(note_id):
 
 
 
-@app.route('/workflow/')
+@app.route('/workflow/', methods=['GET', 'POST'])
 @login_required
 def workflow():
     todaydate = date.today()
@@ -1154,7 +1158,8 @@ def workflow():
     
         for enrollement in enrollment:
             db.session.delete(enrollement)
-            db.session.commit()
+        db.session.commit()
+        return redirect( url_for('Update_Advisement',note_id=notes.id ))  
 
     return render_template('workflow.html', title="workflow",notes=notes,editworkflow=editworkflow,form=form)
 
@@ -1421,7 +1426,7 @@ def faculty_review(note_id):
         student.needs_advising = False          # Set this to False upon approval
         db.session.commit()
         flash('Notes saved!', 'success')
-        return redirect(url_for('AdvisingHome'))
+        return redirect(url_for('faculty'))
     elif request.method == 'GET':
         form.q1.data=notes.academic_comment
         form.q2.data=notes.next_semester_comment

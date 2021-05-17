@@ -682,7 +682,11 @@
                     <div class="card-header">
                       <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" style="background-color:#3872d7;">
                         <li class="nav-item">
+                            {%if notes.Owner.credit_earned > 45 %}
                           <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Faculty Advising Note </a>
+                          {%else%}
+                          <a class="nav-link active" data-toggle="tab" href="#p1" role="tab">Academic Advising Note </a>
+                          {%endif%}
                         </li>
                       </ul>
                     </div>
