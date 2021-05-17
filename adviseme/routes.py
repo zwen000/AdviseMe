@@ -1,3 +1,4 @@
+import os
 import math
 import secrets
 from datetime import date
@@ -966,6 +967,8 @@ def graduating_class():
     Transcripts = []
     for i in graduates:
         Transcripts = i.transcript
+
+    export_csv()
 
     return render_template("graduating_class.html", title=f"Class of {year}", year=year, semester=semester, Transcripts=Transcripts, graduates=graduates)
 
