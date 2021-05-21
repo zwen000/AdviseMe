@@ -981,13 +981,15 @@ def export_csv():
 
     f = open('./adviseme/static/export/CCNY_graduates.csv', 'w')
     out = csv.writer(f)
-    out.writerow(['EMPLID', 'First Name', 'Last Name', 'GPA', 'QPA' ])
+    out.writerow(['EMPLID', 'First Name', 'Last Name', 'GPA', 'QPA', 'Citymail address' ])
 
     # NOTE: Not optimal given I was passing this query into the function before and it was working fine. Scope can be a pain at times. 
-    graduates = Student.query.filter_by(graduating=True).all()      
+    # graduates = Student.query.join(User, Student.EMPLID == User.EMPLID).filter(Student.graduating == True).all()      
+
+    graduates = db.session.query(User, Student).outerjoin(User, User.EMPLID == Student.EMPLID).filter(Student.graduating == True).all()
 
     for student in graduates:
-        out.writerow([student.EMPLID, student.firstname, student.lastname, student.GPA, student.QPA])
+        out.writerow([student[1].EMPLID, student[1].firstname, student[1].lastname, student[1].GPA, student[1].QPA, student[0].email ])
 
     f.close()
 
